@@ -22,7 +22,6 @@ Consider an agent within an environment described by $e\in E$, with some interna
 We will develop these concrete situations and then try to find an axiomatic approach that allows us to reproduce our conclusions.
 
 For a fixed $E$, we denote and define sets of possible situations
-1. $\mathcal{S}'\_{\mathrm{class}}:=\{\frac{1}{s}\mid M\}$,
 1. $\mathcal{S}'\_{\mathrm{class}}:=\left\\\{(M,P)\mid \left\|M\right\|<\infty, P\in(\mathbb{R}^+)^{E\times M}\right\\\}$,
 2. $\mathcal{S}'\_{\mathrm{quant}}:=\left\\\{(M,\Psi)\mid |M|<\infty, \Psi\in\mathbb{C}^{E\times M}\right\\\}$,
 3. $\mathcal{S}'\_{\mathrm{decoh}}:=\left\\\{(D,M,\Psi)\mid \left\|D\right\|<\infty, |M|<\infty, \Psi\in\mathbb{C}^{D\times E\times M}\right\\\}.$
@@ -43,15 +42,18 @@ In the coherent quantum case, we take the square root to replace probabilities b
 In particular, $0$, $1$ and $d\in E$, $E'\subseteq E$ are treated as the all-$0$, all-$1$, and indicator function vectors (these being generally not normalized probability distributions).[^5] When we have defined addition and multiplication and passed over to equivalence classes, $0$ and $1$ will play the role indicated by their symbol. Using $0$, we also consider $\mathcal{K'}$ as a subset of $\mathcal{K'}^\pm$ by identifying $K\in\mathcal{K'}$ with $K-0\in\mathcal{K'}^\pm$.
 
 By $\Omega\in\mathcal{S}'$, we denote the state of complete knowledge, i.e.
-1. $\Omega\in\mathcal{S}'\_{\mathrm{class}}$ as $\Omega:=(E,(\delta_{e,m})_{(e,m)\in E\times M})$, and equivalently for $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$,
+1. $\Omega\in\mathcal{S}'\_{\mathrm{class}}$ and $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ as $\Omega:=(E,(\delta_{e,m})_{(e,m)\in E\times M})$, and
 2. $\Omega\in\mathcal{S}'\_{\mathrm{decoh}}$ as $\Omega:=(E,E,(\delta_{d,e,m})_{(d,e,m)\in E\times E\times E})$.
 
-Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ and decoherently in $\mathcal{S}'\_{\mathrm{decoh}}$.
-
+Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ and incoherently in $\mathcal{S}'\_{\mathrm{decoh}}$.
 ## 4. Operations
 We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$.
-1. Addition, $+$, is to be interpreted as being in any of the possible situations, and defined with direct sums:
-   1. 
+1. Addition, $+$, is to be interpreted as being in either of the situations that the summands describe, and defined with direct sums:
+   1. In $\mathcal{S}'\_{\mathrm{class}}$, $(M_1,P_1)+(M_2,P_2):=(M_1\biguplus M_2, (p'_{em'})_{(e,m)\in E\times (M_1\biguplus M_2)})$, with $M_1\biguplus M_2$ denoting the disjoint union of $M_1$ and $M_2$ and $p'_{em'}=(P_1)_{em}$ for $m'\in M_1$ and $p'_{em'}=(P_2)_{em}$ for $m'\in M_2$.
+   
+   \mid \left\|M\right\|<\infty, P\in(\mathbb{R}^+)^{E\times M}\right\\\}$,
+2. $\mathcal{S}'\_{\mathrm{quant}}:=\left\\\{(M,\Psi)\mid |M|<\infty, \Psi\in\mathbb{C}^{E\times M}\right\\\}$,
+3. $\mathcal{S}'\_{\mathrm{decoh}}:=\left\\\{(D,M,\Psi)\mid \left\|D\right\|<\infty, |M|<\infty, \Psi\in\mathbb{C}^{D\times E\times M}\right\\\}.$
 
 $\mathcal{S}'\_{\mathrm{class}}=$
 
