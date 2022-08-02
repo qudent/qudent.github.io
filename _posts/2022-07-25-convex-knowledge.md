@@ -23,10 +23,10 @@ We will develop these concrete situations and then try to find an axiomatic appr
 
 For a fixed $E$, we denote and define sets of possible situations
 1. $\mathcal{S}'\_{\mathrm{class}}:=\left\\\{(M,P)\mid |M|<\infty, P\in(\mathbb{R}^+)^{E\times M}\right\\\}$,
-2. $\mathcal{S}'\_{\mathrm{quant}}:=\left\{(M,\Psi)\mid |M|<\infty, \Psi\in\mathbb{C}^{E\times M}\right\}$,
-3. $\mathcal{S}'\_{\mathrm{decoh}}:=\left\{(D,M,\Psi)\mid |D|<\infty, |M|<\infty, \Psi\in\mathbb{C}^{D\times E\times M}\right\}.$
+2. $\mathcal{S}'\_{\mathrm{quant}}:=\left\\\{(M,\Psi)\mid |M|<\infty, \Psi\in\mathbb{C}^{E\times M}\right\\\}$,
+3. $\mathcal{S}'\_{\mathrm{decoh}}:=\left\\\{(D,M,\Psi)\mid |D|<\infty, |M|<\infty, \Psi\in\mathbb{C}^{D\times E\times M}\right\\\}.$
 
-In other words, we do not fix $M$ and $D$ (or limit their sizes), but consider them part of the description. Furthermore, we don't force the classical probability distributions or quantum states to be normalized. We write $\mathcal{S}'$ in developments that apply to any of $\left\{\mathcal{S}'\_{\mathrm{class}},\mathcal{S}'\_{\mathrm{quant}},\mathcal{S}'\_{\mathrm{decoh}}\right}.$
+In other words, we do not fix $M$ and $D$ (or limit their sizes), but consider them part of the description. Furthermore, we don't force the classical probability distributions or quantum states to be normalized. We write $\mathcal{S}'$ in developments that apply to any of $\left\\\{\mathcal{S}'\_{\mathrm{class}},\mathcal{S}'\_{\mathrm{quant}},\mathcal{S}'\_{\mathrm{decoh}}\right}.$
 
 We define $\mathcal{S}'^\pm:=\mathcal{S}'\times\mathcal{S}'$ (for classical, coherent-quantum, or decohering-quantum states). I will denote a tuple $(S'_1,S'_2)\in\mathcal{S}'^\pm$ by $S'_1-S'_2$; accordingly, you should interpret it as a difference between $S'_2$ and $S'_1.$
 
@@ -34,9 +34,9 @@ Both $\mathcal{S}'$ and $\mathcal{S}'^\pm$ overcount states - in other words, th
 
 ## 3. Special elements
 With $\vec{p}\in(\mathbb{R}^+)^E$ to be interpreted as a vector of prior probabilities over $E$, we define $\vec{p}\in\mathcal{S}'$ in the natural ways - as states in which the computer has only one possible internal state:
-1. In $\mathcal{S}'\_{\mathrm{class}}$, $\vec{p}:=(\{0\},\vec{p})$,
-2. In $\mathcal{S}'\_{\mathrm{quant}}$, $\vec{p}:=(\{0\},(\sqrt{p_e})_{(e,0)\in E\times \{0\}})$,
-3. In $\mathcal{S}'\_{\mathrm{decoh}}$, $\vec{p}:=(E,\{0\},(\delta_{d,e} \sqrt{p_e})_{(d,e,0)\in E\times E\times \{0\}}).$[^2]
+1. In $\mathcal{S}'\_{\mathrm{class}}$, $\vec{p}:=(\\\{0\\\},\vec{p})$,
+2. In $\mathcal{S}'\_{\mathrm{quant}}$, $\vec{p}:=(\\\{0\\\},(\sqrt{p_e})_{(e,0)\in E\times \\\{0\\\}})$,
+3. In $\mathcal{S}'\_{\mathrm{decoh}}$, $\vec{p}:=(E,\\\{0\\\},(\delta_{d,e} \sqrt{p_e})_{(d,e,0)\in E\times E\times \\\{0\\\}}).$[^2]
 In the coherent quantum case, we take the square root to replace probabilities by amplitude. In the decoherent quantum case, we additionally set $D:=E$ and use a Kronecker delta, enforcing a decoherent probabilistic mixture of initial states. This means that $\vec{p}\in\mathcal{S}'\_{\mathrm{quant}}$ is **not** the same thing as $\vec{p}\in\mathcal{S}'\_{\mathrm{decoh}}.$
 
 In particular, $0$, $1$ and $d\in E$, $E'\subseteq E$ are treated as the all-$0$, all-$1$, and indicator function vectors (these being generally not normalized probability distributions).[^5] When we have defined addition and multiplication and passed over to equivalence classes, $0$ and $1$ will play the role indicated by their symbol. Using $0$, we also consider $\mathcal{K'}$ as a subset of $\mathcal{K'}^\pm$ by identifying $K\in\mathcal{K'}$ with $K-0\in\mathcal{K'}^\pm$.
@@ -106,11 +106,11 @@ Then in the equivalence classes, $\mathbf{0},\mathbf{1}\in\mathbb{K}$ are neutra
 
    Now suppose the experiments generate additional data that individually correspond to SOKs $E_1,E_2\in \mathbb{K}.$ Then the feasible states of knowledge after one more experiment are given by
 
-   $\\\{E_1 K_1 + E_2 K_2 \mid K_1 + K_2 \leq K\\\}$
+   $\\\\\{E_1 K_1 + E_2 K_2 \mid K_1 + K_2 \leq K\\\\\}$
 
    with $K_1,K_2\in\mathbb{K}.$
 
-   Now suppose we have given $K\in\mathbb{K}$ and some utility function $f\colon D\times R\to\mathbb{R}^+ \cup \\\{0\\\}.$ So the learner outputs some $r\in R$, and depending on the ground truth $d\in D$, it gets some utility $f(r,d).$ A special case is computing single- or multi-valued functions (the utility is $1$ if the chosen $r$ was acceptable for $d$, $0$ otherwise). The vector $\overrightarrow{f(r,\cdot)}$ represents the utilities the learner would obtain if it always chose $r$; we can consider it as a member of $\mathbb{K}$ as above. Then the claim that the learner can obtain a combination of expected utilities $\vec{q}\in(\mathbb{R}^+\cup\\\{0\\\})^D$ for the various ground truths corresponds to the existence of $K_r\in\mathbb{K}$ for $r\in R$ such that
+   Now suppose we have given $K\in\mathbb{K}$ and some utility function $f\colon D\times R\to\mathbb{R}^+ \cup \\\\\{0\\\\\}.$ So the learner outputs some $r\in R$, and depending on the ground truth $d\in D$, it gets some utility $f(r,d).$ A special case is computing single- or multi-valued functions (the utility is $1$ if the chosen $r$ was acceptable for $d$, $0$ otherwise). The vector $\overrightarrow{f(r,\cdot)}$ represents the utilities the learner would obtain if it always chose $r$; we can consider it as a member of $\mathbb{K}$ as above. Then the claim that the learner can obtain a combination of expected utilities $\vec{q}\in(\mathbb{R}^+\cup\\\\\{0\\\\\})^D$ for the various ground truths corresponds to the existence of $K_r\in\mathbb{K}$ for $r\in R$ such that
 
    $\vec{q}\leq \sum_{r\in R} K_r \overrightarrow{f(r,\cdot)},~~\sum_{r\in R} K_r\leq K.$
 
@@ -136,7 +136,7 @@ Then in the equivalence classes, $\mathbf{0},\mathbf{1}\in\mathbb{K}$ are neutra
 
    $\frac{K^0 (N-(j+1)) + K^T (j+1)}{N}\mathbf{1} + \frac{1}{N}\sum\_{q\in Q}\overline{K}\_q \leq \frac{K^0 (N-j) + K^T j}{N}\mathbf{1} + \frac{1}{N}\sum\_{q\in Q} \overline{K}\_q E\_q$
 
-   for any natural number $N>0$, $j\in \{0,\ldots,N-1\}.$ By the discussion above, these are just the inequalities we need to show that we can transform
+   for any natural number $N>0$, $j\in \\\{0,\ldots,N-1\\\}.$ By the discussion above, these are just the inequalities we need to show that we can transform
 
    $K_0 + \frac{1}{N}\sum\_{q\in Q}\overline{K}\_q\rightarrow K_T + \frac{1}{N}\sum\_{q\in Q}\overline{K}\_q$
 
