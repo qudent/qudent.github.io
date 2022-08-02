@@ -23,36 +23,36 @@ We will develop these concrete situations and then try to find an axiomatic appr
 
 For a fixed $E$, we denote and define sets of possible situations
 1. $\mathcal{S}'\_{\mathrm{class}}:=\left\\\{(M,P)\mid |M|<\infty, P\in(\mathbb{R}^+)^{E\times M}\right\\\}$,
-2. $\mathcal{S'}\_{\mathrm{quant}}:=\left\{(M,\Psi)\mid |M|<\infty, \Psi\in\mathbb{C}^{E\times M}\right\}$,
-3. $\mathcal{S'}\_{\mathrm{decoh}}:=\left\{(D,M,\Psi)\mid |D|<\infty, |M|<\infty, \Psi\in\mathbb{C}^{D\times E\times M}\right\}.$
+2. $\mathcal{S}'\_{\mathrm{quant}}:=\left\{(M,\Psi)\mid |M|<\infty, \Psi\in\mathbb{C}^{E\times M}\right\}$,
+3. $\mathcal{S}'\_{\mathrm{decoh}}:=\left\{(D,M,\Psi)\mid |D|<\infty, |M|<\infty, \Psi\in\mathbb{C}^{D\times E\times M}\right\}.$
 
-In other words, we do not fix $M$ and $D$ (or limit their sizes), but consider them part of the description. Furthermore, we don't force the classical probability distributions or quantum states to be normalized. We write $\mathcal{S'}$ in developments that apply to any of $\left\{\mathcal{S'}\_{\mathrm{class}},\mathcal{S'}\_{\mathrm{quant}},\mathcal{S'}\_{\mathrm{decoh}}\right}.$
+In other words, we do not fix $M$ and $D$ (or limit their sizes), but consider them part of the description. Furthermore, we don't force the classical probability distributions or quantum states to be normalized. We write $\mathcal{S}'$ in developments that apply to any of $\left\{\mathcal{S}'\_{\mathrm{class}},\mathcal{S}'\_{\mathrm{quant}},\mathcal{S}'\_{\mathrm{decoh}}\right}.$
 
-We define $\mathcal{S'}^\pm:=\mathcal{S'}\times\mathcal{S'}$ (for classical, coherent-quantum, or decohering-quantum states). I will denote a tuple $(S'_1,S'_2)\in\mathcal{S'}^\pm$ by $S'_1-S'_2$; accordingly, you should interpret it as a difference between $S'_2$ and $S'_1.$
+We define $\mathcal{S}'^\pm:=\mathcal{S}'\times\mathcal{S}'$ (for classical, coherent-quantum, or decohering-quantum states). I will denote a tuple $(S'_1,S'_2)\in\mathcal{S}'^\pm$ by $S'_1-S'_2$; accordingly, you should interpret it as a difference between $S'_2$ and $S'_1.$
 
-Both $\mathcal{S'}$ and $\mathcal{S'}^\pm$ overcount states - in other words, there are states of knowledge and differences between them that should be considered equivalent (e.g. because the agent can transform them without interacting with the environment), but are distinct elements of these sets. We will introduce appropriate equivalence relations in section 5, but first define some more structure on the sets.
+Both $\mathcal{S}'$ and $\mathcal{S}'^\pm$ overcount states - in other words, there are states of knowledge and differences between them that should be considered equivalent (e.g. because the agent can transform them without interacting with the environment), but are distinct elements of these sets. We will introduce appropriate equivalence relations in section 5, but first define some more structure on the sets.
 
 ## 3. Special elements
-With $\vec{p}\in(\mathbb{R}^+)^E$ to be interpreted as a vector of prior probabilities over $E$, we define $\vec{p}\in\mathcal{S'}$ in the natural ways - as states in which the computer has only one possible internal state:
-1. In $\mathcal{S'}\_{\mathrm{class}}$, $\vec{p}:=(\{0\},\vec{p})$,
-2. In $\mathcal{S'}\_{\mathrm{quant}}$, $\vec{p}:=(\{0\},(\sqrt{p_e})_{(e,0)\in E\times \{0\}})$,
-3. In $\mathcal{S'}\_{\mathrm{decoh}}$, $\vec{p}:=(E,\{0\},(\delta_{d,e} \sqrt{p_e})_{(d,e,0)\in E\times E\times \{0\}}).$[^2]
-In the coherent quantum case, we take the square root to replace probabilities by amplitude. In the decoherent quantum case, we additionally set $D:=E$ and use a Kronecker delta, enforcing a decoherent probabilistic mixture of initial states. This means that $\vec{p}\in\mathcal{S'}\_{\mathrm{quant}}$ is **not** the same thing as $\vec{p}\in\mathcal{S'}\_{\mathrm{decoh}}.$
+With $\vec{p}\in(\mathbb{R}^+)^E$ to be interpreted as a vector of prior probabilities over $E$, we define $\vec{p}\in\mathcal{S}'$ in the natural ways - as states in which the computer has only one possible internal state:
+1. In $\mathcal{S}'\_{\mathrm{class}}$, $\vec{p}:=(\{0\},\vec{p})$,
+2. In $\mathcal{S}'\_{\mathrm{quant}}$, $\vec{p}:=(\{0\},(\sqrt{p_e})_{(e,0)\in E\times \{0\}})$,
+3. In $\mathcal{S}'\_{\mathrm{decoh}}$, $\vec{p}:=(E,\{0\},(\delta_{d,e} \sqrt{p_e})_{(d,e,0)\in E\times E\times \{0\}}).$[^2]
+In the coherent quantum case, we take the square root to replace probabilities by amplitude. In the decoherent quantum case, we additionally set $D:=E$ and use a Kronecker delta, enforcing a decoherent probabilistic mixture of initial states. This means that $\vec{p}\in\mathcal{S}'\_{\mathrm{quant}}$ is **not** the same thing as $\vec{p}\in\mathcal{S}'\_{\mathrm{decoh}}.$
 
 In particular, $0$, $1$ and $d\in E$, $E'\subseteq E$ are treated as the all-$0$, all-$1$, and indicator function vectors (these being generally not normalized probability distributions).[^5] When we have defined addition and multiplication and passed over to equivalence classes, $0$ and $1$ will play the role indicated by their symbol. Using $0$, we also consider $\mathcal{K'}$ as a subset of $\mathcal{K'}^\pm$ by identifying $K\in\mathcal{K'}$ with $K-0\in\mathcal{K'}^\pm$.
 
-By $\Omega\in\mathcal{S'}$, we denote the state of complete knowledge, i.e.
-1. $\Omega\in\mathcal{S'}\_{\mathrm{class}}$ as $\Omega:=(E,(\delta_{e,m})_{(e,m)\in E\times M})$, and equivalently for $\Omega\in\mathcal{S'}\_{\mathrm{quant}}$,
-2. $\Omega\in\mathcal{S'}\_{\mathrm{decoh}}$ as $\Omega:=(E,E,(\delta_{d,e,m})_{(d,e,m)\in E\times E\times E})$.
+By $\Omega\in\mathcal{S}'$, we denote the state of complete knowledge, i.e.
+1. $\Omega\in\mathcal{S}'\_{\mathrm{class}}$ as $\Omega:=(E,(\delta_{e,m})_{(e,m)\in E\times M})$, and equivalently for $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$,
+2. $\Omega\in\mathcal{S}'\_{\mathrm{decoh}}$ as $\Omega:=(E,E,(\delta_{d,e,m})_{(d,e,m)\in E\times E\times E})$.
 
-Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{S'}\_{\mathrm{quant}}$ and decoherently in $\mathcal{S'}\_{\mathrm{decoh}}$.
+Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ and decoherently in $\mathcal{S}'\_{\mathrm{decoh}}$.
 
 ## 4. Operations
-We now define some operations on the $\mathcal{S'}$ and $\mathcal{S'}^\pm$.
+We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$.
 1. Addition, $+$, is to be interpreted as being in any of the possible situations, and defined with direct sums:
    1. 
 
-$\mathcal{S'}\_{\mathrm{class}}=$
+$\mathcal{S}'\_{\mathrm{class}}=$
 
 
 1.5. remark: too many states now, but first define ops, then equivalence classes
