@@ -9,7 +9,7 @@ tags:
 ---
 (major rewrite+updates ongoing, old version [here](https://github.com/qudent/qudent.github.io/blob/935968fec7d4e89e7953f460d1c2b1093bf0da6b/_posts/2022-07-25-convex-knowledge.md)). The old version is more verbose/philosophical, in this one, I try to be more on-point.
 ## 1. Abstract
-I develop a convex description of a classical or quantum learner's or agent's state of knowledge and environmental state, which would allow using convex optimization and duality on problems related to optimal learning or actions if one restricted to finite-dimensional vector spaces.
+I develop a convex description of a classical or quantum learner's or agent's state of knowledge and environmental state, which would allow using convex optimization and duality on problems related to optimal learning or actions if one restricted to finite-dimensional vector spaces. The physically possible states are described as a convex subset of an associative, commutative $\mathbb{R}$-algebra. This also allows describing formal differential equations and power series describing e.g. the evolution of a learner's knowledge over time.
 
 (Remark: If you don't know quantum physics, you should be able to follow the non-quantum part if you skip the references to that).
 
@@ -48,8 +48,8 @@ By $\Omega\in\mathcal{S}'$, we denote the state of complete knowledge, i.e.
 Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ and incoherently in $\mathcal{S}'\_{\mathrm{decoh}}$.
 ## 4. Operations
 We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$.
-1. Addition, $+$, is to be interpreted as being in either of the situations that the summands describe, and defined with direct sums:
-   1. In $\mathcal{S}'\_{\mathrm{class}}$, $(M_1,P_1)+(M_2,P_2):=(M_1\biguplus M_2, (p'_{em'})_{(e,m)\in E\times (M_1\biguplus M_2)})$, with $M_1\biguplus M_2$ denoting the disjoint union of $M_1$ and $M_2$ and $p'_{em'}=(P_1)_{em}$ for $m'\in M_1$ and $p'_{em'}=(P_2)_{em}$ for $m'\in M_2$.
+1. Addition, $+$, is to be interpreted as the environment+agent being in either of the situations that the summands describe, and defined with direct sums:
+   1. In $\mathcal{S}'\_{\mathrm{class}}$, $(M_1,P_1)+(M_2,P_2):=(M_1\biguplus M_2, (p'_{em'})_{(e,m)\in E\times (M_1\biguplus M_2)})$, with $M_1\biguplus M_2$ denoting the disjoint union of $M_1$ and $M_2$ and $p'_{em'}=(P_1)_{em}$ for $m'\in M_1$ and $p'_{em'}=(P_2)_{em}$ for $m'\in M_2$, and $(M_1,P_1)
    
    \mid \left\|M\right\|<\infty, P\in(\mathbb{R}^+)^{E\times M}\right\\\}$,
 2. $\mathcal{S}'\_{\mathrm{quant}}:=\left\\\{(M,\Psi)\mid |M|<\infty, \Psi\in\mathbb{C}^{E\times M}\right\\\}$,
