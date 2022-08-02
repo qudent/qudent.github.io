@@ -15,9 +15,9 @@ I develop a convex description of a classical or quantum learner's or agent's st
 
 ## 2. Sets
 Consider an agent within an environment described by $e\in E$, with some internal memory state $m\in M.$
-1. In the classical case, we describe the situation by a probability matrix $(p_{em})_{(e,m)\in E\times M}\in(\mathbb{R}^+)^{E\times M}$, where $\mathbb{R}^+$ denotes the set of **nonnegative** real numbers,
-2. in the quantum case without decoherence, we have a bipartite quantum state $(\phi_{em})_{(e,m)\in E\times M}\in\mathbb{C}^{E\times M}$, and
-3. we model the quantum case with decoherence by adding an additional subsystem $D$ into which the state is supposed to have decohered, and and consider a pure quantum state $(\phi_{dem})_{(d,e,m)\in D\times E\times M}\in\mathbb{C}^{D\times E\times M}$ again.[^1]
+1. In the classical case, we describe the situation by a probability matrix $(p_{em})\_{(e,m)\in E\times M}\in(\mathbb{R}^+)^{E\times M}$, where $\mathbb{R}^+$ denotes the set of **nonnegative** real numbers,
+2. in the quantum case without decoherence, we have a bipartite quantum state $(\psi_{em})\_{(e,m)\in E\times M}\in\mathbb{C}^{E\times M}$, and
+3. we model the quantum case with decoherence by adding an additional subsystem $D$ into which the state is supposed to have decohered, and and consider a pure quantum state $(\psi\_{dem})\_{(d,e,m)\in D\times E\times M}\in\mathbb{C}^{D\times E\times M}$ again.[^1]
 
 We will develop these concrete situations and then try to find an axiomatic approach that allows us to reproduce our conclusions.
 
