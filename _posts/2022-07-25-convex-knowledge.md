@@ -49,9 +49,9 @@ Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{
 ## 4. Operations
 We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$.
 1. Addition, $+$, is to be interpreted as the environment+agent being in either of the situations that the summands describe, and defined with direct sums:
-   1. In $\mathcal{S}'\_{\mathrm{class}}$, $(M\_1,P\_1)+(M\_2,P\_2):=(M\_1\biguplus M\_2, P')$, with $M\_1\biguplus M\_2$ denoting the disjoint union of $M\_1$ and $M\_2$ and the elements of $P'$ are composed of the elements of $P\_1$ and $P\_2$.
+   1. In $\mathcal{S}'\_{\mathrm{class}}$, $(M\_1,P\_1)+(M\_2,P\_2):=(M\_1\biguplus M\_2, P')$, with $M\_1\biguplus M\_2$ denoting the disjoint union of $M\_1$ and $M\_2$ and the elements of $P'$ composed of the elements of $P\_1$ and $P\_2$.
    2. In $\mathcal{S}'\_{\mathrm{quant}}$, the definition is equivalent.
-   3. In $\mathcal{S}'\_{\mathrm{decoh}}$, $(D\_1,M\_1,\Psi\_1) + (D\_2,M\_2,\Psi\_2) := (D\_1 \biguplus D\_2, M\_1 \biguplus M\_2, \Psi')$, with the elements of $\Psi'\_{d,e,m}$ composed of those of $\Psi'\_1,\Psi'\_2$ if they $d$ and $m$ belong to the same summand and set to $0$ otherwise.
+   3. In $\mathcal{S}'\_{\mathrm{decoh}}$, $(D\_1,M\_1,\Psi\_1) + (D\_2,M\_2,\Psi\_2) := (D\_1 \biguplus D\_2, M\_1 \biguplus M\_2, \Psi'),$ with the elements of $\Psi'\_{d,e,m}$ composed of those of $\Psi'\_1,\Psi'\_2$ if they $d$ and $m$ belong to the same summand and set to $0$ otherwise.
 
    In the $\mathcal{S}'^\pm$, $(A-B) + (C-D) := ((A+C) - (B+D))$ in the natural way.
 2. We denote multiplication on the $\mathcal{S}'$ by concatenating the factors and interpret it as the model having access to two pieces of knowledge independently. That is:
