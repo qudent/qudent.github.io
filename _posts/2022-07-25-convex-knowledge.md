@@ -60,8 +60,14 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
    3. In $\mathcal{S}'\_{\mathrm{decoh}},$ $(D\_1,M\_1,\Psi\_1) (D\_2,M\_2,\Psi\_2) := (D\_1 \times D\_2, M\_1 \times M\_2, \Psi')$ with $\Psi'\_{(d\_1, d\_2), e, (m\_1, m\_2)} := \Psi\_1\_{d\_1, e, m\_1} \Psi\_2\_{d\_2, e, m\_2}.$
 
    In the $\mathcal{S}'^\pm,$ $(A-B)(C-D) := (AC+BD) - (AD+BC).$
-3. Suppose we have a situation
-3. We define a preorder $S\_1 \leq S\_2,$ which encodes the notion that the agent can transform $S\_2$ into $S\_1$ purely by working on its internal memory. This will give rise to an equivalence class
+3. We define a preorder $S\_1 \leq_0 S\_2$ as follows: [^4]
+   1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_1) \leq (M\_2,P\_2)$ iff there is a transformation matrix on the memory $T \in {\mathbb{R}^+}^{M\_1 \times M\_2}$ with $P\_1 T = P\_2,$ and $\Vert T\Vert\_1\leq 1.$ The latter is the column  So we **allow transition probabilities to sum to less than one**; one can interpret this as the agent sometimes aborting the processing.
+   2. The analogue in $\mathcal{S}'\_{\mathrm{quant}},$ is to allow any transformation on $M$ 
+   
+    with $P'\_{e, (m\_1, m\_2)} := (P\_1)\_{e, m\_1} (P\_2)\_{e, m\_2},$
+
+
+    which encodes the notion that the agent can transform $S\_2$ into $S\_1$ purely by internal memory transformations . This will give rise to an equivalence class
 In other
 1.5. remark: too many states now, but first define ops, then equivalence classes
 
@@ -221,6 +227,7 @@ Any $\mathbb{R}$-algebra is an $\mathbb{R}$-vector space, but the dimension of t
 ## Footnotes
 [^1]: We could have defined it by density operators as well, but it seems to me that the formalism introduced later won't easily work that way anymore.
 [^2]: With $\delta_{d,e}$ denoting the Kronecker delta, i.e. $\delta_{d,e}=1$ if $d=e$ and $0$ otherwise.
+[^20]:
 [^3]: Allowing transition probabilities that sum to less than 1 - i.e. allowing to lose probability mass - won't change the equivalence relation/classes, but is helpful for describing the output condition of a query algorithm later.
 [^4]: We could have exchanged the order of steps $2$ and $3.$
 [^5]: I.e. the vectors which are $1$ on $d$ resp. $d'\in D',$ and $0$ everywhere else.
