@@ -57,11 +57,13 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
 2. We denote multiplication on the $\mathcal{S}'$ by concatenating the factors and interpret it as the model having access to two pieces of knowledge independently. That is:
    1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_1)(M\_2,P\_2) := (M\_1 \times M\_2, P')$ with $P'\_{e, (m\_1, m\_2)} := (P\_1)\_{e, m\_1} (P\_2)\_{e, m\_2},$
    2. Equivalently in $\mathcal{S}'\_{\mathrm{quant}},$
-   3. In $\mathcal{S}'\_{\mathrm{decoh}},$ $(D\_1,M\_1,\Psi\_1) (D\_2,M\_2,\Psi\_2) := (D\_1 \times D\_2, M\_1 \times M\_2, \Psi')$ with $\Psi'\_{(d\_1, d\_2), e, (m\_1, m\_2)} := \Psi\_1\_{d\_1, e, m\_1} \Psi\_2\_{d\_2, e, m\_2}.$
+   3. In $\mathcal{S}'\_{\mathrm{decoh}},$ $(D\_1,M\_1,\Psi\_1) (D\_2,M\_2,\Psi\_2) := (D\_1 \times D\_2, M\_1 \times M\_2, \Psi')$ with $\Psi'\_{(d\_1, d\_2), e, (m\_1, m\_2)}$
+   
+   $:= \Psi\_1\_{d\_1, e, m\_1} \Psi\_2\_{d\_2, e, m\_2}.$
 
    In the $\mathcal{S}'^\pm,$ $(A-B)(C-D) := (AC+BD) - (AD+BC).$
-3. We define a preorder $S\_1 \leq_0 S\_2$ as follows: [^4]
-   1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_1) \leq (M\_2,P\_2)$ iff there is a transformation matrix on the memory $T \in {\mathbb{R}^+}^{M\_1 \times M\_2}$ with $P\_1 T = P\_2,$ and $\Vert T\Vert\_1\leq 1.$ The latter is the column  So we **allow transition probabilities to sum to less than one**; one can interpret this as the agent sometimes aborting the processing.
+3. We define a preorder $S\_1 \leq S\_2$ to capture the notion that a state is "at least as good as" another state, as follows: [^4]
+   1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_1) \leq (M\_2,P\_2)$ iff there is a transformation matrix on the memory $T \in {(\mathbb{R}^+)}^{M\_1 \times M\_2}$ with $P\_1 T = P\_2,$ and $\Vert T\Vert\_1\leq 1.$ The latter is the [1-norm of $T$, i.e. the maximal sum over columns.](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms)  For a given column, the sum of the entries corresponds to the total probability of . In conclusion, we **allow transition probabilities to sum to less than one**; one can interpret this as the agent sometimes aborting the processing.
    2. The analogue in $\mathcal{S}'\_{\mathrm{quant}},$ is to allow any transformation on $M$ 
    
     with $P'\_{e, (m\_1, m\_2)} := (P\_1)\_{e, m\_1} (P\_2)\_{e, m\_2},$
