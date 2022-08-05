@@ -7,21 +7,21 @@ tags:
   - cs.cc
   - quant-ph
 ---
-(major rewrite+updates ongoing, old version [here](https://github.com/qudent/qudent.github.io/blob/935968fec7d4e89e7953f460d1c2b1093bf0da6b/_posts/2022-07-25-convex-knowledge.md)). The old version is more verbose/philosophical, in this one, I try to be more on-point.
+(major rewrite+updates ongoing, old version [here](https://github.com/qudent/qudent.github.io/blob/935968fec7d4e89e7953f460d1c2b1093bf0da6b/_posts/2022-07-25-convex-knowledge.md). The old version is more verbose/philosophical, in this one, I try to avoid burying the lede and put the definitions first.)
 ## 1. Abstract
-I develop a convex description of a classical or quantum learner's or agent's state of knowledge and environmental state, which would allow using convex optimization and duality on problems related to optimal learning or actions if one restricted to finite-dimensional vector spaces. The physically possible states are described as a convex subset of an associative, commutative $\mathbb{R}$-algebra. This also allows solving formal differential equations and power series that describe e.g. the evolution of a learner's knowledge over time, when it observes a Poisson process generating experimental data.
+I develop a convex description of a classical or quantum learner's or agent's state of knowledge and environmental state, which would allow using convex optimization and duality on problems related to optimal learning or actions if one restricted to finite-dimensional vector spaces. The physically possible states are described as a convex subset of an associative, commutative $\mathbb{R}$-algebra. This also allows solving formal differential equations and power series that describe e.g. the evolution of a learner's knowledge over time when it observes a Poisson process generating experimental data.
 
-(Remark: If you don't know quantum physics, you should be able to follow the non-quantum part if you skip the references to that).
+The outline: In section 2-6, I develop the concrete situations of classical, pure quantum, and mixed quantum physics and obtain structures $\mathcal{S}^\pm\_{\mathrm{class}},$ $\mathcal{S}^\pm\_{\mathrm{quant}},$ $\mathcal{S}^\pm\_{\mathrm{decoh}}.$ More precisely, section 2 defines sets, sections 3-5 structure on that sets, and section 6 an equivalence relation that makes equivalent "states of quasiknowledge" equal. Then section 6 mentions the algebraic axioms that these structures fulfill. The remaining sections are devoted to applications.
 
-## 2. Sets
+**Remark:** If you want to speed up reading or don't know quantum physics, you can skip all mentions of non-classical situations.
+
+## 2. Sets before modding out the equivalence relation
 Consider an agent within an environment described by $e\in E,$ with some internal memory state $m\in M.$
 1. In the classical case, we describe the situation by a probability matrix $(p_{e,m})\_{(e,m)\in E\times M}\in(\mathbb{R}^+)^{E\times M},$ where $\mathbb{R}^+$ denotes the set of **nonnegative** real numbers,
 2. in the quantum case without decoherence, we have a bipartite quantum state $(\psi_{e,m})\_{(e,m)\in E\times M}\in\mathbb{C}^{E\times M},$ and
 3. we model the quantum case with decoherence by adding an additional subsystem $D$ into which the state is supposed to have decohered, and and consider a pure quantum state $(\psi\_{d,e,m})\_{(d,e,m)\in D\times E\times M}\in\mathbb{C}^{D\times E\times M}$ again.[^1]
 
-We will develop these concrete situations and then try to find an axiomatic approach that allows us to reproduce our conclusions.
-
-For a fixed $E,$ we denote and define sets of possible situations
+For a fixed $E,$ we denote and define sets of possible situations (which will turn into our desired notions of "states of knowledge" after modding out equivalence relation in section 5):
 1. $\mathcal{S}'\_{\mathrm{class}}:=\left\\\{(M,P)\mid \left\|M\right\|<\infty, P\in(\mathbb{R}^+)^{E\times M}\right\\\},$
 2. $\mathcal{S}'\_{\mathrm{quant}}:=\left\\\{(M,\Psi)\mid |M|<\infty, \Psi\in\mathbb{C}^{E\times M}\right\\\},$
 3. $\mathcal{S}'\_{\mathrm{decoh}}:=\left\\\{(D,M,\Psi)\mid \left\|D\right\|<\infty, |M|<\infty, \Psi\in\mathbb{C}^{D\times E\times M}\right\\\}.$
@@ -30,8 +30,7 @@ In other words, we do not fix $M$ and $D$ (or limit their sizes), but consider t
 
 We define $\mathcal{S}'^\pm:=\mathcal{S}'\times\mathcal{S}'$ (for classical, coherent-quantum, or decohering-quantum states). Denote a tuple $(S'\_1,S'\_2)\in\mathcal{S}'^\pm$ by $S'\_1-S'\_2$ and interpret it as a formal difference accordingly.
 
-Contained within both $\mathcal{S}'$ and $\mathcal{S}'^\pm$ are distinct elements that correspond to equivalent states of knowledge (e.g. because the agent can transform them without interacting with the environment). We will introduce appropriate equivalence relations in section 5, but first define some more structure on the sets.
-
+As discussed in the outline, we spend the next sections defining more structure on the sets before modding out the right equivalence relation in section 6.
 ## 3. Special elements
 With $\vec{p}\in(\mathbb{R}^+)^E$ to be interpreted as a vector of prior probabilities over $E,$ we define $\vec{p}\in\mathcal{S}'$ in the natural ways - as states in which the computer has only one possible internal state:
 1. In $\mathcal{S}'\_{\mathrm{class}},$ $\vec{p}:=(\\\{0\\\},\vec{p}),$
@@ -47,6 +46,7 @@ By $\Omega\in\mathcal{S}',$ we denote the state of complete knowledge, i.e.
 
 Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ and incoherently in $\mathcal{S}'\_{\mathrm{decoh}}.$
 ## 4. Set inclusions
+We define maps that will play the role of inclusion maps
 Using $0,$ we consider $\mathcal{K'}$ as a subset of $\mathcal{K'}^\pm$ by identifying $K\in\mathcal{K'}$ with $K-0\in\mathcal{K'}^\pm.$ We also consider $\mathcal{S}'\_\mathrm{class}$ and $\mathcal{S}'\_\mathrm{quant}$ as subsets of $\mathcal{S}'\_\mathrm{decoh}$ by treating them as completely decohered and completely undecohered states, respectively - in the first case, we map $(M,P)$ to $(E\times M, \Psi)$ with $\Psi_{(e,m),e',m'}=\delta\_(e,m)\delta\_(e',m')$
 
 ## 5. Operations
@@ -68,19 +68,14 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
    Of course, on $\mathcal{S}'^\pm,$ the $\mathrm{tr}\_C (A-B):= \mathrm{tr}\_C A - \mathrm{tr}\_C B.$
 4. We define a preorder $S\_1 \leq S\_2$ to capture the notion that the agent can trivially transform a state into another state, as follows: [^4]
    1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_2 T) \leq (M\_2,P\_2)$ for all transformation matrices on the memory $T \in {(\mathbb{R}^+)}^{M\_1 \times M\_2}$ with $\Vert T\Vert\_1\leq 1.$ The latter is the [1-norm of $T,$ i.e. the maximal column sum.](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms) This means that starting from any state $m\_1\in M\_1,$ the probabilities of transitioning to a final state must sum to **at most** one; if it is $<1$ for some column, we interpret this as the agent giving up with a certain probability. If _all_ column sums were $1,$ we'd get a "proper" transition matrix that doesn't lose probability mass.
-   2. The definition in $\mathcal{S}'\_{\mathrm{quant}}$ is analogous (with $\mathbb{R}^+$ replaced by $\mathbb{C}$) except that our constraint on $T$ is that $\Vert T\Vert\_2\leq 1,$ using the [2-norm of $T$](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms). This means that the maximal singular value of $T$ is $\leq 1.$ Analogously to 1., _all_ singular values being $1$ is equivalent to $T$ being an isometry, i.e. a "proper" quantum transition matrix. If some singular values of $T$ are $<1,$ the block-matrix $\begin{pmatrix}T\\ \sqrt{I-T\_1^\dagger T\_1 T}\end{pmatrix}$ is an isometry nevertheless, so we can consider $T$ to be one [Kraus operator of a quantum channel quantum channel](https://en.wikipedia.org/w/index.php?title=Quantum_operation&oldid=1094787035#Statement_of_the_theorem).
+   2. The definition in $\mathcal{S}'\_{\mathrm{quant}}$ is analogous (with $\mathbb{R}^+$ replaced by $\mathbb{C}$) except that our constraint on $T$ is that $\Vert T\Vert\_2\leq 1,$ using the [2-norm of $T$](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms). This means that the maximal singular value of $T$ is $\leq 1.$ Analogously to 1., _all_ singular values being $1$ is equivalent to $T$ being an isometry, i.e. a "proper" quantum transition matrix. If some singular values of $T$ are $<1,$ the block-matrix $\begin{pmatrix}T\\\\ \sqrt{I-T\_1^\dagger T\_1 T}\end{pmatrix}$ is an isometry nevertheless, so we can consider $T$ to be one [Kraus operator of a quantum channel quantum channel](https://en.wikipedia.org/w/index.php?title=Quantum_operation&oldid=1094787035#Statement_of_the_theorem).
    3. In $\mathcal{S}'\_{\mathrm{quant}},$ we want to consider transitions between both $D$ and the memory. So our transformation is a tuple $(D\_M, T\_M, T\_D)$ with $T\_M \in \mathbb{C}^{M\_2 \times (M\_1 \times D')}$ and $T\_D\in \mathbb{C}^{(D\times D\_M)\times D\_1},$ and $\Vert T\_M\Vert\_2\leq 1,$ $\Vert T\_D\Vert\_2\leq 1.$ So $T\_M$ transforms the memory and generates a register $D\_M$ that becomes part of the decohering space, and $T\_E$ is then an arbitrary transformation of that decohering space, which is **not necessarily an isometry either**. 
    We denote the application of both as $T\_D(\Psi\_2 T\_M))$; in conclusion, our inequalities are $(D\_1,M\_1, T\_D(\Psi\_2 T\_M)) \leq (D\_2, M\_2, \Psi\_2)$. [^9]
 
    On $\mathbb{S}'^\pm,$ $(A-B)\leq (C-D)$ iff $A+D\leq B+D.$
-5. Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq X)$, and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm$. The "states of quasiknowledge" construction is related to a [Grothendieck group construction](https://en.wikipedia.org/wiki/Grothendieck_group).
+5. Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq X)$, and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm$.[^10]
 
    It is tedious but straightforward to check that all our operations behave well with this equivalence relation. What's more, by definition, $\leq$ becomes a **partial order**, and $\mathcal{S}\subseteq\mathcal{S}^\pm$ a **convex subset of an associative, commutative $\mathbb{R}$-algebra**.
-1.5. remark: too many states now, but first define ops, then equivalence classes
-
-
-3. s'-> s, dann gleich "ops funktionieren immer noch"
-5. s_pm'->s_pm
 
 ## Transformation and equivalence relations
 
@@ -239,6 +234,8 @@ Any $\mathbb{R}$-algebra is an $\mathbb{R}$-vector space, but the dimension of t
 [^5]: I.e. the vectors which are $1$ on $d$ resp. $d'\in D',$ and $0$ everywhere else.
 
 [^9]: I think one can obtain a more elegant description of possible transformations by adapting the parallel developments by [Gutoski and Watrous](https://arxiv.org/pdf/quant-ph/0611234.pdf) and[Chiribella, D'Ariano, and Perinotti](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.80.022339). But I don't see a use of that as of this note.
+
+[^10]: If one looks into the definitions, one can see that the "states of quasiknowledge" construction is related to a [Grothendieck group construction](https://en.wikipedia.org/wiki/Grothendieck_group).
 
 [^6]: In the quantum case, this would correspond to Hadamard products of Gram matrices and tensor products of state collections.
 
