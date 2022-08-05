@@ -45,9 +45,12 @@ By $\Omega\in\mathcal{S}',$ we denote the state of complete knowledge, i.e.
 2. $\Omega\in\mathcal{S}'\_{\mathrm{decoh}}$ as $\Omega:=(E,E,(\delta_{d,e,m})_{(d,e,m)\in E\times E\times E}).$
 
 Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ and incoherently in $\mathcal{S}'\_{\mathrm{decoh}}.$
-## 4. Set inclusions
-We define maps that will play the role of inclusion maps
-Using $0,$ we consider $\mathcal{K'}$ as a subset of $\mathcal{K'}^\pm$ by identifying $K\in\mathcal{K'}$ with $K-0\in\mathcal{K'}^\pm.$ We also consider $\mathcal{S}'\_\mathrm{class}$ and $\mathcal{S}'\_\mathrm{quant}$ as subsets of $\mathcal{S}'\_\mathrm{decoh}$ by treating them as completely decohered and completely undecohered states, respectively - in the first case, we map $(M,P)$ to $(E\times M, \Psi)$ with $\Psi_{(e,m),e',m'}=\delta\_(e,m)\delta\_(e',m')$
+## 4. Set inclusions (injective maps)
+We define maps that will play the role of inclusion maps after our equivalence relation (i.e. will be/stay injections):
+1. $\mathcal{S}'\_\mathrm{class}\to\mathcal{S}'\_\mathrm{decoh},$ $(M,P)\to(E\times M, (\delta\_(e,m)\delta\_(e',m')\sqrt{P\_{e,m}})\_{(e,m),e',m'})$ (in words, treating a classical as a completely decohered state),
+2. $\mathcal{S}'\_\mathrm{quant}\to\mathcal{S}'\_\mathrm{decoh},$ $(M,\Psi)\to(\\\\{0\\\\}, (\sqrt{P\_{e,m}})\_{0,e',m'})$ (in words, treating a pure quantum state as a quantum state with no decoherence),
+3. $\mathcal{S}'\to\mathcal{S}'^\pm,$ $S'\to S'-0$,
+4. $\mathbb{R}^+\to \mathcal{S}'\_\mathrm{class}$ by $p\to $
 
 ## 5. Operations
 We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
@@ -56,19 +59,21 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
    2. In $\mathcal{S}'\_{\mathrm{quant}},$ the definition is equivalent.
    3. In $\mathcal{S}'\_{\mathrm{decoh}},$ $(D\_1,M\_1,\Psi\_1) + (D\_2,M\_2,\Psi\_2) := (D\_1 \biguplus D\_2, M\_1 \biguplus M\_2, \Psi'),$ with the elements of $\Psi'\_{d,e,m}$ composed of those of $\Psi'\_1,\Psi'\_2$ if they $d$ and $m$ belong to the same summand and set to $0$ otherwise.
 
-   In the $\mathcal{S}'^\pm,$ $(A-B) + (C-D) := ((A+C) - (B+D))$ in the natural way.
+   In the $\mathcal{S}'^\pm,$ $(A-B) + (C-D) := ((A+C) - (B+D))$ as expected.
 2. We denote multiplication on the $\mathcal{S}'$ by concatenating the factors and interpret it as the model having access to two pieces of knowledge independently. That is:
    1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_1)(M\_2,P\_2) := (M\_1 \times M\_2, P')$ with $P'\_{e, (m\_1, m\_2)} := (P\_1)\_{e, m\_1} (P\_2)\_{e, m\_2},$
    2. equivalently in $\mathcal{S}'\_{\mathrm{quant}},$
-   3. and in $\mathcal{S}'\_{\mathrm{decoh}},$ $(D\_1,M\_1,\Psi\_1) (D\_2,M\_2,\Psi\_2) := (D\_1 \times D\_2, M\_1 \times M\_2, \Psi')$ with $\Psi'\_{(d\_1, d\_2), e, (m\_1, m\_2)}:= (\Psi\_1)\_{d\_1, e, m\_1}\Psi\_2)\_{d\_2, e, m\_2}.$
+   3. and in $\mathcal{S}'\_{\mathrm{decoh}},$ $(D\_1,M\_1,\Psi\_1) (D\_2,M\_2,\Psi\_2) := (D\_1 \times D\_2, M\_1 \times M\_2, \Psi')$ with $\Psi'\_{(d\_1, d\_2), e, (m\_1, m\_2)}:= (\Psi\_1)\_{d\_1, e, m\_1}\Psi\_2\_{d\_2, e, m\_2}.$
 
    In the $\mathcal{S}'^\pm,$ $(A-B)(C-D) := (AC+BD) - (AD+BC).$
-3. When we consider different possible environments, we denote our sets by $\mathcal{S}'^E$ and similar. Considering a bipartite evnvironment $E\times C,$ i.e. a bipartite environment, we define a "partial trace" $\mathrm{tr}\_C \colon \mathcal{S}'^{E\times C}\to \mathcal{S}'^E.$ This works by considering the $C$ register, which previously was part of the environment, as part of the memory: it maps $M\to M\times C,$ copies the entries of $P$ or $\Psi$ and (in the decohering case) leaves $D$ untouched. After modding out an equivalence relation in section 6, this will look more like a partial trace - we "forget" that some information wasn't accessible to the agent before.
+3. When we consider different possible environments, we denote our sets by $\mathcal{S}'^E$ and similar. Considering a bipartite environment $E\times C,$ i.e. a bipartite environment, we define a "partial trace" $\mathrm{tr}\_C \colon \mathcal{S}'^{E\times C}\to \mathcal{S}'^E.$ This works by considering the $C$ register, which previously was part of the environment, as part of the memory: it maps $M\to M\times C,$ copies the entries of $P$ or $\Psi$ and (in the decohering case) leaves $D$ untouched. After modding out an equivalence relation in section 6, this will look more like the partial trace  - after making some information accessible to the agent, the state of knowledge becomes equivalent with respect to all transformations that it can perform on that information.
 
    Of course, on $\mathcal{S}'^\pm,$ the $\mathrm{tr}\_C (A-B):= \mathrm{tr}\_C A - \mathrm{tr}\_C B.$
+
+   The partial trace will be useful to discuss the interface between the agent and the environment, i.e. discuss the possibility that the agent makes observations or performs actions that influence the next system state.
 4. We define a preorder $S\_1 \leq S\_2$ to capture the notion that the agent can trivially transform a state into another state, as follows: [^4]
    1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_2 T) \leq (M\_2,P\_2)$ for all transformation matrices on the memory $T \in {(\mathbb{R}^+)}^{M\_1 \times M\_2}$ with $\Vert T\Vert\_1\leq 1.$ The latter is the [1-norm of $T,$ i.e. the maximal column sum.](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms) This means that starting from any state $m\_1\in M\_1,$ the probabilities of transitioning to a final state must sum to **at most** one; if it is $<1$ for some column, we interpret this as the agent giving up with a certain probability. If _all_ column sums were $1,$ we'd get a "proper" transition matrix that doesn't lose probability mass.
-   2. The definition in $\mathcal{S}'\_{\mathrm{quant}}$ is analogous (with $\mathbb{R}^+$ replaced by $\mathbb{C}$) except that our constraint on $T$ is that $\Vert T\Vert\_2\leq 1,$ using the [2-norm of $T$](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms). This means that the maximal singular value of $T$ is $\leq 1.$ Analogously to 1., _all_ singular values being $1$ is equivalent to $T$ being an isometry, i.e. a "proper" quantum transition matrix. If some singular values of $T$ are $<1,$ the block-matrix $\begin{pmatrix}T\\\\ \sqrt{I-T^\dagger  T}\end{pmatrix}$ is an isometry nevertheless, so we can consider $T$ to be one [Kraus operator of a quantum channel quantum channel](https://en.wikipedia.org/w/index.php?title=Quantum_operation&oldid=1094787035#Statement_of_the_theorem).
+   2. The definition in $\mathcal{S}'\_{\mathrm{quant}}$ is analogous (with $\mathbb{R}^+$ replaced by $\mathbb{C}$) except that our constraint on $T$ is that $\Vert T\Vert\_2\leq 1,$ using the [2-norm of $T$](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms). This means that the maximal singular value of $T$ is $\leq 1.$ Analogously to 1., _all_ singular values being $1$ is equivalent to $T$ being an isometry, i.e. a "proper" quantum transition matrix. If some singular values of $T$ are $<1,$ the block-matrix $\begin{pmatrix}T\\\\ \sqrt{I-T^\dagger  T}\end{pmatrix}$ is an isometry nevertheless, so we can consider $T$ to be one [Kraus operator of a quantum channel](https://en.wikipedia.org/w/index.php?title=Quantum_operation&oldid=1094787035#Statement_of_the_theorem).
    3. In $\mathcal{S}'\_{\mathrm{quant}},$ we want to consider transitions between both $D$ and the memory. So our transformation is a tuple $(D\_M, T\_M, T\_D)$ with $T\_M \in \mathbb{C}^{M\_2 \times (M\_1 \times D')}$ and $T\_D\in \mathbb{C}^{(D\times D\_M)\times D\_1},$ and $\Vert T\_M\Vert\_2\leq 1,$ $\Vert T\_D\Vert\_2\leq 1.$ So $T\_M$ transforms the memory and generates a register $D\_M$ that becomes part of the decohering space, and $T\_E$ is then an arbitrary transformation of that decohering space, which is **not necessarily an isometry either**. 
    We denote the application of both as $T\_D(\Psi\_2 T\_M))$; in conclusion, our inequalities are $(D\_1,M\_1, T\_D(\Psi\_2 T\_M)) \leq (D\_2, M\_2, \Psi\_2)$. [^9]
 
