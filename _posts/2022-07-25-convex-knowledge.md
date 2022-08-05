@@ -41,14 +41,15 @@ In the coherent quantum case, we take the square root to replace probabilities b
 
 In particular, $0,$ $1$ and $d\in E,$ $E'\subseteq E$ are treated as the all-$0,$ all-$1,$ and indicator function vectors (these being generally not normalized probability distributions).[^5] When we have defined addition and multiplication and passed over to equivalence classes, $0$ and $1$ will play the role indicated by their symbol.
 
-Using $0,$ we consider $\mathcal{K'}$ as a subset of $\mathcal{K'}^\pm$ by identifying $K\in\mathcal{K'}$ with $K-0\in\mathcal{K'}^\pm.$ We also consider $\mathcal{S}'\_\mathrm{class}$ and $\mathcal{S}'\_\mathrm{quant}$ as subsets of $\mathcal{S}'\_\mathrm{decoh}$ by treating them as completely decohered and completely undecohered states, respectively - in the first case, we map $(M,P)$ to $(E\times M, \Psi)$ with $\Psi_{(e,m),e',m'}=\delta\_(e,m)\delta\_(e',m')$
-
 By $\Omega\in\mathcal{S}',$ we denote the state of complete knowledge, i.e.
 1. $\Omega\in\mathcal{S}'\_{\mathrm{class}}$ and $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ as $\Omega:=(E,(\delta_{e,m})_{(e,m)\in E\times M}),$ and
 2. $\Omega\in\mathcal{S}'\_{\mathrm{decoh}}$ as $\Omega:=(E,E,(\delta_{d,e,m})_{(d,e,m)\in E\times E\times E}).$
 
 Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ and incoherently in $\mathcal{S}'\_{\mathrm{decoh}}.$
-## 4. Operations
+## 4. Set inclusions
+Using $0,$ we consider $\mathcal{K'}$ as a subset of $\mathcal{K'}^\pm$ by identifying $K\in\mathcal{K'}$ with $K-0\in\mathcal{K'}^\pm.$ We also consider $\mathcal{S}'\_\mathrm{class}$ and $\mathcal{S}'\_\mathrm{quant}$ as subsets of $\mathcal{S}'\_\mathrm{decoh}$ by treating them as completely decohered and completely undecohered states, respectively - in the first case, we map $(M,P)$ to $(E\times M, \Psi)$ with $\Psi_{(e,m),e',m'}=\delta\_(e,m)\delta\_(e',m')$
+
+## 5. Operations
 We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
 1. Addition, $+,$ is to be interpreted as the environment+agent being in either of the situations that the summands describe, and defined with direct sums:
    1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_1)+(M\_2,P\_2):=(M\_1\biguplus M\_2, P'),$ with $M\_1\biguplus M\_2$ denoting the disjoint union of $M\_1$ and $M\_2$ and the elements of $P'$ composed of the elements of $P\_1$ and $P\_2.$
@@ -62,7 +63,7 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
    3. and in $\mathcal{S}'\_{\mathrm{decoh}},$ $(D\_1,M\_1,\Psi\_1) (D\_2,M\_2,\Psi\_2) := (D\_1 \times D\_2, M\_1 \times M\_2, \Psi')$ with $\Psi'\_{(d\_1, d\_2), e, (m\_1, m\_2)}:= (\Psi\_1)\_{d\_1, e, m\_1}\Psi\_2)\_{d\_2, e, m\_2}.$
 
    In the $\mathcal{S}'^\pm,$ $(A-B)(C-D) := (AC+BD) - (AD+BC).$
-3. When we consider different possible environments, we denote our sets by $\mathcal{S}'^E$ and similar. Considering a bipartite evnvironment $E\times C,$ i.e. a bipartite environment, we define a "partial trace" $\mathrm{tr}\_C \colon \mathcal{S}'^{E\times C}\to \mathcal{S}'^E.$ This works by considering the $C$ register, which previously was part of the environment, as part of the memory: it maps $M\to M\times C,$ copies the entries of $P$ or $\Psi$ and (in the decohering case) leaves $D$ untouched. After modding out an equivalence relation in section 5, this will look more like a partial trace - we "forget" that some information wasn't accessible to the agent before.
+3. When we consider different possible environments, we denote our sets by $\mathcal{S}'^E$ and similar. Considering a bipartite evnvironment $E\times C,$ i.e. a bipartite environment, we define a "partial trace" $\mathrm{tr}\_C \colon \mathcal{S}'^{E\times C}\to \mathcal{S}'^E.$ This works by considering the $C$ register, which previously was part of the environment, as part of the memory: it maps $M\to M\times C,$ copies the entries of $P$ or $\Psi$ and (in the decohering case) leaves $D$ untouched. After modding out an equivalence relation in section 6, this will look more like a partial trace - we "forget" that some information wasn't accessible to the agent before.
 
    Of course, on $\mathcal{S}'^\pm,$ the $\mathrm{tr}\_C (A-B):= \mathrm{tr}\_C A - \mathrm{tr}\_C B.$
 4. We define a preorder $S\_1 \leq S\_2$ to capture the notion that the agent can trivially transform a state into another state, as follows: [^4]
@@ -72,9 +73,9 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
    We denote the application of both as $T\_D(\Psi\_2 T\_M))$; in conclusion, our inequalities are $(D\_1,M\_1, T\_D(\Psi\_2 T\_M)) \leq (D\_2, M\_2, \Psi\_2)$. [^9]
 
    On $\mathbb{S}'^\pm,$ $(A-B)\leq (C-D)$ iff $A+D\leq B+D.$
-5. Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq X)$, and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm$. Implicitly, the "states of quasiknowledge" construction is an instance of a [Grothendieck group construction](https://en.wikipedia.org/wiki/Grothendieck_group).
+5. Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq X)$, and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm$. The "states of quasiknowledge" construction is related to a [Grothendieck group construction](https://en.wikipedia.org/wiki/Grothendieck_group).
 
-   It is tedious but straightforward to check that all our operations behave well with this equivalence relation. What's more, by definition, $\leq$ becomes a partial order, $\mathcal{S}^\pm$ an associative, commutative $\mathbb{R}$-algebra, and 
+   It is tedious but straightforward to check that all our operations behave well with this equivalence relation. What's more, by definition, $\leq$ becomes a **partial order**, and $\mathcal{S}\subseteq\mathcal{S}^\pm$ a **convex subset of an associative, commutative $\mathbb{R}$-algebra**.
 1.5. remark: too many states now, but first define ops, then equivalence classes
 
 
