@@ -36,7 +36,9 @@ With $\vec{p}\in(\mathbb{R}^+)^E$ to be interpreted as a vector of prior probabi
 1. In $\mathcal{S}'\_{\mathrm{class}},$ $\vec{p}:=(\\\{0\\\},\vec{p}),$
 2. In $\mathcal{S}'\_{\mathrm{quant}},$ $\vec{p}:=(\\\{0\\\},(\sqrt{p_e})_{(e,0)\in E\times \\\{0\\\}}),$
 3. In $\mathcal{S}'\_{\mathrm{decoh}},$ $\vec{p}:=(E,\\\{0\\\},(\delta_{d,e} \sqrt{p_e})_{(d,e,0)\in E\times E\times \\\{0\\\}}).$[^2]
-In the coherent quantum case, we take the square root to replace probabilities by amplitude. In the decoherent quantum case, we additionally set $D:=E$ and use a Kronecker delta, enforcing a decoherent probabilistic mixture of initial states. This means that $\vec{p}\in\mathcal{S}'\_{\mathrm{quant}}$ is **not** the same thing as $\vec{p}\in\mathcal{S}'\_{\mathrm{decoh}}.$
+In the coherent quantum case, we take the square root to replace probabilities by amplitudes. In the decoherent quantum case, we additionally set $D:=E$ and use a Kronecker delta, enforcing a decoherent probabilistic mixture of initial states. This means that $\vec{p}\in\mathcal{S}'\_{\mathrm{quant}}$ is **not** the same thing as $\vec{p}\in\mathcal{S}'\_{\mathrm{decoh}}.$
+
+If $\vec{p}\in \mathbb{R}^E$ has negative entries, we can still write it as a difference $\vec{p}^+-\vec{p}^-$ with $\vec{p}^+,\vec{p}^-\in(\mathbb{R}^+)^E$ and embed this difference in $\mathcal{S}'^\pm$. After taking equivalence classes, the result will be independent of the chosen decomposition.
 
 In particular, $0,$ $1$ and $d\in E,$ $E'\subseteq E$ are treated as the all-$0,$ all-$1,$ and indicator function vectors (these being generally not normalized probability distributions).[^5] When we have defined addition and multiplication and passed over to equivalence classes, $0$ and $1$ will play the role indicated by their symbol.
 
@@ -50,7 +52,7 @@ We define maps that will play the role of inclusion maps after our equivalence r
 1. $\mathcal{S}'\_\mathrm{class}\to\mathcal{S}'\_\mathrm{decoh},$ $(M,P)\to(E\times M, (\delta\_(e,m)\delta\_(e',m')\sqrt{P\_{e,m}})\_{(e,m),e',m'})$ (in words, treating a classical as a completely decohered state),
 2. $\mathcal{S}'\_\mathrm{quant}\to\mathcal{S}'\_\mathrm{decoh},$ $(M,\Psi)\to(\\\\{0\\\\}, (\sqrt{P\_{e,m}})\_{0,e',m'})$ (in words, treating a pure quantum state as a quantum state with no decoherence),
 3. $\mathcal{S}'\to\mathcal{S}'^\pm,$ $S'\to S'-0$,
-4. $\mathbb{R}^+\to \mathcal{S}'\_\mathrm{class}$ by $p\to $
+4. $\mathbb{R}^+\to \mathcal{S}'_\mathrm{class}$ by $p\to $, $\mathbb{R}\to\mathcal{S}'^\pm$ as in part 3. It will turn out that after taking equivalence relations, these definitions are actually **equal** for $\mathbb{S}_\mathrm{class},$ $\mathbb{S}_\mathrm{quant},$ $\mathbb{S}_\mathrm{decoh}$ after taking the equivalence relation - in contrast to the general situation of 
 
 ## 5. Operations
 We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
