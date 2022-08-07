@@ -32,26 +32,14 @@ We define $\mathcal{S}'^\pm:=\mathcal{S}'\times\mathcal{S}'$ (for classical, coh
 
 As discussed in the outline, we spend the next sections defining more structure on the sets before modding out the right equivalence relation in section 6.
 ## 3. Special elements
-With $\vec{p}\in(\mathbb{R}^+)^E$ to be interpreted as a vector of prior probabilities over $E,$ we define $\vec{p}\in\mathcal{S}'$ in the natural ways - as states in which the computer has only one possible internal state:
-1. In $\mathcal{S}'\_{\mathrm{class}},$ $\vec{p}:=(\\\{0\\\},\vec{p}),$
-2. In $\mathcal{S}'\_{\mathrm{quant}},$ $\vec{p}:=(\\\{0\\\},(\sqrt{p_e})_{(e,0)\in E\times \\\{0\\\}}),$
-3. In $\mathcal{S}'\_{\mathrm{decoh}},$ $\vec{p}:=(E,\\\{0\\\},(\delta_{d,e} \sqrt{p_e})_{(d,e,0)\in E\times E\times \\\{0\\\}}).$[^2]
-In the coherent quantum case, we take the square root to replace probabilities by amplitudes. In the decoherent quantum case, we additionally set $D:=E$ and use a Kronecker delta, enforcing a decoherent probabilistic mixture of initial states. This means that $\vec{p}\in\mathcal{S}'\_{\mathrm{quant}}$ is **not** the same thing as $\vec{p}\in\mathcal{S}'\_{\mathrm{decoh}}.$
+In $\mathcal{S}'\_\mathrm{class}$ and $\mathcal{S}'\_\mathrm{quant}$, for $\alpha\in\mathbb{R}^+$, we define $e\in E$ by $\mathbf{e}:=(\\\\{0\\\},(\delta\_{e',e})\_{(e,0)\in E\times M})$ In $\mathcal{S}'\_\mathrm{decoh},$ we use a one-dimensional decohering space and obtain $\mathbf{e}:=(\\\\{0\\\},\\\{0\\\},(\delta\_{e',e})\_{(0,e,0)\in D\times E\times M}).$
 
-If $\vec{p}\in \mathbb{R}^E$ has negative entries, we can still write it as a difference $\vec{p}^+-\vec{p}^-$ with $\vec{p}^+,\vec{p}^-\in(\mathbb{R}^+)^E$ and embed this difference in $\mathcal{S}'^\pm$. After taking equivalence classes, the result will be independent of the chosen decomposition.
-
-In particular, $0,$ $1$ and $d\in E,$ $E'\subseteq E$ are treated as the all-$0,$ all-$1,$ and indicator function vectors (these being generally not normalized probability distributions).[^5] When we have defined addition and multiplication and passed over to equivalence classes, $0$ and $1$ will play the role indicated by their symbol.
-
-By $\Omega\in\mathcal{S}',$ we denote the state of complete knowledge, i.e.
-1. $\Omega\in\mathcal{S}'\_{\mathrm{class}}$ and $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ as $\Omega:=(E,(\delta_{e,m})_{(e,m)\in E\times M}),$ and
-2. $\Omega\in\mathcal{S}'\_{\mathrm{decoh}}$ as $\Omega:=(E,E,(\delta_{d,e,m})_{(d,e,m)\in E\times E\times E}).$
-
-Again, note that we defined complete knowledge coherently in $\Omega\in\mathcal{S}'\_{\mathrm{quant}}$ and incoherently in $\mathcal{S}'\_{\mathrm{decoh}}.$
 ## 4. Set inclusions (injective maps)
 We define maps that will play the role of inclusion maps after our equivalence relation (i.e. will be/stay injections):
 1. $\mathcal{S}'\_\mathrm{class}\to\mathcal{S}'\_\mathrm{decoh},$ $(M,P)\to(E\times M, (\delta\_(e,m)\delta\_(e',m')\sqrt{P\_{e,m}})\_{(e,m),e',m'})$ (in words, treating a classical as a completely decohered state),
 2. $\mathcal{S}'\_\mathrm{quant}\to\mathcal{S}'\_\mathrm{decoh},$ $(M,\Psi)\to(\\\\{0\\\\}, (\sqrt{P\_{e,m}})\_{0,e',m'})$ (in words, treating a pure quantum state as a quantum state with no decoherence),
 3. $\mathcal{S}'\to\mathcal{S}'^\pm,$ $S'\to S'-0$,
+4. $\mathbb{R}^+\to\mathcal
 4. $\mathbb{R}^+\to \mathcal{S}'_\mathrm{class}$ by $p\to $, $\mathbb{R}\to\mathcal{S}'^\pm$ as in part 3. It will turn out that after taking equivalence relations, these definitions are actually **equal** for $\mathbb{S}_\mathrm{class},$ $\mathbb{S}_\mathrm{quant},$ $\mathbb{S}_\mathrm{decoh}$ after taking the equivalence relation - in contrast to the general situation of 
 
 ## 5. Operations
@@ -80,11 +68,22 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
    We denote the application of both as $T\_D(\Psi\_2 T\_M))$; in conclusion, our inequalities are $(D\_1,M\_1, T\_D(\Psi\_2 T\_M)) \leq (D\_2, M\_2, \Psi\_2)$. [^9]
 
    On $\mathbb{S}'^\pm,$ $(A-B)\leq (C-D)$ iff $A+D\leq B+D.$
-5. Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq X)$, and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm$.[^10]
 
-   It is tedious but straightforward to check that all our operations behave well with this equivalence relation. What's more, by definition, $\leq$ becomes a **partial order**, and $\mathcal{S}\subseteq\mathcal{S}^\pm$ a **convex subset of an associative, commutative $\mathbb{R}$-algebra**.
+## 6. The equivalence relation and the algebra.
+Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq X)$, and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm$.[^10]
 
-## Transformation and equivalence relations
+It is tedious but straightforward to check that all our operations behave well with this equivalence relation, and \mathcal{S}\subseteq\mathcal{S}^\pm$ becomes a **convex subset of an associative, commutative ordered $\mathbb{R}$-algebra**.
+
+A side remark: $\mathcal{S}_{\mathrm{quant}}\subset\mathcal{S}^\pm_{\mathrm{quant}}$ should be isomorphic to the algebra of complex positive semidefinite $E\times E$ matrices (as a subset of the Hermitian matrices), with elementwise addition and multiplication. One can derive this by considering the [unitary equivalence of purifications of quantum states](https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary).
+
+   TODO we still don't have the formal statement needed to bound the error in the uqa
+
+## An agent interacting with its environment
+Now consider an agent interacting with its environment. So we introduce some output and input subsystems $O,$ $I.$ In one step,
+1. the agent chooses to write something in $O,$ choosing the action it takes next,
+2. the environment evolves for one step, transforming $E\times O\to E\times I,$
+3. and the agent reads in the input subsystem, making it part of its "state of knowledge".
+So let's 
 
 ## Operations
 The basic plan is as follows:
