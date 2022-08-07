@@ -72,7 +72,7 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
 ## 6. The equivalence relation and the algebra.
 Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq X)$, and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm$.[^10]
 
-It is tedious but straightforward to check that all our operations behave well with this equivalence relation, and \mathcal{S}\subseteq\mathcal{S}^\pm$ becomes a **convex subset of an associative, commutative ordered $\mathbb{R}$-algebra**.
+It is tedious but straightforward to check that all our operations behave well with this equivalence relation, and $\mathcal{S}\subseteq\mathcal{S}^\pm$ becomes a **convex subset of an associative, commutative ordered $\mathbb{R}$-algebra**.
 
 A side remark: $\mathcal{S}_{\mathrm{quant}}\subset\mathcal{S}^\pm_{\mathrm{quant}}$ should be isomorphic to the algebra of complex positive semidefinite $E\times E$ matrices (as a subset of the Hermitian matrices), with elementwise addition and multiplication. One can derive this by considering the [unitary equivalence of purifications of quantum states](https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary).
 
