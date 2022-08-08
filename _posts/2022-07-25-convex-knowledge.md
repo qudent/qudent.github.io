@@ -53,7 +53,12 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
 2. We denote multiplication on the $\mathcal{S}'$ by concatenating the factors and interpret it as the model having access to two pieces of knowledge independently. That is:
    1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_1)(M\_2,P\_2) := (M\_1 \times M\_2, P')$ with $P'\_{e, (m\_1, m\_2)} := (P\_1)\_{e, m\_1} (P\_2)\_{e, m\_2},$
    2. equivalently in $\mathcal{S}'\_{\mathrm{quant}},$
-   3. and in $\mathcal{S}'\_{\mathrm{decoh}},$ $(D\_1,M\_1,\Psi\_1) (D\_2,M\_2,\Psi\_2) := (D\_1 \times D\_2, M\_1 \times M\_2, \Psi')$ with $\Psi'\_{(d\_1, d\_2), e, (m\_1, m\_2)}:= (\Psi\_1)\_{d\_1, e, m\_1}\Psi\_2\_{d\_2, e, m\_2}.$
+   3. and in $\mathcal{S}'\_{\mathrm{decoh}},$ $(D\_1,M\_1,\Psi\_1) (D\_2,M\_2,\Psi\_2) := (D\_1 \times D\_2, M\_1 \times M\_2, \Psi')$ with
+   
+   
+   $\Psi'\_{(d\_1, d\_2), e, (m\_1, m\_2)}$
+   
+   $:= (\Psi\_1)\_{d\_1, e, m\_1}\Psi\_2\_{d\_2, e, m\_2}.$
 
    In the $\mathcal{S}'^\pm,$ $(A-B)(C-D) := (AC+BD) - (AD+BC).$
 3. When we consider different possible environments, we denote our sets by $\mathcal{S}'^E$ and similar. Considering a bipartite environment $E\times C,$ i.e. a bipartite environment, we define a "partial trace" $\mathrm{tr}\_C \colon \mathcal{S}'^{E\times C}\to \mathcal{S}'^E.$ This works by considering the $C$ register, which previously was part of the environment, as part of the memory: it maps $M\to M\times C,$ copies the entries of $P$ or $\Psi$ and (in the decohering case) leaves $D$ untouched. After modding out an equivalence relation in section 6, this will look more like the partial trace  - after making some information accessible to the agent, the state of knowledge becomes equivalent with respect to all transformations that it can perform on that information.
@@ -74,8 +79,7 @@ Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathc
 
 It is tedious but straightforward to check (fingers crossed) that all our operations behave well with this equivalence relation and $\mathcal{S}\subseteq\mathcal{S}^\pm$ becomes a **convex subset of an associative, commutative ordered $\mathbb{R}$-algebra**.[^13]
 
-The partial trace $\mathrm{tr}\_C\colon\mathcal{S}^{\pm (E\times C)}\to \mathcal{S}^{\pm E}$ is a **linear map** that surjectively maps states of knowledge to states of knowledge (i.e. the image $\mathrm{tr}\_C(\mathcal{S}^{E\times C})=\mathcal{S}^{E}$). Conversely, however, the preimage of a SOK is _not_ necessarily a SOK.
-
+The partial trace $\mathrm{tr}\_C\colon\mathcal{S}^{\pm (E\times C)}\to \mathcal{S}^{\pm E}$ is a **linear map** that surjectively maps states of knowledge to states of knowledge (i.e. the image $\mathrm{tr}\_C(\mathcal{S}^{E\times C})=\mathcal{S}^{E}$). Conversely, however, the preimage of a SOK is _not_ necessarily a SOK. $\mathrm{tr}\_C$ is also monotonous in $\leq$. 
 
 ### 6.1. Properties of the partial trace
 a linear map
@@ -85,11 +89,11 @@ a linear map
    TODO we still don't have the formal statement needed to bound the error in the uqa
 
 ## An agent interacting with its environment
-Now consider an agent interacting with its environment. So we introduce some output and input subsystems $O,$ $I.$ Suppose we start with a state $S\in \mathcal{S}^{E}.$ In one step, the following happens:
+Now consider an agent interacting with its environment. So we introduce some output and input subsystems $O,$ $I.$ Suppose we start with a state $S\in \mathcal{S}^{E}.$ Then the set of $\left\{ \mathrm{tr}\_I (T S\_O) \mid\mathrm{tr}\_O S\_O \leq S, S\in \mathcal{S}^{E\times I} \right\}.$
 
-1. The agent chooses to write something in $O,$ choosing the action it takes next. After that, we consider the result as part of the environment. So it can choose any $\left\{ S\mid ^{E\times I} \right\}$
-2. The environment evolves under a transformation $T:\mathcal{S}^{E\times O}\to \mathcal{S}^{E\times I}.$ This transformation should be instantiated as a linear map acting on $E\times O,$ with the appropriate bounds on the $1$-norm/$2$-norm, as in our definition of the partial order.
-3. and the agent reads in the input subsystem, making it part of its "state of knowledge".
+1. The agent chooses to write something in $O,$ choosing the action it takes next. After that, we consider the result as part of the environment. So the set of feasible  $S$
+2. The environment evolves under a transformation $T:\mathcal{S}^{E\times O}\to \mathcal{S}^{E\times I}.$ This transformation should be instantiated as a linear map acting on $E\times O,$ with the appropriate bounds on the $1$-norm/$2$-norm, as in our order definition in 5.4.
+3. and the agent reads in the input subsystem, making it part of its "state of knowledge" again. This is a partial tracing operation.
 
 After the first step, the agent can create any state $S\in\mathcal{S}^{E\times O}$ with $\mathrm{tr}\_O S=
 ## Operations
