@@ -61,7 +61,7 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
    Of course, on the $\mathcal{S}'^\pm,$ the $\mathrm{tr}\_C (A-B):= \mathrm{tr}\_C A - \mathrm{tr}\_C B.$
 
    The partial trace will be useful to discuss the interface between the agent and the environment, i.e. discuss the possibility that the agent makes observations or performs actions that influence the next system state.
-4. We define a preorder $S\_1 \leq S\_2$ to capture the notion that the agent can trivially transform a state into another state, as follows: [^4]
+4. We define a preorder $S\_1 \leq S\_2$ to capture the notion that the agent can trivially transform a state into another state, as follows:[^4]
    1. In $\mathcal{S}'\_{\mathrm{class}},$ $(M\_1,P\_2 T) \leq (M\_2,P\_2)$ for all transformation matrices on the memory $T \in {(\mathbb{R}^+)}^{M\_1 \times M\_2}$ with $\Vert T\Vert\_1\leq 1.$ The latter is the [1-norm of $T,$ i.e. the maximal column sum.](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms) This means that starting from any state $m\_1\in M\_1,$ the probabilities of transitioning to a final state must sum to **at most** one; if it is $<1$ for some column, we interpret this as the agent giving up with a certain probability. If _all_ column sums were $1,$ we'd get a "proper" transition matrix that doesn't lose probability mass.
    2. The definition in $\mathcal{S}'\_{\mathrm{quant}}$ is analogous (with $\mathbb{R}^+$ replaced by $\mathbb{C}$) except that our constraint on $T$ is that $\Vert T\Vert\_2\leq 1,$ using the [2-norm of $T$](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms). This means that the maximal singular value of $T$ is $\leq 1.$ Analogously to 1., _all_ singular values being $1$ is equivalent to $T$ being an isometry, i.e. a "proper" quantum transition matrix. If some singular values of $T$ are $<1,$ the block-matrix $\begin{pmatrix}T\\\\ \sqrt{I-T^\dagger  T}\end{pmatrix}$ is an isometry nevertheless, so we can consider $T$ to be one [Kraus operator of a quantum channel](https://en.wikipedia.org/w/index.php?title=Quantum_operation&oldid=1094787035#Statement_of_the_theorem).
    3. In $\mathcal{S}'\_{\mathrm{quant}},$ we want to consider transitions between both $D$ and the memory. So our transformation is a tuple $(D\_M, T\_M, T\_D)$ with $T\_M \in \mathbb{C}^{M\_2 \times (M\_1 \times D')}$ and $T\_D\in \mathbb{C}^{(D\times D\_M)\times D\_1},$ and $\Vert T\_M\Vert\_2\leq 1,$ $\Vert T\_D\Vert\_2\leq 1.$ So $T\_M$ transforms the memory and generates a register $D\_M$ that becomes part of the decohering space, and $T\_E$ is then an arbitrary transformation of that decohering space, which is **not necessarily an isometry either**. 
@@ -96,35 +96,7 @@ The basic plan is as follows:
 1. We start with a naive description of states of knowledge [of an agent about its environment] as collections/matrices of conditional probabilities p(internal memory state|environmental ground truth)≥0; for now, we drop the requirement that the conditional probabilities sum to $1$ for any possible ground truth. We call these CPMs (conditional probability matrices); we consider all possible sets of internal memory states at once (i.e. don't fix the number of rows). The set of possible ground truths is fixed; we denote it by $D.$
 
 
-## Introduction
-Consider a learner in a (for now, classical) environment described by a ground truth $d\in D.$ The learner wants to find out something about the environment (e.g. output some function $f(d)$ with low error probability for any $d$). It can't influence $d$ (therefore I don't call it "agent"), but may have a choice of which "experiment" to perform in any step, each yielding probabilistic information $p(\mathrm{result}|d).$ Our basic question is about finding good strategies to achieve such a goal - or proving lower bounds on the required number of steps for some problems.
 
-As in any optimization problem, it would be nice to have a _convex_ description of the possible strategies and intermediate "states of knowledge", i.e. one such that the acceptable strategies and intermediate states
- 1. form a convex subset of a real vector space,
- 2. the states are necessary and sufficient to describe the computer's state of knowledge,
- 3. if two states of knowledge are attainable by the learner, their convex combinations are attainable as well, and
- 4. if two states allow solving some problem, their convex combinations allow solving that problem as well.
-
-This would allow using the powerful methods of [convex optimization and convex
-duality](https://web.stanford.edu/~boyd/cvxbook/) (to be more precise, [semidefinite programming](https://en.wikipedia.org/w/index.php?title=Semidefinite_programming&oldid=1092453332)) to obtain lower bounds and algorithms.
-
-But a naive description by conditional probability matrices doesn't fulfill the fourth property. For example, if the learner's internal state was some permutation of the environment's state, each individual state would correspond to complete knowledge, but randomly mixing them yields a state of complete ignorance.
-
-The aim of this note is to find a convex description for classical agents/learners. In contrast to the quantum case, our development doesn't give great bounds on the dimension of the vector space.
-
-## Motivation from quantum query complexity
-(Note: One shouldn't need to know anything about quantum physics or query algorithms to follow the rest of this post.)
-
-A great thing about the quantum analogue of this problem (_quantum query algorithms_) is that such a description exists there, namely the Gram matrix of the states for different inputs at a given time. This allowed developments like [Barnum-Saks-Szegedy 2003](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.113.1101&rep=rep1&type=pdf) - and arguably the [adversary bound - query algorithm duality](https://www.cs.umd.edu/~amchilds/qa/qa.pdf), in particular when developed like [here](https://github.com/qudent/RhoPaths).
-
-
-2. For CPMs $C\_1,C\_2,$ we write that $C\_1\leq C\_2$ iff the agent/learner can transform $C\_2$ into $C\_1$ by a probabilistic transformation without any interaction with the environment. Input and output dimensions are not necessarily equal, and transition probabilities must sum to **at most** $1.$[^3] Clearly, this means that $C\_1$ corresponds to "at most as much knowledge" as $C\_2.$
-3. We say $C\_1$ and $C\_2$ are equivalent iff $C\_1\leq C\_2$ and $C\_2\leq C\_1.$ We define the set of **states of knowledge** (SOKs), $\mathbb{K},$ by modding out this equivalence relation from the set of CPMs. Mathematically, $\leq$ was a preorder on the CPMs and becomes a partial order on $\mathbb{K}.$
-4. On $\mathbb{K},$ we define multiplication with a nonnegative scalar elementwise, and addition by a **direct sum** of the matrices making up the summands (i.e. taking a disjoint union of the internal memory states, and collecting the conditional probabilities). We can check this behaves well with the equivalence relation. We can also check that addition behaves well with our notion of $\leq,$ i.e. $K\_1\leq K\_2$ iff $K\_1+K_3\leq K\_2+K_3.$ Mathematically, we arrive at a structure called an "[ordered semigroup](https://en.wikipedia.org/w/index.php?title=Ordered_semigroup&oldid=978175111)", which we will turn into an ordered group in step 8. With these definitions, $\mathbb{K}$ is a convex set to which the same intuitions as listed for Gram matrices above apply.[^4]
-5. We also define multiplication of two collections by considering the learner to have access to uncorrelated information representing the factors: If the factors are represented by CPMs over internal memory states $a \in A,$ $b \in B,$ the product is represented by a CPM over the Kronecker product $A\times B,$ with the joint probabilities products of the factor probabilities $p((a,b)\mid D)=p(a\mid D)p(b\mid D)$ for $(a,b)\in A\times B.$ Besides behaving well with the equivalence relation, it's also commutative on the SOKs.[^6]
-
-
-Then in the equivalence classes, $\mathbf{0},\mathbf{1}\in\mathbb{K}$ are neutral w.r.t. addition and multiplication; they correspond to a state of $0$ probability and a state of zero knowledge. We also define $\Omega\in\mathbb{K}$ as the state of complete knowledge.
 7. (Note: You can skip reading this item at any time and proceed to the next one.)
    For an example, suppose the learner is in a SOK $K\in\mathbb{K}$ and should make a binary decision which of two experiments to perform next. So it will perform some probabilistic procedure and save the result in an additional register $R'$ with possible states $1,$ $2.$ Then the memory states where $R'=1,$ and the memory states where $R'=2,$ form (non-normalized) SOKs individually that sum to a state obtainable from $K$:
 
@@ -189,22 +161,15 @@ Then in the equivalence classes, $\mathbf{0},\mathbf{1}\in\mathbb{K}$ are neutra
 
 ## Footnotes
 [^1]: We could have defined it by density operators as well, but it seems to me that the formalism introduced later won't easily work that way anymore.
-[^2]: With $\delta_{d,e}$ denoting the Kronecker delta, i.e. $\delta_{d,e}=1$ if $d=e$ and $0$ otherwise.
-[^3]: Allowing transition probabilities that sum to less than 1 - i.e. allowing to lose probability mass - won't change the equivalence relation/classes, but is helpful for describing the output condition of a query algorithm later.
-[^4]: We could have exchanged the order of steps $2$ and $3.$
 
-[^5]: I.e. the vectors which are $1$ on $d$ resp. $d'\in D',$ and $0$ everywhere else.
+[^3]: Allowing transition probabilities that sum to less than 1 - i.e. allowing to lose probability mass - won't change the equivalence relation/classes, but is helpful for describing the output condition of a query algorithm later.
+
+[^4]: We could have exchanged the order of steps $2$ and $3.$
 
 [^9]: I think one can obtain a more elegant description of possible transformations by adapting the parallel developments by [Gutoski and Watrous](https://arxiv.org/pdf/quant-ph/0611234.pdf) and[Chiribella, D'Ariano, and Perinotti](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.80.022339). But I don't see a use of that as of this note.
 
-[^10]: If one looks into the definitions, one can see that the "states of quasiknowledge" construction is related to a [Grothendieck group construction](https://en.wikipedia.org/wiki/Grothendieck_group).
+[^10]: If one looks into the definitions, one can see that the "states of quasiknowledge" construction is related to a [Grothendieck group construction](https://en.wikipedia.org/wiki/Grothendieck_group). I looked into Wikipedia to read that this has his name from a specific case "which resulted in the development of [K-theory](https://en.wikipedia.org/w/index.php?title=K-theory&oldid=1072713370)". What's written there looks formally quite similar to what I do here, though I don't understand it in detail. So maybe one can call these thoughts "K-theory on the space of probabilistic transformations?"
 
 [^13]: A side remark: $\mathcal{S}_{\mathrm{quant}}\subset\mathcal{S}^\pm_{\mathrm{quant}}$ should be isomorphic to the algebra of complex positive semidefinite $E\times E$ matrices (as a subset of the Hermitian matrices), with elementwise addition and multiplication. One can derive this by considering the [unitary equivalence of purifications of quantum states](https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary).
 
-[^15]: Although conversely, a preimage of a SOK is _not_ necessarily a SOK. 
-
-[^6]: In the quantum case, this would correspond to Hadamard products of Gram matrices and tensor products of state collections.
-
 [^17]: Apparently, [this Oberwolfach seminar](https://homepages.cwi.nl/~monique/ow-seminar-sdp/) contains a lecture on infinite-dimensional semidefinite optimization.
-[^26]: I looked into Wikipedia to read that this has his name from a specific case "which resulted in the development of [K-theory](https://en.wikipedia.org/w/index.php?title=K-theory&oldid=1072713370)". What's written there looks formally quite similar to what I do here, though I don't understand it in detail. So maybe one can call these thoughts "K-theory on the space of probabilistic transformations?"
-[^27]: To fulfill the vector space axiom that $\alpha X + \beta X=(\alpha+\beta)X,$ we needed the modding out operation that took us from CPMs to SOKs.
