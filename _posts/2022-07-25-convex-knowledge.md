@@ -37,10 +37,10 @@ In $\mathcal{S}'\_\mathrm{class}$ and $\mathcal{S}'\_\mathrm{quant}$, for $\alph
 ## 4. Set inclusions (injective maps)
 We define maps that will play the role of inclusion maps after our equivalence relation (i.e. will be/stay injections):
 1. $\mathcal{S}'\_\mathrm{class}\to\mathcal{S}'\_\mathrm{decoh},$ $(M,P)\to(E\times M, (\delta\_(e,m)\delta\_(e',m')\sqrt{P\_{e,m}})\_{(e,m),e',m'})$ (in words, treating a classical as a completely decohered state),
-2. $\mathcal{S}'\_\mathrm{quant}\to\mathcal{S}'\_\mathrm{decoh},$ $(M,\Psi)\to(\\\\{0\\\\}, (\sqrt{P\_{e,m}})\_{0,e',m'})$ (in words, treating a pure quantum state as a quantum state with no decoherence),
-3. $\mathcal{S}'\to\mathcal{S}'^\pm,$ $S'\to S'-0$,
-4. $\mathbb{R}^+\to\mathcal
-4. $\mathbb{R}^+\to \mathcal{S}'_\mathrm{class}$ by $p\to $, $\mathbb{R}\to\mathcal{S}'^\pm$ as in part 3. It will turn out that after taking equivalence relations, these definitions are actually **equal** for $\mathbb{S}_\mathrm{class},$ $\mathbb{S}_\mathrm{quant},$ $\mathbb{S}_\mathrm{decoh}$ after taking the equivalence relation - in contrast to the general situation of 
+2. $\mathcal{S}'\_\mathrm{quant}\to\mathcal{S}'\_\mathrm{decoh},$ $(M,\Psi)\to(\\\\{0\\\\}, (\sqrt{P\_{e,m}})\_{0,e,m})$ (in words, treating a pure quantum state as a quantum state with no decoherence),
+3. $\mathcal{S}'\to\mathcal{S}'^\pm,$ $S'\to S'-0$.
+
+We also consider the nonnegative real numbers $\mathbb{R}^+$ as a subset of (the intersection of all) $\mathcal{S}'$, and all real numbers as a subset of (the intersection of all) $\mathcal{S}'^\pm$. Given $r\geq 0$, we choose a 1-dimensional memory (and, for $\mathcal{S}'_\mathrm{decoh}$, decohering) space, and let $P$ be an all-$r$ matrix for $\mathcal{S}'_\mathrm{class}$. In $\mathcal{S}'_\mathrm{quant}$ and $\mathcal{S}'_\mathrm{decoh}$, this corresponds to an all-$\sqrt{r}$ matrix. We embed real numbers $-r'<0$ in $\mathcal{S}'^\pm$ as $0-r'$, i.e. as the negation of the embedding of $r'$.
 
 ## 5. Operations
 We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
@@ -58,7 +58,7 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
    In the $\mathcal{S}'^\pm,$ $(A-B)(C-D) := (AC+BD) - (AD+BC).$
 3. When we consider different possible environments, we denote our sets by $\mathcal{S}'^E$ and similar. Considering a bipartite environment $E\times C,$ i.e. a bipartite environment, we define a "partial trace" $\mathrm{tr}\_C \colon \mathcal{S}'^{E\times C}\to \mathcal{S}'^E.$ This works by considering the $C$ register, which previously was part of the environment, as part of the memory: it maps $M\to M\times C,$ copies the entries of $P$ or $\Psi$ and (in the decohering case) leaves $D$ untouched. After modding out an equivalence relation in section 6, this will look more like the partial trace  - after making some information accessible to the agent, the state of knowledge becomes equivalent with respect to all transformations that it can perform on that information.
 
-   Of course, on $\mathcal{S}'^\pm,$ the $\mathrm{tr}\_C (A-B):= \mathrm{tr}\_C A - \mathrm{tr}\_C B.$
+   Of course, on the $\mathcal{S}'^\pm,$ the $\mathrm{tr}\_C (A-B):= \mathrm{tr}\_C A - \mathrm{tr}\_C B.$
 
    The partial trace will be useful to discuss the interface between the agent and the environment, i.e. discuss the possibility that the agent makes observations or performs actions that influence the next system state.
 4. We define a preorder $S\_1 \leq S\_2$ to capture the notion that the agent can trivially transform a state into another state, as follows: [^4]
@@ -69,22 +69,29 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
 
    On $\mathbb{S}'^\pm,$ $(A-B)\leq (C-D)$ iff $A+D\leq B+D.$
 
-## 6. The equivalence relation and the algebra.
+## 6. The equivalence relation and the algebra
 Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq X)$, and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm$.[^10]
 
-It is tedious but straightforward to check that all our operations behave well with this equivalence relation, and $\mathcal{S}\subseteq\mathcal{S}^\pm$ becomes a **convex subset of an associative, commutative ordered $\mathbb{R}$-algebra**.
+It is tedious but straightforward to check (fingers crossed) that all our operations behave well with this equivalence relation and $\mathcal{S}\subseteq\mathcal{S}^\pm$ becomes a **convex subset of an associative, commutative ordered $\mathbb{R}$-algebra**.[^13]
 
-A side remark: $\mathcal{S}_{\mathrm{quant}}\subset\mathcal{S}^\pm_{\mathrm{quant}}$ should be isomorphic to the algebra of complex positive semidefinite $E\times E$ matrices (as a subset of the Hermitian matrices), with elementwise addition and multiplication. One can derive this by considering the [unitary equivalence of purifications of quantum states](https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary).
+The partial trace $\mathrm{tr}\_C\colon\mathcal{S}^{\pm (E\times C)}\to \mathcal{S}^{\pm E}$ is a **linear map** that surjectively maps states of knowledge to states of knowledge (i.e. the image $\mathrm{tr}\_C(\mathcal{S}^{E\times C})=\mathcal{S}^{E}$). Conversely, however, the preimage of a SOK is _not_ necessarily a SOK.
+
+
+### 6.1. Properties of the partial trace
+a linear map
+1. linear,
+2. The image of the states of knowledge (i.e. members of $\mathcal{S}^{E\times C}$) is $\mathrm{tr}\_C(\mathcal{S}^{E\times C})=\mathcal{S}^{E}$,
 
    TODO we still don't have the formal statement needed to bound the error in the uqa
 
 ## An agent interacting with its environment
-Now consider an agent interacting with its environment. So we introduce some output and input subsystems $O,$ $I.$ In one step,
-1. the agent chooses to write something in $O,$ choosing the action it takes next,
-2. the environment evolves for one step, transforming $E\times O\to E\times I,$
-3. and the agent reads in the input subsystem, making it part of its "state of knowledge".
-So let's 
+Now consider an agent interacting with its environment. So we introduce some output and input subsystems $O,$ $I.$ Suppose we start with a state $S\in \mathcal{S}^{E}.$ In one step, the following happens:
 
+1. The agent chooses to write something in $O,$ choosing the action it takes next. After that, we consider the result as part of the environment. So it can choose any $\left\{ S\mid ^{E\times I} \right\}$
+2. The environment evolves under a transformation $T:\mathcal{S}^{E\times O}\to \mathcal{S}^{E\times I}.$ This transformation should be instantiated as a linear map acting on $E\times O,$ with the appropriate bounds on the $1$-norm/$2$-norm, as in our definition of the partial order.
+3. and the agent reads in the input subsystem, making it part of its "state of knowledge".
+
+After the first step, the agent can create any state $S\in\mathcal{S}^{E\times O}$ with $\mathrm{tr}\_O S=
 ## Operations
 The basic plan is as follows:
 1. We start with a naive description of states of knowledge [of an agent about its environment] as collections/matrices of conditional probabilities p(internal memory state|environmental ground truth)≥0; for now, we drop the requirement that the conditional probabilities sum to $1$ for any possible ground truth. We call these CPMs (conditional probability matrices); we consider all possible sets of internal memory states at once (i.e. don't fix the number of rows). The set of possible ground truths is fixed; we denote it by $D.$
@@ -120,7 +127,6 @@ A great thing about the quantum analogue of this problem (_quantum query algorit
 
 Then in the equivalence classes, $\mathbf{0},\mathbf{1}\in\mathbb{K}$ are neutral w.r.t. addition and multiplication; they correspond to a state of $0$ probability and a state of zero knowledge. We also define $\Omega\in\mathbb{K}$ as the state of complete knowledge.
 7. (Note: You can skip reading this item at any time and proceed to the next one.)
-
    For an example, suppose the learner is in a SOK $K\in\mathbb{K}$ and should make a binary decision which of two experiments to perform next. So it will perform some probabilistic procedure and save the result in an additional register $R'$ with possible states $1,$ $2.$ Then the memory states where $R'=1,$ and the memory states where $R'=2,$ form (non-normalized) SOKs individually that sum to a state obtainable from $K$:
 
    $K\_1+K\_2\leq K.$
@@ -168,7 +174,6 @@ Then in the equivalence classes, $\mathbf{0},\mathbf{1}\in\mathbb{K}$ are neutra
 
    2. It is also weird that this construction needs the algorithm's ability to do nothing. In the classical case, if an algorithm decides it needs to do nothing, it can just perform the next internal processing step instead. I don't know if this is possible coherently in the quantum case, however. It would be nice to be able to put this assertion into the formalism.
 
-8. Our $+$ and $0$ yield a commutative monoid, i.e. we can add and have a neutral element, but can't yet subtract. A [_Grothendieck group construction_](https://en.wikipedia.org/w/index.php?title=Grothendieck_group&oldid=1091622036)[^26] allows us to turn this monoid into a commutative group. We obtain an $\mathbb{R}$-algebra, which is also a vector space.[^27] Our original set of "physical" states of knowledge is still a convex subset of that vector space. So if we find or truncate to a finite basis, we can hopefully do convex optimization and duality over it.
 9. Together, addition and multiplication allows us to define formal power series of knowledge. For example, suppose our learner observes the stars with a telescope without making any choices. In an infinitesimal time $\Delta t\to 0,$ it observes a supernova with probability $r \Delta t,$ generating experimental data $A\in \mathbb{K}.$ Otherwise, it observes nothing. If $K(t)$ is the state of knowledge over time, we obtain
 
    $K(t+\Delta t)\to ((1-r \Delta t)\mathbf{1}+r\Delta t A) K(t).$
@@ -183,54 +188,6 @@ Then in the equivalence classes, $\mathbf{0},\mathbf{1}\in\mathbb{K}$ are neutra
 
    shows that the amount of knowledge obtained follows a Poisson distribution. Note that these equations contain minus signs, so our Grothendieck construction was probably helpful.
 
-10. We discussed classical probability theory so far. But I think this works for both pure and mixed quantum theory as well, though I haven't thoroughly worked through the details and don't want to make a definite claim - it would be really nice to get an adversary method for faulty query algorithms though:
-	1. For pure quantum theory, the CPMs correspond to collections of wavefunctions for $d\in D,$ and the $\leq$ relation corresponds to applying unitaries and projectors. Then the convex space _should_ be equivalent to the space of Gram matrices (of complex vectors), and the Grothendieck construction should yield the space of Hermitian matrices. In this equivalence, addition and multiplication correspond to elementwise addition and multiplication of these Gram matrices. (Note that, when going from collections of states to Gram matrices, direct sums turn into sums and tensor products turn into elementwise products).
-	2. We represent mixed quantum theory using purifications: The analogue of the CPMs are pure quantum vectors including a subsystem representing the environment, and the equivalence relation we mod out over includes local operations on the environment.
-
-## More details
-### The set-up/CPMs
-Suppose the learner has stored its previous (probabilistic) knowledge as a state of its internal memory $x\in X.$ Consider the _conditional probability matrix_ (CPM) $C=(p(x\mid d))\_{x\in X,d\in D}\in\mathbb{R}^{X\times D}.$ Then $C$ is sufficient (but, as we'll see, not necessary) to describe the "knowledge" the learner gathers about the environment for any $d\in D.$ For example, if the learner's ultimate goal is to calculate some function $f\colon D\to R,$ it does (and has to do) so by applying some probabilistic process $X\to R,$ with some transition matrix $T=(p(r\mid x))\_{r\in R,x\in X}.$ The appropriate matrix entries of $TC$ contain the probabilities $p(r=f(d)\mid d),$ the success probabilities of that procedure for given $d\in D.$
-
-We formally _don't_ require that the conditional probabilities sum to $1,$ but do require that they're nonnegative. If the conditional probabilities sum to $<1$ for some $d\in D,$ we can interpret this as a learner that has given up on a problem by a certain time, with some probability.
-
-### Preorder on transition matrices by transformability
-On the set of CPMs, $\leq$ as discussed in the sketch is a _preorder_ - for any $C,C\_1,C\_2,C_3,$ it fulfills
-- transitivity: $C\_1\leq C\_2$ and $C\_2\leq C_3$ implies $C\_1\leq C_3,$ and
-- reflexivity: $C\leq C.$
-
-### $\leq$ isn't a partial order yet
-But $\leq$ is _not_ a partial order, as it does not fulfill symmetry: $C\_1\leq C\_2$ and $C\_2\leq C\_1$ does not necessarily imply $C\_1=C\_2.$ Two counterexamples:
-   - Permuting the rows of a conditional probability matrix $M,$ corresponding to changing the labeling of $x\in X,$
-   - Replacing some $x\in X$ with one of two additional states $x\_1,$ $x\_2$ with probability $1/2$ each.
-
-Intuitively, this means that, to describe the "state of knowledge" of the learner, the CPMs contain superfluous information. We can define an equivalence relation on the CPMS to capture this, with $C\_1\sim C\_2$ iff $C\_1\leq C\_2 \wedge C\_2\leq C\_1.$ We **define our set of _states of knowledge (SOKs)_** $\mathbb{K}$ as a mathematical object as the set of equivalence classes under this equivalence relation. We will now argue that $K\_1= K\_2\in \mathbb{R}$ iff these "states of knowledge" should philosophically be considered equivalent:
-
-It is clear that  $K\_1=K\_2$ implies they should be considered equivalent. Conversely, suppose that two CPMs $C\_1,C\_2$ should be considered equivalent. This means that, given $C\_2,$ the learner can solve all tasks it could solve when given $C\_1$ and vice versa. In particular, it can emit a probability distribution corresponding to $C\_1.$ But this means that $C\_1\leq C\_2.$ Similarly, $C\_2\leq C\_1$ as well, so $C\_1$ and $C\_2$ are in the same equivalence class.
-
-By standard math, for $K\_1, K\_2\in \mathbb{K},$ $K\_1\leq K\_2$ is independent of the choice of representative, and $\leq$ is a partial order on $\mathbb{K}.$
-
-### Convexity of states of knowledge
-We define addition and scalar multiplication operations on states of knowledge as in step 4 of the sketch. We can easily verify they behave well with the equivalence relation.
-
-A convex combination $p K\_1+(1-p)K\_2$ now corresponds to a SOK in which, before performing the experiments leading up to some state of knowledge, the learner had randomly decided to perform a procedure leading to $K\_1$ with probability $p,$ and a procedure leading to $K\_2$ with probability $1-p$ (and stored the choice it made). So our definition of addition brings us one step closer to being able to use convex optimization to optimize over states of knowledge:
-- When $K\_1$ and $K\_2$ are feasible in some scheme, their convex combinations are feasible as well,
-- and when $K\_1$ and $K\_2$ are both individually acceptable for some task (i.e. yield a low enough achievable failure probability), their convex combinations are jointly acceptable as well (as one can achieve the appropriate convex mixtures of failure probabilities).
-
-As mentioned in the introduction, if we just took convex combinations of our original CPMs, that wouldn't be true.
-
-### The Grothendieck group
-$(\mathbb{K},+)$ forms a commutative _monoid_: There is a neutral element $0\in \mathbb{K},$ represented by any all-$0$ matrix, and addition is associative and commutative. We can turn this into a group, i.e. add enough elements for there to be inverses, by a [_Grothendieck group construction_](https://en.wikipedia.org/w/index.php?title=Grothendieck_group&oldid=1091622036).[^26] This works as follows:
-
-1. We are given a commutative monoid $(M,+),$
-2. We define the group by $M_\pm:=M\times M/\sim,$ where $(m\_1,m\_2)\sim(m_3,m_4)$ iff $m\_1+m_4=m\_2+m_3.$ In words, a tuple $(m\_1,m\_2)$ is to be interpreted as the group element $m\_1-m\_2,$ and we can determine equivalence of two group elements $m\_1-m\_2, m_3-m_4$ by checking whether $m\_1+m_4=m_3+m\_2.$
-3. We define $(m\_1,m\_2)+(m_3,m_4):=(m\_1+m_3,m\_2+m_4),$ and the inverse of an element $M$ represented by $(m\_1,m\_2)$ is denoted by $-M$ and represented by $(m\_2,m\_1).$
-
-For our monoid $(\mathbb{K},+),$ we call elements of the resulting set $\mathbb{K}_\pm$ _quasistates of knowledge_. The point of our exercise is that these form a vector space over $\mathbb{R},$ if we define scalar multiplication in the natural way ($\alpha (K\_1,K\_2):=(\alpha K\_1, \alpha K\_2)$ for $\alpha\geq 0,$ and $\alpha K:=(-\alpha) (-K)$ for $\alpha<0$).[^27]
-
-We can also define multiplication on $\mathbb{K}\_\pm.$ Keeping in mind that $(K\_1,K\_2)$ is to be interpreted as $K\_1-K\_2,$ our definition is $(K\_1,K\_2)(K_3,K_4):=(K\_1K_3+K\_2K_4,K\_2K_3+K\_1K_4).$ We arrive at a commutative $\mathbb{R}$-algebra $\mathbb{K}\_\pm,$ with the "physical" SOKs $\mathbb{K}\subset\mathbb{K}\_\pm$ a convex subset of $\mathbb{K}\_\pm.$ Finally, $(K\_1,K\_2)\leq(K_3,K_4)$ iff $K\_1+K_4\leq K_3+K\_2.$ This turns our thing into an ordered group, which seems to behave well with standard laws of school arithmetic to me.
-
-Any $\mathbb{R}$-algebra is an $\mathbb{R}$-vector space, but the dimension of the space will probably be infinite in general. Textbook convex optimization is done in Euclidean space (i.e. $\mathbb{R}^n$ with $n$ finite);[^17] we can truncate our space to a finite basis, and for a given finite set of possible experiments taking values in a finite set, we should be able to find a basis that covers any given finite number of observations. But I don't fully understand whether/to what extent the nice ideas of duality and similar would still work in our situation.
-
 ## Footnotes
 [^1]: We could have defined it by density operators as well, but it seems to me that the formalism introduced later won't easily work that way anymore.
 [^2]: With $\delta_{d,e}$ denoting the Kronecker delta, i.e. $\delta_{d,e}=1$ if $d=e$ and $0$ otherwise.
@@ -242,6 +199,10 @@ Any $\mathbb{R}$-algebra is an $\mathbb{R}$-vector space, but the dimension of t
 [^9]: I think one can obtain a more elegant description of possible transformations by adapting the parallel developments by [Gutoski and Watrous](https://arxiv.org/pdf/quant-ph/0611234.pdf) and[Chiribella, D'Ariano, and Perinotti](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.80.022339). But I don't see a use of that as of this note.
 
 [^10]: If one looks into the definitions, one can see that the "states of quasiknowledge" construction is related to a [Grothendieck group construction](https://en.wikipedia.org/wiki/Grothendieck_group).
+
+[^13]: A side remark: $\mathcal{S}_{\mathrm{quant}}\subset\mathcal{S}^\pm_{\mathrm{quant}}$ should be isomorphic to the algebra of complex positive semidefinite $E\times E$ matrices (as a subset of the Hermitian matrices), with elementwise addition and multiplication. One can derive this by considering the [unitary equivalence of purifications of quantum states](https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary).
+
+[^15]: Although conversely, a preimage of a SOK is _not_ necessarily a SOK. 
 
 [^6]: In the quantum case, this would correspond to Hadamard products of Gram matrices and tensor products of state collections.
 
