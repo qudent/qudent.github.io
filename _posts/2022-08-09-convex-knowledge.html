@@ -1,0 +1,673 @@
+---
+title: 'The \mathbb{R}-algebra of quasiknowledge and convex optimization'
+date: 2022-08-09
+permalink: /posts/2022/08/convex-knowledge/
+tags:
+  - cs.ml
+  - cs.cc
+  - quant-ph
+---
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2022-07-25" />
+  <title>The -algebra of quasiknowledge and convex optimization</title>
+  <style>
+    html {
+      line-height: 1.5;
+      font-family: Georgia, serif;
+      font-size: 20px;
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-size: 85%;
+      margin: 0;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: 1;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">The -algebra of quasiknowledge and convex
+optimization</h1>
+<p class="date">2022-07-25</p>
+</header>
+<p>(major rewrite+updates ongoing, old version <a
+href="https://github.com/qudent/qudent.github.io/blob/935968fec7d4e89e7953f460d1c2b1093bf0da6b/_posts/2022-07-25-convex-knowledge.md">here</a>.
+The old version is more verbose/philosophical, in this one, I try to
+avoid burying the lede and put the definitions first.)</p>
+<h2 id="abstract">1. Abstract</h2>
+<p>I develop a convex description of a classical or quantum learner’s or
+agent’s state of knowledge and environmental state, which would allow
+using convex optimization and duality on problems related to optimal
+learning or actions if one restricted to finite-dimensional vector
+spaces. The physically possible states are described as a convex subset
+of an associative, commutative, ordered <span
+class="math inline">\(\mathbb{R}\)</span>-algebra. This also allows
+solving formal differential equations and power series that describe
+e.g. the evolution of a learner’s knowledge over time when it observes a
+Poisson process generating experimental data.</p>
+<p>The <strong>outline</strong>: In sections 2-5, I develop the concrete
+situations of classical, pure quantum, and mixed quantum physics and
+obtain structures <span
+class="math inline">\(\mathcal{S}^\pm_{\mathrm{class}},\)</span> <span
+class="math inline">\(\mathcal{S}^\pm_{\mathrm{quant}},\)</span> <span
+class="math inline">\(\mathcal{S}^\pm_{\mathrm{decoh}}.\)</span> More
+precisely, section 2 defines sets, sections 3-4 structure on that sets,
+and section 5 an equivalence relation that makes equivalent “states of
+quasiknowledge” equal. Then section 5 mentions the algebraic axioms that
+these structures fulfill. The remaining sections discuss
+applications.</p>
+<p><strong>Remark:</strong> If you want to speed up reading or don’t
+know quantum physics, you can skip all mentions of non-classical
+situations.</p>
+<h2 id="sets-before-modding-out-the-equivalence-relation">2. Sets before
+modding out the equivalence relation</h2>
+<p>Consider an agent within an environment that could be in a state
+<span class="math inline">\(e\in E,\)</span> with some internal memory
+state <span class="math inline">\(m\in M.\)</span></p>
+<ol type="1">
+<li>In the classical case, we describe the situation by a probability
+matrix <span class="math inline">\((p_{e,m})_{(e,m)\in E\times
+M}\in(\mathbb{R}^+)^{E\times M},\)</span> where <span
+class="math inline">\(\mathbb{R}^+\)</span> denotes the set of
+<strong>nonnegative</strong> real numbers,</li>
+<li>in the quantum case without decoherence, we have a bipartite quantum
+state <span class="math inline">\((\psi_{e,m})_{(e,m)\in E\times
+M}\in\mathbb{C}^{E\times M},\)</span> and</li>
+<li>we model the quantum case with decoherence by adding an additional
+subsystem <span class="math inline">\(D\)</span> into which the state is
+supposed to have decohered, and and consider a pure quantum state <span
+class="math inline">\((\psi_{d,e,m})_{(d,e,m)\in D\times E\times
+M}\in\mathbb{C}^{D\times E\times M}\)</span> again.<a href="#fn1"
+class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a></li>
+</ol>
+<p>For a fixed <span class="math inline">\(E,\)</span> we denote and
+define sets of possible situations (which will turn into our desired
+notions of “states of knowledge” after modding out equivalence relation
+in section 5):</p>
+<ol type="1">
+<li><span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{class}}:=\left\{(M,P)\mid
+|M|&lt;\infty, P\in(\mathbb{R}^+)^{E\times M}\right\},\)</span></li>
+<li><span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{quant}}:=\left\{(M,\Psi)\mid
+|M|&lt;\infty, \Psi\in\mathbb{C}^{E\times M}\right\},\)</span></li>
+<li><span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{decoh}}:=\left\{(D,M,\Psi)\mid
+|D|&lt;\infty, |M|&lt;\infty, \Psi\in\mathbb{C}^{D\times E\times
+M}\right\}.\)</span></li>
+</ol>
+<p>In other words, we do not fix <span class="math inline">\(M\)</span>
+and <span class="math inline">\(D\)</span> (or limit their sizes beyond
+requiring they are finite), but consider them part of the description.
+Furthermore, we don’t force the classical probability distributions or
+quantum states to be normalized. We will write <span
+class="math inline">\(\mathcal{S}&#39;\)</span> in arguments that work
+for any of the sets <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{class}},\)</span> <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{quant}},\)</span> <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{decoh}}.\)</span> If we
+refer to a particular <span class="math inline">\(E\)</span>, we write
+<span class="math inline">\(\mathcal{S}&#39;^E.\)</span></p>
+<p>We define <span
+class="math inline">\(\mathcal{S}&#39;^\pm:=\mathcal{S}&#39;\times\mathcal{S}&#39;\)</span>
+(for classical, coherent-quantum, or decohering-quantum states). Denote
+a tuple <span
+class="math inline">\((S&#39;_1,S&#39;_2)\in\mathcal{S}&#39;^\pm\)</span>
+by <span class="math inline">\(S&#39;_1-S&#39;_2\)</span> and interpret
+it as a formal difference accordingly.</p>
+<p>As discussed in the outline, we spend the next sections defining more
+structure on the sets before modding out the right equivalence relation
+in section 6.</p>
+<h2 id="set-inclusions-injective-maps">3. Set inclusions (injective
+maps)</h2>
+<p>We define maps that will play the role of inclusion maps after our
+equivalence relation (i.e. allow us to consider some sets as subsets of
+other sets - will be/stay injections and form nothing but commutative
+diagrams when concatenated):</p>
+<h3 id="classical-and-pure-quantum-as-mixed-quantum-states">3.1.
+Classical and pure quantum as mixed quantum states</h3>
+<p>The inclusions are</p>
+<ol type="1">
+<li><span
+class="math inline">\(\mathcal{S}&#39;_\mathrm{class}\to\mathcal{S}&#39;_\mathrm{decoh},\)</span>
+<span class="math inline">\((M,P)\to(E\times M,
+(\delta_{(e,m)}\delta_{(e&#39;,m&#39;)}\sqrt{P_{e,m}})_{(e,m),e&#39;,m&#39;})\)</span>
+(in words, treating a classical as a completely decohered state),</li>
+<li><span
+class="math inline">\(\mathcal{S}&#39;_\mathrm{quant}\to\mathcal{S}&#39;_\mathrm{decoh},\)</span>
+<span class="math inline">\((M,\Psi)\to(\{0\},
+(\sqrt{P_{e,m}})_{0,e,m})\)</span> (in words, treating a pure quantum
+state as a quantum state with no decoherence).</li>
+</ol>
+<h3 id="knowledge-as-quasiknowledge">3.2. Knowledge as
+quasiknowledge</h3>
+<p><span
+class="math inline">\(\mathcal{S}&#39;\to\mathcal{S}&#39;^\pm,\)</span>
+<span class="math inline">\(S&#39;\to S&#39;-0\)</span>.</p>
+<h3 id="elements-of-e">3.2. Elements of E</h3>
+<p>We want to consider <span class="math inline">\(e\in E\)</span> as a
+state in which the environment is guaranteed to be in state <span
+class="math inline">\(e.\)</span></p>
+<ol type="1">
+<li><span
+class="math inline">\(E\to\mathcal{S}&#39;_\mathrm{class}\)</span>,
+<span
+class="math inline">\(e\to(\{0\},(\delta_{e&#39;,e})_{(e&#39;,0)\in
+E\times \{0\}}))\)</span></li>
+</ol>
+<p>(where <span class="math inline">\(\{0\}\)</span> is an arbitrary
+1-element memory space). The situation is completely analogous in the
+pure-quantum or mixed-quantum case (in the latter, with a 1-dimensional
+decohering space).</p>
+<h3 id="real-numbers">3.3. Real numbers</h3>
+<p><span class="math inline">\(\mathbb{R}^+\to
+\mathcal{S}&#39;_\mathrm{class}\)</span> maps <span
+class="math inline">\(r\)</span> to an all-<span
+class="math inline">\(r\)</span> matrix, again with trivial memory
+space. <span class="math inline">\(\mathbb{R}^+\to
+\mathcal{S}&#39;_\mathrm{quant},\)</span> <span
+class="math inline">\(\mathcal{S}&#39;_\mathrm{decoh}\)</span> map to an
+all-<span class="math inline">\(\sqrt{r}\)</span> matrix with trivial
+memory (and decohering) space.</p>
+<p>We embed real numbers <span
+class="math inline">\(-r&#39;&lt;0\)</span> in <span
+class="math inline">\(\mathcal{S}&#39;^\pm\)</span> as <span
+class="math inline">\(0-r&#39;\)</span>, i.e. as the negation of the
+embedding of <span class="math inline">\(r&#39;\)</span>.</p>
+<h2 id="operations">4. Operations</h2>
+<p>We now define some operations on the <span
+class="math inline">\(\mathcal{S}&#39;\)</span> and <span
+class="math inline">\(\mathcal{S}&#39;^\pm.\)</span></p>
+<ol type="1">
+<li><p>Addition, <span class="math inline">\(+,\)</span> is to be
+interpreted as the environment+agent being in either of the situations
+that the summands describe, and defined with direct sums:</p>
+<ol type="1">
+<li>In <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{class}},\)</span> <span
+class="math inline">\((M_1,P_1)+(M_2,P_2):=(M_1\biguplus M_2,
+P&#39;),\)</span> with <span class="math inline">\(M_1\biguplus
+M_2\)</span> denoting the disjoint union of <span
+class="math inline">\(M_1\)</span> and <span
+class="math inline">\(M_2\)</span> and the elements of <span
+class="math inline">\(P&#39;\)</span> composed of the elements of <span
+class="math inline">\(P_1\)</span> and <span
+class="math inline">\(P_2.\)</span></li>
+<li>In <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{quant}},\)</span> the
+definition is equivalent.</li>
+<li>In <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{decoh}},\)</span> <span
+class="math inline">\((D_1,M_1,\Psi_1) + (D_2,M_2,\Psi_2) := (D_1
+\biguplus D_2, M_1 \biguplus M_2, \Psi&#39;),\)</span> with the entries
+of <span class="math inline">\(\Psi&#39;\)</span> taken from <span
+class="math inline">\(\Psi&#39;_1,\Psi&#39;_2\)</span> if <span
+class="math inline">\(d\)</span> and <span
+class="math inline">\(m\)</span> belong to the same summand and set to
+<span class="math inline">\(0\)</span> otherwise.</li>
+</ol>
+<p>In the <span class="math inline">\(\mathcal{S}&#39;^\pm,\)</span>
+<span class="math inline">\((A-B) + (C-D) := ((A+C) - (B+D))\)</span> as
+expected.</p></li>
+<li><p>We denote multiplication on the <span
+class="math inline">\(\mathcal{S}&#39;\)</span> by concatenating the
+factors and interpret it as the model having access to two pieces of
+knowledge independently. That is:</p>
+<ol type="1">
+<li>In <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{class}},\)</span> <span
+class="math inline">\((M_1,P_1)(M_2,P_2) := (M_1 \times M_2,
+P&#39;)\)</span> with <span class="math inline">\(P&#39;_{e, (m_1, m_2)}
+:= (P_1)_{e, m_1} (P_2)_{e, m_2},\)</span></li>
+<li>equivalently in <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{quant}},\)</span></li>
+<li>and in <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{decoh}},\)</span> <span
+class="math inline">\((D_1,M_1,\Psi_1) (D_2,M_2,\Psi_2) := (D_1 \times
+D_2, M_1 \times M_2, \Psi&#39;)\)</span> with <span
+class="math inline">\(\Psi&#39;_{(d_1, d_2), e, (m_1, m_2)} :=
+(\Psi_1)_{d_1, e, m_1}(\Psi_2)_{d_2, e, m_2}.\)</span></li>
+</ol>
+<p>In the <span class="math inline">\(\mathcal{S}&#39;^\pm,\)</span>
+<span class="math inline">\((A-B)(C-D) := (AC+BD) -
+(AD+BC).\)</span></p></li>
+<li><p>Remember that when we consider different possible environments,
+we denote our sets by <span
+class="math inline">\(\mathcal{S}&#39;^E\)</span> and similar.
+Considering a bipartite environment <span class="math inline">\(E\times
+C,\)</span> we define a “partial trace” <span
+class="math inline">\(\mathrm{tr}_C \colon \mathcal{S}&#39;^{E\times
+C}\to \mathcal{S}&#39;^E.\)</span> This works by considering the <span
+class="math inline">\(C\)</span> register, which previously was part of
+the environment, as part of the memory: it maps <span
+class="math inline">\(M\to M\times C,\)</span> copies the entries of
+<span class="math inline">\(P\)</span> or <span
+class="math inline">\(\Psi\)</span> and (in the decohering case) leaves
+<span class="math inline">\(D\)</span> untouched. After modding out an
+equivalence relation in section 6, this will look more like the partial
+trace - after making some information accessible to the agent, the state
+of knowledge becomes equivalent with respect to all transformations that
+it can perform on that information.</p>
+<p>Of course, on the <span
+class="math inline">\(\mathcal{S}&#39;^\pm,\)</span> the <span
+class="math inline">\(\mathrm{tr}_C (A-B):= \mathrm{tr}_C A -
+\mathrm{tr}_C B.\)</span></p>
+<p>The partial trace will be useful to discuss the interface between
+agent and the environment, i.e. discuss the possibility that the agent
+makes observations or performs actions that influence the next system
+state.</p></li>
+<li><p>We define a preorder <span class="math inline">\(S_1 \leq
+S_2\)</span> to capture the notion that the agent can trivially
+transform a state into another state, as follows:</p>
+<ol type="1">
+<li>In <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{class}},\)</span> <span
+class="math inline">\((M_1,P_2 T) \leq (M_2,P_2)\)</span> for all
+transformation matrices on the memory <span class="math inline">\(T \in
+{(\mathbb{R}^+)}^{M_1 \times M_2}\)</span> with <span
+class="math inline">\(\Vert T\Vert_1\leq 1.\)</span> The latter is the
+<a
+href="https://en.wikipedia.org/w/index.php?title=Matrix_norm&amp;oldid=1100495446#Matrix_norms_induced_by_vector_p-norms">1-norm
+of <span class="math inline">\(T,\)</span> i.e. the maximal column
+sum.</a> This means that starting from any state <span
+class="math inline">\(m_2\in M_2,\)</span> the probabilities of
+transitioning to a final state must sum to <strong>at most</strong> one;
+if it is <span class="math inline">\(&lt;1\)</span> for some column, we
+interpret this as the agent giving up with a certain probability. If
+<em>all</em> column sums were <span class="math inline">\(1,\)</span>
+we’d get a “proper” transition matrix that doesn’t lose probability
+mass.</li>
+<li>The definition in <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{quant}}\)</span> is
+analogous (with <span class="math inline">\(\mathbb{R}^+\)</span>
+replaced by <span class="math inline">\(\mathbb{C}\)</span>) except that
+our constraint on <span class="math inline">\(T\)</span> is that <span
+class="math inline">\(\Vert T\Vert_2\leq 1,\)</span> using the <a
+href="https://en.wikipedia.org/w/index.php?title=Matrix_norm&amp;oldid=1100495446#Matrix_norms_induced_by_vector_p-norms">2-norm
+of <span class="math inline">\(T\)</span></a>. This means that the
+maximal singular value of <span class="math inline">\(T\)</span> is
+<span class="math inline">\(\leq 1.\)</span> Analogously to 1.,
+<em>all</em> singular values being <span
+class="math inline">\(1\)</span> is equivalent to <span
+class="math inline">\(T\)</span> being an isometry, i.e. a “proper”
+quantum transition matrix. If some singular values of <span
+class="math inline">\(T\)</span> are <span
+class="math inline">\(&lt;1,\)</span> the block-matrix <span
+class="math inline">\(\begin{pmatrix}T\\\\ \sqrt{I-T^\dagger
+T}\end{pmatrix}\)</span> is an isometry nevertheless; we can imagine the
+agent gives up if it lands in the lower block of that matrix and/or
+consider <span class="math inline">\(T\)</span> to be one <a
+href="https://en.wikipedia.org/w/index.php?title=Quantum_operation&amp;oldid=1094787035#Statement_of_the_theorem">Kraus
+operator of a quantum channel</a>.</li>
+<li>In <span
+class="math inline">\(\mathcal{S}&#39;_{\mathrm{decoh}},\)</span> we
+want to consider transitions involving both <span
+class="math inline">\(D\)</span> and the memory. So we have <span
+class="math inline">\((D_1,M_1, T_D(\Psi_2 T_M)) \leq (D_2, M_2,
+\Psi_2),\)</span> where <span class="math inline">\(T_D(\Psi_2
+T_M))\)</span> denotes
+<ol type="1">
+<li>The application of some <span class="math inline">\(T_M \in
+\mathbb{C}^{M_2 \times (M_1 \times D_M)}\)</span> to the memory space of
+<span class="math inline">\(\Psi_2,\)</span> where <span
+class="math inline">\(D_M\)</span> is an intermediate decohering space
+and <span class="math inline">\(\Vert T_M\Vert_2\leq 1,\)</span></li>
+<li>following that, the application of <span
+class="math inline">\(T_D\in \mathbb{C}^{D_1\times (D\times
+D_M)}\)</span> to <span class="math inline">\(D\)</span> and <span
+class="math inline">\(D_M\)</span>, with <span
+class="math inline">\(\Vert T_D\Vert_2\leq 1\)</span> as well. So <span
+class="math inline">\(T_M\)</span> transforms the memory and generates a
+register <span class="math inline">\(D_M\)</span> that becomes part of
+the decohering space, and <span class="math inline">\(T_D\)</span> is an
+arbitrary transformation of that decohering space, which is <strong>not
+necessarily an isometry either</strong>.<a href="#fn2"
+class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a></li>
+</ol></li>
+</ol>
+<p>On <span class="math inline">\(\mathbb{S}&#39;^\pm,\)</span> <span
+class="math inline">\((A-B)\leq (C-D)\)</span> iff <span
+class="math inline">\(A+D\leq B+D.\)</span></p></li>
+</ol>
+<h2 id="the-equivalence-relation-and-the-algebra">5. The equivalence
+relation and the algebra</h2>
+<p>Finally, we define an <strong>equivalence relation</strong> on the
+<span class="math inline">\(\mathcal{S}&#39;\)</span> and <span
+class="math inline">\(\mathcal{S}&#39;^\pm\)</span> by <span
+class="math inline">\(X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq
+X)\)</span>, and call the equivalence classes the spaces of
+<strong>states of knowledge</strong> <span
+class="math inline">\(\mathcal{S}\)</span> and <strong>states of
+quasiknowledge</strong> <span
+class="math inline">\(\mathcal{S}^\pm\)</span>.<a href="#fn3"
+class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>It is tedious but straightforward to check (fingers crossed) that all
+our operations behave well with this equivalence relation and <span
+class="math inline">\(\mathcal{S}\subseteq\mathcal{S}^\pm\)</span>
+becomes a <strong>convex subset of an associative, commutative ordered
+<span class="math inline">\(\mathbb{R}\)</span>-algebra</strong>.<a
+href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a></p>
+<p>The partial trace <span
+class="math inline">\(\mathrm{tr}_C\colon\mathcal{S}^{\pm (E\times
+C)}\to \mathcal{S}^{\pm E}\)</span> is a <strong>linear map</strong>
+that surjectively maps states of knowledge to states of knowledge
+(i.e. the image <span
+class="math inline">\(\mathrm{tr}_C(\mathcal{S}^{E\times
+C})=\mathcal{S}^{E}\)</span>). Conversely, however, the preimage of a
+SOK is <em>not</em> necessarily a SOK. <span
+class="math inline">\(\mathrm{tr}_C\)</span> is also monotonous in <span
+class="math inline">\(\leq\)</span>.</p>
+<p>Note that after the equivalence relation, the set inclusion <span
+class="math inline">\(\mathbb{R}\subseteq
+\mathcal{S}^{\pm\{0\}}\)</span> defined in 3.3. is actually
+<em>surjective</em> for a 1-element <span
+class="math inline">\(E=\{0\}\)</span>. So it makes sense to define a
+“total trace” <span class="math inline">\(\mathrm{tr}\colon
+\mathcal{S}^{\pm}\to\mathbb{R}\)</span>, which treats the environment
+<span class="math inline">\(E\)</span> as <span
+class="math inline">\(\{0\}\times E\)</span> and calculates the partial
+trace over <span class="math inline">\(E\)</span>. Interpreting the
+result as an element of <span class="math inline">\(\mathbb{R},\)</span>
+this returns the <span class="math inline">\(1\)</span>-norm/squared
+<span class="math inline">\(2\)</span>-norm of a SOK.</p>
+<h2 id="an-agent-interacting-with-its-environmentconvex-optimization">6.
+An agent interacting with its environment/convex optimization</h2>
+<h3 id="evolution">6.1. Evolution</h3>
+<p>Now consider an agent interacting with its environment. So we
+introduce some output and input subsystems <span
+class="math inline">\(O,\)</span> <span
+class="math inline">\(I,\)</span> and a “law of nature” <span
+class="math inline">\(T\colon\mathcal{S}^{E\times O}\to
+\mathcal{S}^{E\times I}\)</span> that evolves the environment influenced
+by the agent’s choices, and generating measurement data. The “law of
+nature” should be instantiated as some transition matrix <span
+class="math inline">\(T&#39;\)</span>, similar to the ones in our order
+definition in 4.4.:</p>
+<ol type="1">
+<li>For <span class="math inline">\(\mathcal{S}_\mathrm{class},\)</span>
+<span class="math inline">\(T&#39;\in(\mathbb{R}^+)^{(E\times
+I)\times(E\times O)}\)</span> and <span class="math inline">\(\Vert
+T&#39;\Vert_1\leq 1,\)</span></li>
+<li>For <span class="math inline">\(\mathcal{S}_\mathrm{quant},\)</span>
+<span class="math inline">\(T&#39;\in\mathbb{C}^{(E\times
+I)\times(E\times O)}\)</span> and <span class="math inline">\(\Vert
+T&#39;\Vert_2\leq 1,\)</span></li>
+<li>For <span class="math inline">\(\mathcal{S}_\mathrm{decoh},\)</span>
+<span class="math inline">\(T&#39;\in\mathbb{C}^{(D_T\times E\times
+I)\times(E\times O)}\)</span> and <span class="math inline">\(\Vert
+T&#39;\Vert_2\leq 1,\)</span> i.e. <span
+class="math inline">\(T&#39;\)</span> may add some new space <span
+class="math inline">\(D_T\)</span> to the decohering space.</li>
+</ol>
+<p>Starting with a SOK <span class="math inline">\(S\in
+\mathcal{S}^{E},\)</span> the states of knowledge attainable by the
+agent in one step are then</p>
+<p><span class="math inline">\(\left\{ \mathrm{tr}_I (T(S_O))
+\mid\mathrm{tr}_O S_O \leq S, S_O\in \mathcal{S}^{E\times O}
+\right\}:\)</span></p>
+<p>The agent is able to apply an arbitrary transformation to its
+internal state to write something in <span
+class="math inline">\(O,\)</span> which corresponds to creating an
+arbitrary SOK <span class="math inline">\(S_O\)</span> whose partial
+trace is at most <span class="math inline">\(S.\)</span> Then the
+transformation corresponds to applying T, and reading of the input is
+application of the partial trace.</p>
+<h3 id="measurements">6.2. Measurements</h3>
+<p>Now suppose that given <span
+class="math inline">\(S\in\mathcal{S}^E,\)</span> the agent wants to
+calculate a function <span class="math inline">\(f\colon E\to
+C.\)</span> As before, it produces some <span
+class="math inline">\(S_C\in \mathcal{S}^{E\times C}\)</span> with <span
+class="math inline">\(\mathrm{tr}_C S_C \leq S\)</span>. Given this
+<span class="math inline">\(S_C,\)</span> the “probability” (in scare
+quotes because <span class="math inline">\(S\)</span> doesn’t need to be
+normalized) of getting output <span class="math inline">\(C\)</span> for
+input <span class="math inline">\(E\)</span> is <span
+class="math inline">\(\mathrm{tr}((E,C) S_C)\)</span> (with <span
+class="math inline">\((E,C)\)</span> interpreted as a member of <span
+class="math inline">\(\mathcal{S}^{E\times C}\)</span> as in 3.2):
+Multiplying by <span class="math inline">\((E,C)\)</span> turns all
+elements to <span class="math inline">\(0\)</span> that don’t correspond
+to that combination, and <span
+class="math inline">\(\mathrm{tr}\)</span> calculates the remaining
+probability.</p>
+<p>We can easily turn this into some output condition, e.g. the
+condition that a SOK needs to allow the agent to calculate a function
+with a given maximal error probability. What’s more, these are
+<strong>convex</strong> conditions because the SOKs are convex and
+partial traces are linear. So when we <strong>truncate to a finite
+basis, we should be able to use convex optimization and duality</strong>
+<a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a> to find optimal algorithms that
+allow the agent to determine some value or perform some manipulation of
+the environment. This is a generalization of <a
+href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.113.1101&amp;rep=rep1&amp;type=pdf">Barnum-Saks-Szegedy</a>.</p>
+<p>TODO: We can also generalize the adversary bound.</p>
+<h2 id="formal-power-series-of-knowledge">7. Formal power series of
+knowledge</h2>
+<p>Together, addition and multiplication allows us to define formal
+power series of knowledge (we leave mathematical rigour for a moment, as
+we didn’t define infinite sums). For example, suppose our learner
+observes the stars with a telescope without making any choices. In an
+infinitesimal time <span class="math inline">\(\Delta t\to 0,\)</span>
+it observes a supernova with probability <span class="math inline">\(r
+\Delta t,\)</span> generating experimental data <span
+class="math inline">\(A\in \mathcal{S}.\)</span> Otherwise, it observes
+nothing. If <span class="math inline">\(S(t)\)</span> is the state of
+knowledge over time, we obtain</p>
+<p><span class="math inline">\(S(t+\Delta t)\to ((1-r \Delta
+t)\mathbf{1}+r\Delta t A) S(t).\)</span></p>
+<p>This is solved by</p>
+<p><span class="math inline">\(S(t)=\exp((A-\mathbf{1})rt)
+S(0),\)</span></p>
+<p>which is to be interpreted as the appropriate formal infinite power
+series. In fact, writing</p>
+<p><span
+class="math inline">\(K(t)=\exp(-rt)\exp(Art)S(0)=\sum^\infty_{k=0}
+\frac{\exp(-rt) (rt)^k}{k!} A^k S(0)\)</span></p>
+<p>shows that the amount of knowledge obtained follows a Poisson
+distribution. Note that these equations contain minus signs, so our
+Grothendieck construction was probably helpful.</p>
+<p>TODO: Maybe we can also define such a formal power series when the
+agent is allowed to make choices - when considering <em>sets of
+attainable states of knowledge</em> instead of <em>individual states of
+knowledge</em>.</p>
+<h2 id="footnotes">Footnotes</h2>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>We could have defined it by density operators as well,
+but it seems to me that the formalism introduced later won’t easily work
+that way anymore.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>I think one can obtain a more elegant description of
+possible transformations by adapting the parallel developments by <a
+href="https://arxiv.org/pdf/quant-ph/0611234.pdf">Gutoski and
+Watrous</a> and <a
+href="https://journals.aps.org/pra/abstract/10.1103/PhysRevA.80.022339">Chiribella,
+D’Ariano, and Perinotti</a>. But I don’t see a use of that as of this
+note.<a href="#fnref2" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>If one looks into the definitions, one can see that the
+“states of quasiknowledge” construction is related to a <a
+href="https://en.wikipedia.org/wiki/Grothendieck_group">Grothendieck
+group construction</a>. I looked into Wikipedia to read that this has
+his name from a specific case “which resulted in the development of <a
+href="https://en.wikipedia.org/w/index.php?title=K-theory&amp;oldid=1072713370">K-theory</a>”.
+What’s written there looks formally quite similar to what I do here,
+though I don’t understand it in detail. So maybe one can call these
+thoughts “K-theory on the space of probabilistic transformations?”<a
+href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>A side remark: <span
+class="math inline">\(\mathcal{S}_{\mathrm{quant}}\subset\mathcal{S}^\pm_{\mathrm{quant}}\)</span>
+should be isomorphic to the algebra of complex positive semidefinite
+<span class="math inline">\(E\times E\)</span> matrices (as a subset of
+the Hermitian matrices), with elementwise addition and multiplication.
+One can derive this by considering the <a
+href="https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary">unitary
+equivalence of purifications of quantum states</a>.<a href="#fnref4"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Apparently, <a
+href="https://homepages.cwi.nl/~monique/ow-seminar-sdp/">this
+Oberwolfach seminar</a> contains a lecture on infinite-dimensional
+semidefinite optimization.<a href="#fnref5" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</body>
+</html>
