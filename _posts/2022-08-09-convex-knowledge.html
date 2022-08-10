@@ -7,13 +7,15 @@ tags:
   - cs.cc
   - quant-ph
 ---
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
-<head>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
 </head>
-<body>
-<p>(major rewrite+updates ongoing, old version <a
+<header id="title-block-header">
+<p>(older version <a
 href="https://github.com/qudent/qudent.github.io/blob/935968fec7d4e89e7953f460d1c2b1093bf0da6b/_posts/2022-07-25-convex-knowledge.md">here</a>.
 The old version is more verbose/philosophical, in this one, I try to
 avoid burying the lede and put the definitions first.)</p>
@@ -70,13 +72,13 @@ notions of “states of knowledge” after modding out equivalence relation
 in section 5):</p>
 <ol type="1">
 <li><span
-class="math inline">\(\mathcal{S}&#39;_{\mathrm{class}}:=\left\{(M,P)\mid
+class="math inline">\(\mathcal{S}&#39;^E_{\mathrm{class}}:=\left\{(M,P)\mid
 |M|&lt;\infty, P\in(\mathbb{R}^+)^{E\times M}\right\},\)</span></li>
 <li><span
-class="math inline">\(\mathcal{S}&#39;_{\mathrm{quant}}:=\left\{(M,\Psi)\mid
+class="math inline">\(\mathcal{S}&#39;^E_{\mathrm{quant}}:=\left\{(M,\Psi)\mid
 |M|&lt;\infty, \Psi\in\mathbb{C}^{E\times M}\right\},\)</span></li>
 <li><span
-class="math inline">\(\mathcal{S}&#39;_{\mathrm{decoh}}:=\left\{(D,M,\Psi)\mid
+class="math inline">\(\mathcal{S}&#39;^E_{\mathrm{decoh}}:=\left\{(D,M,\Psi)\mid
 |D|&lt;\infty, |M|&lt;\infty, \Psi\in\mathbb{C}^{D\times E\times
 M}\right\}.\)</span></li>
 </ol>
@@ -84,14 +86,12 @@ M}\right\}.\)</span></li>
 and <span class="math inline">\(D\)</span> (or limit their sizes beyond
 requiring they are finite), but consider them part of the description.
 Furthermore, we don’t force the classical probability distributions or
-quantum states to be normalized. We will write <span
-class="math inline">\(\mathcal{S}&#39;\)</span> in arguments that work
-for any of the sets <span
-class="math inline">\(\mathcal{S}&#39;_{\mathrm{class}},\)</span> <span
-class="math inline">\(\mathcal{S}&#39;_{\mathrm{quant}},\)</span> <span
-class="math inline">\(\mathcal{S}&#39;_{\mathrm{decoh}}.\)</span> If we
-refer to a particular <span class="math inline">\(E\)</span>, we write
-<span class="math inline">\(\mathcal{S}&#39;^E.\)</span></p>
+quantum states to be normalized. We leave out the superscript <span
+class="math inline">\(E\)</span> and/or the subscript <span
+class="math inline">\(\mathrm{class},\)</span> <span
+class="math inline">\(\mathrm{quant},\)</span> <span
+class="math inline">\(\mathrm{decoh}\)</span> if they are
+irrelevant.</p>
 <p>We define <span
 class="math inline">\(\mathcal{S}&#39;^\pm:=\mathcal{S}&#39;\times\mathcal{S}&#39;\)</span>
 (for classical, coherent-quantum, or decohering-quantum states). Denote
@@ -115,7 +115,7 @@ Classical and pure quantum as mixed quantum states</h3>
 <li><span
 class="math inline">\(\mathcal{S}&#39;_\mathrm{class}\to\mathcal{S}&#39;_\mathrm{decoh},\)</span>
 <span class="math inline">\((M,P)\to(E\times M,
-(\delta_{(e,m)}\delta_{(e&#39;,m&#39;)}\sqrt{P_{e,m}})_{(e,m),e&#39;,m&#39;})\)</span>
+(\delta_{(e,e&#39;)}\delta_{(m,m&#39;)}\sqrt{P_{e,m}})_{(e,m),e&#39;,m&#39;})\)</span>
 (in words, treating a classical as a completely decohered state),</li>
 <li><span
 class="math inline">\(\mathcal{S}&#39;_\mathrm{quant}\to\mathcal{S}&#39;_\mathrm{decoh},\)</span>
@@ -501,5 +501,3 @@ semidefinite optimization.<a href="#fnref5" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
-</body>
-</html>
