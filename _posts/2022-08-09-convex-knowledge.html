@@ -43,7 +43,7 @@ these structures fulfill. The remaining sections discuss
 applications.</p>
 <p><strong>Remark:</strong> If you want to speed up reading or don’t
 know quantum physics, you can skip all mentions of non-classical
-situations.</p>
+situations. The example in section 6 may also be helpful.</p>
 <h2 id="sets-before-modding-out-the-equivalence-relation">2. Sets before
 modding out the equivalence relation</h2>
 <p>Consider an agent within an environment that could be in a state
@@ -246,14 +246,20 @@ transform a state into another state, as follows:</p>
 <ol type="1">
 <li>In <span
 class="math inline">\(\mathcal{S}&#39;_{\mathrm{class}},\)</span> <span
-class="math inline">\((M_1,P_2 T) \leq (M_2,P_2)\)</span> for all
+class="math inline">\((M_1,P_2 T^T) \leq (M_2,P_2)\)</span> for all
 transformation matrices on the memory <span class="math inline">\(T \in
 {(\mathbb{R}^+)}^{M_1 \times M_2}\)</span> with <span
-class="math inline">\(\Vert T\Vert_1\leq 1.\)</span> The latter is the
-<a
+class="math inline">\(\Vert T\Vert_1\leq 1.\)</span> <span
+class="math inline">\(P_2 T^T\)</span> is the usual matrix product of
+<span class="math inline">\(P_2\)</span> with the transpose of <span
+class="math inline">\(T.\)</span> One can check that this corresponds to
+applying <span class="math inline">\(T\)</span> on the <span
+class="math inline">\(M\)</span> subsystem; this is an awkward
+technicality related to us not using graphical notation. The latter is
+the <a
 href="https://en.wikipedia.org/w/index.php?title=Matrix_norm&amp;oldid=1100495446#Matrix_norms_induced_by_vector_p-norms">1-norm
-of <span class="math inline">\(T,\)</span> i.e. the maximal column
-sum.</a> This means that starting from any state <span
+of the transpose of <span class="math inline">\(T,\)</span> i.e. the
+maximal row sum.</a> This means that starting from any state <span
 class="math inline">\(m_2\in M_2,\)</span> the probabilities of
 transitioning to a final state must sum to <strong>at most</strong> one;
 if it is <span class="math inline">\(&lt;1\)</span> for some column, we
@@ -287,9 +293,9 @@ operator of a quantum channel</a>.</li>
 class="math inline">\(\mathcal{S}&#39;_{\mathrm{decoh}},\)</span> we
 want to consider transitions involving both <span
 class="math inline">\(D\)</span> and the memory. So we have <span
-class="math inline">\((D_1,M_1, T_D(\Psi_2 T_M)) \leq (D_2, M_2,
+class="math inline">\((D_1,M_1, T_D(\Psi_2 T^T_M)) \leq (D_2, M_2,
 \Psi_2),\)</span> where <span class="math inline">\(T_D(\Psi_2
-T_M))\)</span> denotes
+T_M^T))\)</span> denotes
 <ol type="1">
 <li>The application of some <span class="math inline">\(T_M \in
 \mathbb{C}^{M_2 \times (M_1 \times D_M)}\)</span> to the memory space of
@@ -314,6 +320,137 @@ role="doc-noteref"><sup>2</sup></a></li>
 class="math inline">\((A-B)\leq (C-D)\)</span> iff <span
 class="math inline">\(A+D\leq B+D.\)</span></p></li>
 </ol>
+<h2 id="an-example-determining-the-bias-of-a-coin">6. An example:
+determining the bias of a coin</h2>
+<p>God has chosen a biased (classical) coin which either shows head with
+<span class="math inline">\(p=0.6\)</span> or tails with <span
+class="math inline">\(p=0.6\)</span>, the prior probabilities for each
+are equal. The “agent” (in this simple example) can’t make any decisions
+to influence the environment, it only observes the sequence of coin
+flips.</p>
+<p>In this situation, the environment is a 2-element set <span
+class="math inline">\(E=\{\mathrm{HeadsBiased},\mathrm{TailsBiased}\}\)</span>;
+denote this by <span class="math inline">\(E=\{0,1\}\)</span> for
+simplicity. One representative for the initial state of knowledge <span
+class="math inline">\(S_0\)</span> would be <span
+class="math inline">\((M,P)\)</span> with <span
+class="math inline">\(M=\{0\}\)</span> and <span
+class="math inline">\(P=\begin{pmatrix}1/2
+\\1/2\end{pmatrix}=\frac{1}{2}\mathbf{1}.\)</span> This would correspond
+to the agent having a trivial internal memory.</p>
+<p>The agent could perform some internal memory transformations. For
+example, it could introduce a new 3-state memory state <span
+class="math inline">\(M&#39;=\{0,1,2\},\)</span> and randomly choose
+<span class="math inline">\(0\)</span> with probability <span
+class="math inline">\(1/2\)</span>, and <span
+class="math inline">\(1\)</span> or <span
+class="math inline">\(2\)</span> with probability <span
+class="math inline">\(1/4\)</span> each. Then we’d get a representative
+<span class="math inline">\((M&#39;, P&#39;)\)</span> with <span
+class="math inline">\(P&#39;:=\begin{pmatrix} \frac{1}{4} &amp;
+\frac{1}{8} &amp; \frac{1}{8} \\ \frac{1}{4} &amp; \frac{1}{8} &amp;
+\frac{1}{8} \end{pmatrix}.\)</span> By our definitions, these
+representatives are equivalent as states of knowledge:</p>
+<p>$P’:=P T^T $ with <span class="math inline">\(T:=\begin{pmatrix}
+\frac{1}{2} \\ \frac{1}{4} \\ \frac{1}{4} \end{pmatrix},\)</span></p>
+<p>$P= P’T’^T $ with <span class="math inline">\(T&#39;:=\begin{pmatrix}
+1 &amp; 1 &amp; 1\end{pmatrix},\)</span></p>
+<p>and both <span class="math inline">\(T\)</span> and <span
+class="math inline">\(T&#39;\)</span> have <span
+class="math inline">\(1\)</span>-norm (maximal column sums) <span
+class="math inline">\(\leq 1.\)</span> The latter transformation matrix
+corresponds to forgetting <span class="math inline">\(M&#39;\)</span>
+and getting back to a trivial memory state. So as we hoped, we have
+modded out equivalent transformations that the agent could perform on
+its internal memory.</p>
+<p>The situation becomes more interesting after the agent made a few
+observations of coin tosses. Suppose it makes a single observation and
+stores the result as a memory state in <span
+class="math inline">\(M:=\{h,t\}.\)</span> Then the joint probability
+matrix becomes</p>
+<p><span class="math inline">\(P:=\begin{pmatrix} \frac{0.6}{2} &amp;
+\frac{0.4}{2} \\ \frac{0.4}{2} &amp;\frac{0.6}{2}
+\end{pmatrix},\)</span></p>
+<p>and a representative of our state of knowledge is <span
+class="math inline">\((M,P).\)</span></p>
+<p>After it made <span class="math inline">\(2\)</span> observations
+(and stored both results), a representative is</p>
+<p><span class="math inline">\((M_2,P_2)\)</span> with <span
+class="math inline">\(M_2:=\{hh,ht,th,tt\}\)</span> and <span
+class="math inline">\(P_2:=\begin{pmatrix} \frac{0.6*0.6}{2} &amp;
+\frac{0.6*0.4}{2} &amp; \frac{0.4*0.6}{2} &amp;\frac{0.4*0.4}{2}\\
+\frac{0.4*0.4}{2} &amp; \frac{0.4*0.6}{2} &amp; \frac{0.6*0.4}{2}
+&amp;\frac{0.6*0.6}{2} \end{pmatrix}\)</span> - the internal memory can
+store all combinations of outcomes, and standard probability theory
+yields the joint probabilities.</p>
+<p>We know that it is superfluous to store all outcomes: It suffices to
+keep track of <em>how many times</em> the coin showed heads, as the
+order doesn’t give additional information about which coin was chosen.
+We will now see that the formalism reflects this, as a representative
+for the latter form of storage is equivalent as a state of knowledge.
+Choose</p>
+<p><span class="math inline">\(M_2&#39;:=\{0,1,2\},\)</span></p>
+<p><span class="math inline">\(T_2:=\begin{pmatrix} 1 &amp; 0 &amp; 0
+&amp; 0\\ 0 &amp; 1 &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix},\)</span></p>
+<p><span class="math inline">\(T&#39;_2:=\begin{pmatrix} 1 &amp; 0 &amp;
+0\\ 0 &amp; 0.5 &amp; 0 \\ 0 &amp; 0.5 &amp; 0\\ 0 &amp; 0 &amp;
+1\end{pmatrix},\)</span></p>
+<p><span class="math inline">\(P_2&#39;:=\begin{pmatrix} 0.18 &amp; 0.24
+&amp; 0.08\\ 0.08 &amp; 0.24 &amp; 0.18 \end{pmatrix}.\)</span></p>
+<p>Then <span class="math inline">\((M_2&#39;,P_2&#39;)\)</span>
+represents the joint probabilities over environmental and memory states
+when the agent only stores such a counter - and the matrices <span
+class="math inline">\(T_2,\)</span> <span
+class="math inline">\(T&#39;_2\)</span> are appropriate transformation
+matrices (with column sums <span class="math inline">\(\leq 1\)</span>)
+that prove that these representatives are equivalent in the space of
+states of knowledge <span class="math inline">\(\mathcal{S}\)</span>.
+The entries of <span class="math inline">\(P_2&#39;\)</span> are then
+the appropriate joint probabilities of the coin being heads/tails-biased
+and observing <span class="math inline">\(k\)</span> heads out of <span
+class="math inline">\(2\)</span>, given by the binomial
+distribution.</p>
+<p>Given the representative <span
+class="math inline">\((M&#39;_2,P&#39;_2)\)</span>, the agent can apply
+<span class="math inline">\(T_2&#39;\)</span> to recreate a situation
+equivalent to the original one (in which it stored the outcomes of all
+individual coin flips).</p>
+<p>In general, given a SOK <span
+class="math inline">\(S\in\mathcal{S}\)</span>, observing an additional
+coin flip and storing the result corresponds to multiplying <span
+class="math inline">\(S\)</span> by a SOK <span
+class="math inline">\(Q\)</span> represented by <span
+class="math inline">\((M_Q,P_Q):=\left(\{e,h\},\begin{pmatrix}0.6 &amp;
+0.4\\ 0.4 &amp; 0.6\end{pmatrix}\right)\)</span> according to our
+formalism. In other words, if <span class="math inline">\(S\)</span> is
+represented by <span class="math inline">\((M,P),\)</span> it gets
+mapped to the equivalence class of <span class="math inline">\((M\times
+M_Q, P&#39;)\)</span> with <span
+class="math inline">\(P&#39;_{e,(m,x)}:= P_{e,m}(P_Q)_{e,x}.\)</span> So
+after <span class="math inline">\(n\)</span> coin flips, the state of
+knowledge is</p>
+<p><span class="math inline">\(S=Q^n S_0.\)</span></p>
+<p>Finally, suppose that in each step, the agent only observes a coin
+flip with probability <span class="math inline">\(1/4,\)</span> and
+doesn’t change its state of knowledge otherwise. So it gets one of the
+outcomes <span class="math inline">\(M_p:=\{h,t,n\},\)</span> with a
+conditional probability matrix</p>
+<p><span class="math inline">\(\begin{pmatrix}0.15 &amp; 0.10 &amp;
+0.75\\0.10 &amp; 0.15 &amp;
+0.75\end{pmatrix}=\frac{1}{4}\begin{pmatrix}0.6 &amp; 0.4\\0.4 &amp;
+0.6\end{pmatrix}\oplus\frac{3}{4}\begin{pmatrix}1\\1
+\end{pmatrix}=\frac{1}{4}Q+\frac{3}{4}\mathbf{1}.\)</span></p>
+<p>Here, the <span class="math inline">\(\oplus\)</span> signs stand for
+concatenating the columns, just like in our definition of addition. Then
+the state of knowledge after <span class="math inline">\(n\)</span>
+events (that are coin flips with probability <span
+class="math inline">\(1/4\)</span>) is</p>
+<p><span class="math inline">\((\frac{1}{4}Q+\frac{3}{4}\mathbf{1})^n
+S_0.\)</span></p>
+<p>Similarly as in the situation above, it would be possible to show
+that it’s sufficient for the agent to store a counter of heads and tails
+observed so far.</p>
 <h2 id="the-equivalence-relation-and-the-algebra">5. The equivalence
 relation and the algebra</h2>
 <p>Finally, we define an <strong>equivalence relation</strong> on the
