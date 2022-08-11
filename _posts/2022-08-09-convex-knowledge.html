@@ -50,7 +50,9 @@ class="math inline">\(\begin{pmatrix}0.5 &amp; 0\\0 &amp;
 class="math inline">\(\begin{pmatrix}0 &amp; 0.5\\0.5 &amp;
 0\end{pmatrix}\)</span> both correspond to the agent having complete
 knowledge of the environment. We will formalize this idea by an
-equivalence relation over which we take equivalence classes. Then only
+equivalence relation over which we take equivalence classes -
+essentially letting states be equivalent if the agent can transform them
+into each other without interacting with the environment. Then only
 distinct equivalence classes correspond to distinct “states of
 knowledge”.</p></li>
 <li><p><strong>The addition used for convex mixtures is a direct, not
@@ -78,7 +80,7 @@ as “the system is in state of knowledge <span
 class="math inline">\(A\)</span> with probability <span
 class="math inline">\(p\)</span>, and in state of knowledge <span
 class="math inline">\(B\)</span> with probability <span
-class="math inline">\(1-p\)</span>.” This wouldn’t work if we just took
+class="math inline">\(1-p\)</span>.” That wouldn’t work if we just took
 elementwise convex combinations of the joint probability distributions:
 Reusing the example from 1., <span class="math inline">\(\frac{1}{2}
 \begin{pmatrix}0.5 &amp; 0\\0 &amp;
@@ -97,13 +99,13 @@ memory space of the right-hand side matrix as containing an additional
 bit that stores whether the knowledge is encoded as in the left or as in
 the right summand. It will turn out that the right-hand side matrix is
 the state of complete knowledge as well (another representative of the
-same equivalence class that contains <span
+equivalence class that contains <span
 class="math inline">\(\begin{pmatrix}0.5 &amp; 0\\0 &amp;
 0.5\end{pmatrix}\)</span> and <span
 class="math inline">\(\begin{pmatrix}0 &amp; 0.5\\0.5 &amp;
 0\end{pmatrix}\)</span>), just like we want: Having complete knowledge
-in either of two ways is just equivalent to having complete knowledge
-all the time.</p>
+in either of two ways is equivalent to having complete knowledge all the
+time.</p>
 <p>So in our formal algebraic structure of “states of knowledge”
 describing classical physics, multiplication with a nonnegative scalar
 is defined elementwise, and addition is implemented by a direct sum. If
@@ -112,24 +114,28 @@ a negative scalar), we have all the ingredients needed for a real vector
 space (if everything fulfills the axioms). We will effectively do this
 by a <em>Grothendieck group construction</em>, which is a consistent way
 to add enough negatives to an algebraic structure so that everything has
-an inverse (just like negative numbers were invented as “numbers that
-don’t actually exist, but are useful for calculations” starting with
-natural numbers). In the end, the physical states of knowledge are a
+an inverse (just like negative numbers were abstracted from natural
+numbers as “numbers that don’t actually exist, but are useful for
+calculations”). In the end, the physical states of knowledge are a
 convex subset of a vector space.</p></li>
 </ol>
-<p>I see two applications:</p>
+<p>I see two <strong>applications:</strong></p>
 <ol type="1">
 <li>We will be able to describe the problem of finding an optimal
 strategy to manipulate or learn about the environment as a convex
 optimization problem - and hopefully use duality to find lower bounds
-for the agent’s ability to do so as well. We can describe and generalize
-results from quantum complexity theory, in particular <a
+for the agent’s ability to do so as well. We can describe results from
+quantum complexity theory, in particular <a
 href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.113.1101&amp;rep=rep1&amp;type=pdf">this
 paper by Barnum-Saks-Szegedy</a> and the related <a
 href="https://arxiv.org/abs/1504.06943">quantum adversary
 bound-universal query algorithm duality</a>, in our formalism - and
-immediately generalize the convex optimization problems therein to
-classical or decoherent-quantum situations.</li>
+plugging in the definitions, the convex optimization problems therein
+generalize to classical or decoherent-quantum situations. A small
+problem is that, compared to the coherent-quantum case, I see no good
+bounds on the dimension of the involved vector spaces in the classical
+or decoherent-quantum case.<a href="#fn2" class="footnote-ref"
+id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 <li>Leaving mathematical rigour a bit (as we haven’t defined infinite
 dimensional vector spaces), we can also solve formal differential
 equations and construct power series that describe e.g. the evolution of
@@ -141,11 +147,6 @@ we are dealing with something called an <span
 class="math inline">\(\mathbb{R}\)</span>-algebra (which we can always
 interpret as a vector space as well).</li>
 </ol>
-<p>In fact (I didn’t write this down yet, and it’s not supposed to be
-clear from this introduction, and), in the case of pure quantum states,
-the resulting structure should be equivalent to that of the positive
-semidefinite matrices on the environment, as a subset of the Hermitian
-matrices, with elementwise addition and multiplication.</p>
 <h3 id="outline">1.2. Outline</h3>
 <p>In sections 2-5, I develop the concrete situations of classical, pure
 quantum, and mixed quantum physics and obtain structures <span
@@ -179,9 +180,9 @@ M}\in\mathbb{C}^{E\times M},\)</span> and</li>
 subsystem <span class="math inline">\(D\)</span> into which the state is
 supposed to have decohered, and and consider a pure quantum state <span
 class="math inline">\((\psi_{d,e,m})_{(d,e,m)\in D\times E\times
-M}\in\mathbb{C}^{D\times E\times M}\)</span> again.<a href="#fn2"
-class="footnote-ref" id="fnref2"
-role="doc-noteref"><sup>2</sup></a></li>
+M}\in\mathbb{C}^{D\times E\times M}\)</span> again.<a href="#fn3"
+class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a></li>
 </ol>
 <p>For a fixed <span class="math inline">\(E,\)</span> we denote and
 define sets of possible situations (which will turn into our desired
@@ -430,9 +431,9 @@ class="math inline">\(T_M\)</span> transforms the memory and generates a
 register <span class="math inline">\(D_M\)</span> that becomes part of
 the decohering space, and <span class="math inline">\(T_D\)</span> is an
 arbitrary transformation of that decohering space, which is <strong>not
-necessarily an isometry either</strong>.<a href="#fn3"
-class="footnote-ref" id="fnref3"
-role="doc-noteref"><sup>3</sup></a></li>
+necessarily an isometry either</strong>.<a href="#fn4"
+class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a></li>
 </ol></li>
 </ol>
 <p>On <span class="math inline">\(\mathbb{S}&#39;^\pm,\)</span> <span
@@ -449,20 +450,21 @@ X)\)</span>, and call the equivalence classes the spaces of
 <strong>states of knowledge</strong> <span
 class="math inline">\(\mathcal{S}\)</span> and <strong>states of
 quasiknowledge</strong> <span
-class="math inline">\(\mathcal{S}^\pm\)</span>.<a href="#fn4"
-class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+class="math inline">\(\mathcal{S}^\pm\)</span>.<a href="#fn5"
+class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <p>It is tedious but straightforward to check (fingers crossed) that all
 our operations behave well with this equivalence relation and <span
 class="math inline">\(\mathcal{S}\subseteq\mathcal{S}^\pm\)</span>
 becomes a <strong>convex subset of an associative, commutative ordered
 <span class="math inline">\(\mathbb{R}\)</span>-algebra</strong>.<a
-href="#fn5" class="footnote-ref" id="fnref5"
-role="doc-noteref"><sup>5</sup></a></p>
+href="#fn6" class="footnote-ref" id="fnref6"
+role="doc-noteref"><sup>6</sup></a></p>
 <p>The partial trace <span
 class="math inline">\(\mathrm{tr}_C\colon\mathcal{S}^{\pm (E\times
-C)}\to \mathcal{S}^{\pm E}\)</span> is a <strong>linear map</strong>
-that surjectively maps states of knowledge to states of knowledge
-(i.e. the image <span
+C)}\to \mathcal{S}^{\pm E}\)</span> is a <strong>linear map</strong><a
+href="#fn7" class="footnote-ref" id="fnref7"
+role="doc-noteref"><sup>7</sup></a> that surjectively maps states of
+knowledge to states of knowledge (i.e. the image <span
 class="math inline">\(\mathrm{tr}_C(\mathcal{S}^{E\times
 C})=\mathcal{S}^{E}\)</span>). Conversely, however, the preimage of a
 SOK is <em>not</em> necessarily a SOK. <span
@@ -680,8 +682,8 @@ with a given maximal error probability. What’s more, these are
 <strong>convex</strong> conditions because the SOKs are convex and
 partial traces are linear. So when we <strong>truncate to a finite
 basis, we should be able to use convex optimization and duality</strong>
-<a href="#fn6" class="footnote-ref" id="fnref6"
-role="doc-noteref"><sup>6</sup></a> to find optimal algorithms that
+<a href="#fn8" class="footnote-ref" id="fnref8"
+role="doc-noteref"><sup>8</sup></a> to find optimal algorithms that
 allow the agent to determine some value or perform some manipulation of
 the environment. This is a generalization of <a
 href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.113.1101&amp;rep=rep1&amp;type=pdf">Barnum-Saks-Szegedy</a>.</p>
@@ -715,6 +717,9 @@ Grothendieck construction was probably helpful.</p>
 agent is allowed to make choices - when considering <em>sets of
 attainable states of knowledge</em> instead of <em>individual states of
 knowledge</em>.</p>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>Thanks to <a href="https://math.ucr.edu/home//baez/README.html">John
+Baez</a> for helpful comments.</p>
 <h2 id="footnotes">Footnotes</h2>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
@@ -724,19 +729,22 @@ role="doc-endnotes">
 environmental state, and each column a different internal memory
 state.<a href="#fnref1" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>We could have defined it by density operators as well,
-but it seems to me that the formalism introduced later won’t easily work
-that way anymore.<a href="#fnref2" class="footnote-back"
+<li id="fn2"><p>In fact, as I understand, they are
+infinite-dimensional.<a href="#fnref2" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>I think one can obtain a more elegant description of
+<li id="fn3"><p>We could have defined it by density operators as well,
+but it seems to me that the formalism introduced later won’t easily work
+that way anymore.<a href="#fnref3" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>I think one can obtain a more elegant description of
 possible transformations by adapting the parallel developments by <a
 href="https://arxiv.org/pdf/quant-ph/0611234.pdf">Gutoski and
 Watrous</a> and <a
 href="https://journals.aps.org/pra/abstract/10.1103/PhysRevA.80.022339">Chiribella,
 D’Ariano, and Perinotti</a>. But I don’t see a use of that as of this
-note.<a href="#fnref3" class="footnote-back"
+note.<a href="#fnref4" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>If one looks into the definitions, one can see that the
+<li id="fn5"><p>If one looks into the definitions, one can see that the
 “states of quasiknowledge” construction is related to a <a
 href="https://en.wikipedia.org/wiki/Grothendieck_group">Grothendieck
 group construction</a>. I looked into Wikipedia to read that this has
@@ -745,20 +753,29 @@ href="https://en.wikipedia.org/w/index.php?title=K-theory&amp;oldid=1072713370">
 What’s written there looks formally quite similar to what I do here,
 though I don’t understand it in detail. So maybe one can call these
 thoughts “K-theory on the space of probabilistic transformations?”<a
-href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>A side remark: <span
+href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>A side remark: <span
 class="math inline">\(\mathcal{S}_{\mathrm{quant}}\subset\mathcal{S}^\pm_{\mathrm{quant}}\)</span>
 should be isomorphic to the algebra of complex positive semidefinite
 <span class="math inline">\(E\times E\)</span> matrices (as a subset of
 the Hermitian matrices), with elementwise addition and multiplication.
-One can derive this by considering the <a
-href="https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary">unitary
-equivalence of purifications of quantum states</a>.<a href="#fnref5"
+Very roughly, there is a 1-to-1 correspondence between bipartite,
+unnormalized wavefunctions modulo unitary transformations on one part,
+and positive semidefinite matrices (which are the same as density
+matrices without normalization): Every density matrix can be purified,
+local unitaries on the purifying space don’t change the reduced density
+matrix, and <a
+href="https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary">all
+purifications of a given reduced density matrix are related by a local
+unitary</a>.<a href="#fnref6" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>It is <strong>not</strong> a homomorphism of <span
+class="math inline">\(\mathbb{R}\)</span>-algebras.<a href="#fnref7"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>Apparently, <a
+<li id="fn8"><p>Apparently, <a
 href="https://homepages.cwi.nl/~monique/ow-seminar-sdp/">this
 Oberwolfach seminar</a> contains a lecture on infinite-dimensional
-semidefinite optimization.<a href="#fnref6" class="footnote-back"
+semidefinite optimization.<a href="#fnref8" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
