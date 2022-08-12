@@ -20,10 +20,10 @@ href="https://github.com/qudent/qudent.github.io/blob/935968fec7d4e89e7953f460d1
 The old version is more verbose/philosophical, in this one, I try to
 avoid burying the lede and put the definitions first.)</p>
 <h2 id="abstract">1. Abstract</h2>
-<p>I develop a convex description of a classical or quantum learner’s or
-agent’s state of knowledge about its evironment in a bid to apply
-methods from convex optimization and duality to optimal learning/control
-problems.</p>
+<p>In a bid to apply methods from convex optimization and duality to
+optimal learning/control problems, I develop a convex description of a
+classical or quantum learner’s or agent’s state of knowledge about its
+evironment.</p>
 <h3 id="intuition-and-motivation">1.1 Intuition and motivation</h3>
 <p>In the foundations of quantum physics, <a
 href="https://en.wikipedia.org/w/index.php?title=Generalized_probabilistic_theory&amp;oldid=1095657221">generalized
@@ -32,11 +32,19 @@ generalize both quantum physics and classical probability theory, and -
 to a limited degree - allow reasoning about quantum and classical
 systems using the same algebraic manipulations. The aim of this note is
 to develop a similarly general structure to describe the notion of
-<em>an agent’s knowledge about its environment</em>.</p>
-<p>In probability theories, one could describe that by a joint
-probability distribution over the environment’s and the agent’s internal
-memory states. The approach I present is different in <strong>two basic
-ways:</strong></p>
+<em>an agent’s knowledge about its environment, and the actions it can
+perform to learn about and manipulate that environment</em>. For
+example, this framework could be applicable if one <strong>trains a
+machine learning model and wants to determine the “most useful
+questions” to ask human labelers or the real-world environment,</strong>
+if compute is much cheaper than gathering that data. I’ll focus on
+situations where the agent has <strong>unbounded internal computational
+power,</strong> and is only restricted by the interface with the
+environment.</p>
+<p>In probability theories, one would describe the “state of knowledge”
+by a joint probability distribution over the environment’s and the
+agent’s internal memory states. The approach I present is different in
+<strong>two basic ways:</strong></p>
 <ol type="1">
 <li><p><strong>Equivalent joint probability distributions are the same
 state of knowledge:</strong> In terms of “how much the agent knows about
@@ -61,7 +69,7 @@ distributions and mixed quantum states is <em>convexity</em>: If <span
 class="math inline">\(A\)</span> and <span
 class="math inline">\(B\)</span> are valid probability distributions,
 transition matrices or similar, and <span class="math inline">\(0\leq p
-\leq 1\)</span>, an object denoted by <span
+\leq 1,\)</span> an object denoted by <span
 class="math inline">\(c_p(A,B):=pA+(1-p)B\)</span> exists and is to be
 interpreted as “the result of choosing <span
 class="math inline">\(A\)</span> with probability <span
@@ -71,19 +79,19 @@ class="math inline">\(1-p\)</span>”. In probability theory, <span
 class="math inline">\(A\)</span> and <span
 class="math inline">\(B\)</span> are some vectors or matrices, <span
 class="math inline">\(pA\)</span> denotes the <strong>entrywise</strong>
-product with <span class="math inline">\(p\)</span>, and the <span
+product with <span class="math inline">\(p,\)</span> and the <span
 class="math inline">\(+\)</span> sign denotes the <strong>entrywise
 sum</strong> of these objects.</p>
 <p>In our notion of “states of knowledge”, a “convex mixture” <span
-class="math inline">\(c_p(A,B)=pA+(1-p)B\)</span> should be interpreted
-as “the system is in state of knowledge <span
+class="math inline">\(c_p(A,B)=pA+(1-p)B\)</span> should correspond to
+the agent “being in state of knowledge <span
 class="math inline">\(A\)</span> with probability <span
-class="math inline">\(p\)</span>, and in state of knowledge <span
+class="math inline">\(p,\)</span> and in state of knowledge <span
 class="math inline">\(B\)</span> with probability <span
-class="math inline">\(1-p\)</span>.” That wouldn’t work if we just took
-elementwise convex combinations of the joint probability distributions:
-Reusing the example from 1., <span class="math inline">\(\frac{1}{2}
-\begin{pmatrix}0.5 &amp; 0\\0 &amp;
+class="math inline">\(1-p.\)</span>” <strong>That wouldn’t work if we
+just took elementwise convex combinations of the joint probability
+distributions:</strong> Reusing the example from 1., <span
+class="math inline">\(\frac{1}{2} \begin{pmatrix}0.5 &amp; 0\\0 &amp;
 0.5\end{pmatrix}+\frac{1}{2}\begin{pmatrix}0 &amp; 0.5\\0.5 &amp;
 0\end{pmatrix}=\begin{pmatrix}0.25 &amp; 0.25\\0.25 &amp;
 0.25\end{pmatrix}\)</span> corresponds to a state of complete ignorance
@@ -104,17 +112,19 @@ class="math inline">\(\begin{pmatrix}0.5 &amp; 0\\0 &amp;
 0.5\end{pmatrix}\)</span> and <span
 class="math inline">\(\begin{pmatrix}0 &amp; 0.5\\0.5 &amp;
 0\end{pmatrix}\)</span>), just like we want: Having complete knowledge
-in either of two ways is equivalent to having complete knowledge all the
-time.</p>
+in either of two ways, with probability <span
+class="math inline">\(1/2\)</span> each, is equivalent to having
+complete knowledge with probability <span
+class="math inline">\(1.\)</span></p>
 <p>So in our formal algebraic structure of “states of knowledge”
 describing classical physics, multiplication with a nonnegative scalar
 is defined elementwise, and addition is implemented by a direct sum. If
 we find a way to subtract states of knowledge as well (or multiply with
 a negative scalar), we have all the ingredients needed for a real vector
-space (if everything fulfills the axioms). We will effectively do this
-by a <em>Grothendieck group construction</em>, which is a consistent way
-to add enough negatives to an algebraic structure so that everything has
-an inverse (just like negative numbers were abstracted from natural
+space (if everything fulfills the axioms). To make states subtractable,
+we use a <em>Grothendieck group construction</em>, which is a consistent
+way to add enough negatives to an algebraic structure that everything
+has an inverse (just like negative numbers were abstracted from natural
 numbers as “numbers that don’t actually exist, but are useful for
 calculations”). In the end, the physical states of knowledge are a
 convex subset of a vector space.</p></li>
@@ -122,10 +132,10 @@ convex subset of a vector space.</p></li>
 <p>I see two <strong>applications:</strong></p>
 <ol type="1">
 <li>We will be able to describe the problem of finding an optimal
-strategy to manipulate or learn about the environment as a convex
-optimization problem - and hopefully use duality to find lower bounds
-for the agent’s ability to do so as well. We can describe results from
-quantum complexity theory, in particular <a
+strategy to manipulate or learn about the environment as a
+<strong>convex optimization problem</strong> - and hopefully use duality
+to find lower bounds for the agent’s ability to do so as well. We can
+describe results from quantum complexity theory, in particular <a
 href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.113.1101&amp;rep=rep1&amp;type=pdf">this
 paper by Barnum-Saks-Szegedy</a> and the related <a
 href="https://arxiv.org/abs/1504.06943">quantum adversary
@@ -137,13 +147,14 @@ bounds on the dimension of the involved vector spaces in the classical
 or decoherent-quantum case.<a href="#fn2" class="footnote-ref"
 id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 <li>Leaving mathematical rigour a bit (as we haven’t defined infinite
-dimensional vector spaces), we can also solve formal differential
-equations and construct power series that describe e.g. the evolution of
-a learner’s knowledge over time when it observes a Poisson process
-generating experimental data. This will involve a notion of
-multiplication of “states of knowledge” as well, corresponding to an
-agent having access to two states of knowledge in parallel. So in fact,
-we are dealing with something called an <span
+sums or limits), we can also describe <strong>formal differential
+equations</strong> and construct power series that describe e.g. the
+evolution of a learner’s knowledge over time when it observes a Poisson
+process generating experimental data. This will involve a notion of
+multiplication of “states of knowledge”, corresponding to an agent
+having access to two states of knowledge in parallel (e.g. the result of
+an event and a previous event). So in fact, we are dealing with
+something called an <span
 class="math inline">\(\mathbb{R}\)</span>-algebra (which we can always
 interpret as a vector space as well).</li>
 </ol>
@@ -245,14 +256,15 @@ state as a quantum state with no decoherence).</li>
 quasiknowledge</h3>
 <p><span
 class="math inline">\(\mathcal{S}&#39;\to\mathcal{S}&#39;^\pm,\)</span>
-<span class="math inline">\(S&#39;\to S&#39;-0\)</span>.</p>
-<h3 id="elements-of-e">3.2. Elements of E</h3>
-<p>We want to consider <span class="math inline">\(e\in E\)</span> as a
-state in which the environment is guaranteed to be in state <span
-class="math inline">\(e.\)</span></p>
+<span class="math inline">\(S&#39;\to S&#39;-0.\)</span></p>
+<h3 id="elements-of-e">3.3. Elements of E</h3>
+<p>We want to consider <span class="math inline">\(e\in E\)</span> as
+the state of knowledge in which the environment is guaranteed to be in
+state <span class="math inline">\(e,\)</span> with probability <span
+class="math inline">\(1.\)</span></p>
 <ol type="1">
 <li><span
-class="math inline">\(E\to\mathcal{S}&#39;_\mathrm{class}\)</span>,
+class="math inline">\(E\to\mathcal{S}&#39;_\mathrm{class},\)</span>
 <span
 class="math inline">\(e\to(\{0\},(\delta_{e&#39;,e})_{(e&#39;,0)\in
 E\times \{0\}}))\)</span></li>
@@ -261,7 +273,7 @@ E\times \{0\}}))\)</span></li>
 1-element memory space). The situation is completely analogous in the
 pure-quantum or mixed-quantum case (in the latter, with a 1-dimensional
 decohering space).</p>
-<h3 id="real-numbers">3.3. Real numbers</h3>
+<h3 id="real-numbers">3.4. Real numbers</h3>
 <p><span class="math inline">\(\mathbb{R}^+\to
 \mathcal{S}&#39;_\mathrm{class}\)</span> maps <span
 class="math inline">\(r\)</span> to an all-<span
@@ -274,8 +286,8 @@ memory (and decohering) space.</p>
 <p>We embed real numbers <span
 class="math inline">\(-r&#39;&lt;0\)</span> in <span
 class="math inline">\(\mathcal{S}&#39;^\pm\)</span> as <span
-class="math inline">\(0-r&#39;\)</span>, i.e. as the negation of the
-embedding of <span class="math inline">\(r&#39;\)</span>.</p>
+class="math inline">\(0-r&#39;,\)</span> i.e. as the negation of the
+embedding of <span class="math inline">\(r&#39;.\)</span></p>
 <h2 id="operations">4. Operations</h2>
 <p>We now define some operations on the <span
 class="math inline">\(\mathcal{S}&#39;\)</span> and <span
@@ -378,8 +390,8 @@ class="math inline">\(M\)</span> subsystem; this is an awkward
 technicality related to us not using graphical notation. The latter is
 the <a
 href="https://en.wikipedia.org/w/index.php?title=Matrix_norm&amp;oldid=1100495446#Matrix_norms_induced_by_vector_p-norms">1-norm
-of the transpose of <span class="math inline">\(T,\)</span> i.e. the
-maximal row sum.</a> This means that starting from any state <span
+of <span class="math inline">\(T,\)</span> i.e. the maximal column
+sum.</a> This means that starting from any state <span
 class="math inline">\(m_2\in M_2,\)</span> the probabilities of
 transitioning to a final state must sum to <strong>at most</strong> one;
 if it is <span class="math inline">\(&lt;1\)</span> for some column, we
@@ -425,7 +437,7 @@ and <span class="math inline">\(\Vert T_M\Vert_2\leq 1,\)</span></li>
 <li>following that, the application of <span
 class="math inline">\(T_D\in \mathbb{C}^{D_1\times (D\times
 D_M)}\)</span> to <span class="math inline">\(D\)</span> and <span
-class="math inline">\(D_M\)</span>, with <span
+class="math inline">\(D_M,\)</span> with <span
 class="math inline">\(\Vert T_D\Vert_2\leq 1\)</span> as well. So <span
 class="math inline">\(T_M\)</span> transforms the memory and generates a
 register <span class="math inline">\(D_M\)</span> that becomes part of
@@ -446,11 +458,11 @@ relation and the algebra</h2>
 <span class="math inline">\(\mathcal{S}&#39;\)</span> and <span
 class="math inline">\(\mathcal{S}&#39;^\pm\)</span> by <span
 class="math inline">\(X\sim Y\leftrightarrow (X\leq Y \wedge Y\leq
-X)\)</span>, and call the equivalence classes the spaces of
+X),\)</span> and call the equivalence classes the spaces of
 <strong>states of knowledge</strong> <span
 class="math inline">\(\mathcal{S}\)</span> and <strong>states of
 quasiknowledge</strong> <span
-class="math inline">\(\mathcal{S}^\pm\)</span>.<a href="#fn5"
+class="math inline">\(\mathcal{S}^\pm.\)</span><a href="#fn5"
 class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <p>It is tedious but straightforward to check (fingers crossed) that all
 our operations behave well with this equivalence relation and <span
@@ -469,30 +481,30 @@ class="math inline">\(\mathrm{tr}_C(\mathcal{S}^{E\times
 C})=\mathcal{S}^{E}\)</span>). Conversely, however, the preimage of a
 SOK is <em>not</em> necessarily a SOK. <span
 class="math inline">\(\mathrm{tr}_C\)</span> is also monotonous in <span
-class="math inline">\(\leq\)</span>.</p>
+class="math inline">\(\leq.\)</span></p>
 <p>Note that after the equivalence relation, the set inclusion <span
 class="math inline">\(\mathbb{R}\subseteq
 \mathcal{S}^{\pm\{0\}}\)</span> defined in 3.3. is actually
 <em>surjective</em> for a 1-element <span
-class="math inline">\(E=\{0\}\)</span>. So it makes sense to define a
+class="math inline">\(E=\{0\}.\)</span> So it makes sense to define a
 “total trace” <span class="math inline">\(\mathrm{tr}\colon
-\mathcal{S}^{\pm}\to\mathbb{R}\)</span>, which treats the environment
+\mathcal{S}^{\pm}\to\mathbb{R},\)</span> which treats the environment
 <span class="math inline">\(E\)</span> as <span
 class="math inline">\(\{0\}\times E\)</span> and calculates the partial
-trace over <span class="math inline">\(E\)</span>. Interpreting the
+trace over <span class="math inline">\(E.\)</span> Interpreting the
 result as an element of <span class="math inline">\(\mathbb{R},\)</span>
 this returns the <span class="math inline">\(1\)</span>-norm/squared
 <span class="math inline">\(2\)</span>-norm of a SOK.</p>
 <h2 id="an-example-determining-the-bias-of-a-coin">6. An example:
 determining the bias of a coin</h2>
-<p>God has chosen a biased (classical) coin which either shows head with
-<span class="math inline">\(p=0.6\)</span> or tails with <span
-class="math inline">\(p=0.6\)</span>, the prior probabilities for each
+<p>God has chosen a biased (classical) coin which either shows heads
+with <span class="math inline">\(p=0.6\)</span> or tails with <span
+class="math inline">\(p=0.6,\)</span> the prior probabilities for each
 are equal. The “agent” (in this simple example) can’t make any decisions
-to influence the environment, it only observes the sequence of coin
+to influence the environment, it only observes a sequence of coin
 flips.</p>
-<p>In this situation, the environment is a 2-element set <span
-class="math inline">\(E=\{\mathrm{HeadsBiased},\mathrm{TailsBiased}\}\)</span>;
+<p>The environment is a 2-element set <span
+class="math inline">\(E=\{\mathrm{HeadsBiased},\mathrm{TailsBiased}\};\)</span>
 denote this by <span class="math inline">\(E=\{0,1\}\)</span> for
 simplicity. One representative for the initial state of knowledge <span
 class="math inline">\(S_0\)</span> is <span
@@ -505,7 +517,7 @@ the agent having a trivial internal memory.</p>
 example, it could introduce a new 3-state memory state <span
 class="math inline">\(M&#39;=\{0,1,2\},\)</span> and randomly choose
 <span class="math inline">\(0\)</span> with probability <span
-class="math inline">\(1/2\)</span>, and <span
+class="math inline">\(1/2,\)</span> and <span
 class="math inline">\(1\)</span> or <span
 class="math inline">\(2\)</span> with probability <span
 class="math inline">\(1/4\)</span> each. Then we’d get a representative
@@ -551,41 +563,33 @@ yields the joint probabilities.</p>
 keep track of <em>how many times</em> the coin showed heads, as the
 order doesn’t give additional information about which coin was chosen.
 We will now see that the formalism reflects this, as a representative
-for the latter form of storage is equivalent as a state of knowledge.
-Choose</p>
-<p><span class="math inline">\(M_2&#39;:=\{0,1,2\},\)</span></p>
+for the latter form of storage is equivalent as a state of knowledge:
+When counting the coin flips, the joint probability matrix for observing
+given numbers of heads is given by binomial distributions, i.e. we get a
+representative <span class="math inline">\((\{0,1,2\},
+P_2&#39;)\)</span> with</p>
+<p><span class="math inline">\(P_2&#39;:=\begin{pmatrix} 0.18 &amp; 0.24
+&amp; 0.08\\ 0.08 &amp; 0.24 &amp; 0.18 \end{pmatrix}.\)</span></p>
+<p>We find transformation matrices with column sums <span
+class="math inline">\(\leq 1\)</span> such that <span
+class="math inline">\(P_2&#39;=P_2 T_2^T\)</span> and <span
+class="math inline">\(P_2=P_2&#39; T_2&#39;^T,\)</span> proving that
+these representatives are equivalent:</p>
 <p><span class="math inline">\(T_2:=\begin{pmatrix} 1 &amp; 0 &amp; 0
 &amp; 0\\ 0 &amp; 1 &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 0 &amp; 1
 \end{pmatrix},\)</span></p>
-<p><span class="math inline">\(T&#39;_2:=\begin{pmatrix} 1 &amp; 0 &amp;
+<p><span class="math inline">\(T_2&#39;:=\begin{pmatrix} 1 &amp; 0 &amp;
 0\\ 0 &amp; 0.5 &amp; 0 \\ 0 &amp; 0.5 &amp; 0\\ 0 &amp; 0 &amp;
-1\end{pmatrix},\)</span></p>
-<p><span class="math inline">\(P_2&#39;:=\begin{pmatrix} 0.18 &amp; 0.24
-&amp; 0.08\\ 0.08 &amp; 0.24 &amp; 0.18 \end{pmatrix}.\)</span></p>
-<p>Then <span class="math inline">\((M_2&#39;,P_2&#39;)\)</span>
-represents the joint probabilities over environmental and memory states
-when the agent only stores such a counter - and the matrices <span
-class="math inline">\(T_2,\)</span> <span
-class="math inline">\(T&#39;_2\)</span> are appropriate transformation
-matrices (with column sums <span class="math inline">\(\leq 1\)</span>)
-that prove that these representatives are equivalent in the space of
-states of knowledge <span class="math inline">\(\mathcal{S}\)</span>.
-The entries of <span class="math inline">\(P_2&#39;\)</span> are then
-the appropriate joint probabilities of the coin being heads/tails-biased
-and observing <span class="math inline">\(k\)</span> heads out of <span
-class="math inline">\(2\)</span>, given by the binomial
-distribution.</p>
-<p>Given the representative <span
-class="math inline">\((M&#39;_2,P&#39;_2)\)</span>, the agent can apply
-<span class="math inline">\(T_2&#39;\)</span> to recreate a situation
-equivalent to the original one (in which it stored the outcomes of all
-individual coin flips).</p>
+1\end{pmatrix}.\)</span></p>
+<p><span class="math inline">\(T_2\)</span> corresponds to counting the
+number of heads, and <span class="math inline">\(T_2&#39;\)</span> to
+randomly generating an order of flips given a count.</p>
 <p>In general, given a SOK <span
-class="math inline">\(S\in\mathcal{S}\)</span>, observing an additional
+class="math inline">\(S\in\mathcal{S},\)</span> observing an additional
 coin flip and storing the result corresponds to multiplying <span
 class="math inline">\(S\)</span> by a SOK <span
 class="math inline">\(Q\)</span> represented by <span
-class="math inline">\((M_Q,P_Q):=\left(\{e,h\},\begin{pmatrix}0.6 &amp;
+class="math inline">\((M_Q,P_Q):=\left(\{h,t\},\begin{pmatrix}0.6 &amp;
 0.4\\ 0.4 &amp; 0.6\end{pmatrix}\right)\)</span> according to our
 formalism. In other words, if <span class="math inline">\(S\)</span> is
 represented by <span class="math inline">\((M,P),\)</span> it gets
@@ -626,7 +630,7 @@ class="math inline">\(T\colon\mathcal{S}^{E\times O}\to
 \mathcal{S}^{E\times I}\)</span> that evolves the environment influenced
 by the agent’s choices, and generating measurement data. The “law of
 nature” should be instantiated as some transition matrix <span
-class="math inline">\(T&#39;\)</span>, similar to the ones in our order
+class="math inline">\(T&#39;,\)</span> similar to the ones in our order
 definition in 4.4.:</p>
 <ol type="1">
 <li>For <span class="math inline">\(\mathcal{S}_\mathrm{class},\)</span>
@@ -663,26 +667,25 @@ class="math inline">\(S\in\mathcal{S}^E,\)</span> the agent wants to
 calculate a function <span class="math inline">\(f\colon E\to
 C.\)</span> As before, it produces some <span
 class="math inline">\(S_C\in \mathcal{S}^{E\times C}\)</span> with <span
-class="math inline">\(\mathrm{tr}_C S_C \leq S\)</span>. Given this
+class="math inline">\(\mathrm{tr}_C S_C \leq S.\)</span> Given this
 <span class="math inline">\(S_C,\)</span> the “probability” (in scare
 quotes because <span class="math inline">\(S\)</span> doesn’t need to be
 normalized) of getting output <span class="math inline">\(C\)</span> for
 input <span class="math inline">\(E\)</span> is <span
 class="math inline">\(\mathrm{tr}((E,C) S_C)\)</span> (with <span
 class="math inline">\((E,C)\)</span> interpreted as a member of <span
-class="math inline">\(\mathcal{S}^{E\times C}\)</span> as in 3.2):
-Multiplying by <span class="math inline">\((E,C)\)</span> turns all
-elements to <span class="math inline">\(0\)</span> that don’t correspond
-to that combination, and <span
+class="math inline">\(\mathcal{S}^{E\times C}\)</span> as in 3.3):
+Multiplying by <span class="math inline">\((E,C)\)</span> zeroes out all
+probabilities that don’t correspond to that combination, and <span
 class="math inline">\(\mathrm{tr}\)</span> calculates the remaining
 probability.</p>
 <p>We can easily turn this into some output condition, e.g. the
-condition that a SOK needs to allow the agent to calculate a function
-with a given maximal error probability. What’s more, these are
-<strong>convex</strong> conditions because the SOKs are convex and
+condition that a SOK allows the agent to determine a property of the
+environment with a given maximal error probability. What’s more, these
+are <strong>convex</strong> conditions because the SOKs are convex and
 partial traces are linear. So when we <strong>truncate to a finite
-basis, we should be able to use convex optimization and duality</strong>
-<a href="#fn8" class="footnote-ref" id="fnref8"
+basis, we should be able to use convex optimization and
+duality</strong><a href="#fn8" class="footnote-ref" id="fnref8"
 role="doc-noteref"><sup>8</sup></a> to find optimal algorithms that
 allow the agent to determine some value or perform some manipulation of
 the environment. This is a generalization of <a
@@ -717,6 +720,8 @@ Grothendieck construction was probably helpful.</p>
 agent is allowed to make choices - when considering <em>sets of
 attainable states of knowledge</em> instead of <em>individual states of
 knowledge</em>.</p>
+<h2 id="further-references">9. (Further) references</h2>
+<p>TODO</p>
 <h2 id="acknowledgements">Acknowledgements</h2>
 <p>Thanks to <a href="https://math.ucr.edu/home//baez/README.html">John
 Baez</a> for helpful comments.</p>
@@ -778,4 +783,3 @@ Oberwolfach seminar</a> contains a lecture on infinite-dimensional
 semidefinite optimization.<a href="#fnref8" class="footnote-back"
 role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>
