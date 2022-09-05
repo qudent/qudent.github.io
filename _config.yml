@@ -162,7 +162,7 @@ incremental: false
 
 # Markdown Processing
 kramdown:
-  input: pandoc
+  input: gfm
   hard_wrap: false
   auto_ids: true
   footnote_nr: 1
