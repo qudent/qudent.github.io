@@ -7,15 +7,6 @@ tags:
   - cs.cc
   - quant-ph
 ---
----
-title: 'The \mathbb{R}-algebra of quasiknowledge and convex optimization'
-date: 2022-08-09
-permalink: /posts/2022/07/convex-knowledge/
-tags:
-  - cs.ml
-  - cs.cc
-  - quant-ph
----
 (older version [here](https://github.com/qudent/qudent.github.io/blob/935968fec7d4e89e7953f460d1c2b1093bf0da6b/_posts/2022-07-25-convex-knowledge.md).)
 
 ## 1. Abstract
