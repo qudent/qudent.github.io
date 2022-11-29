@@ -8,7 +8,7 @@
 permalink: https://qudent.github.io/posts/2022/08/convex-knowledge/
 -->
 
-In a bid to generalize methods from convex optimization and duality applied to optimal learning/control problems, previously used in the quantum setting, to classical and faulty quantum settings, I develop a convex description of a classical or quantum learner's or agent's state of knowledge about its evironment.
+In a bid to generalize methods from convex optimization and duality applied to optimal learning/control problems, previously used in the quantum setting, to classical and faulty quantum settings, I develop a convex description of a classical or quantum learner's or agent's state of knowledge about its environment.
 
 - Permalink: https://qudent.github.io/posts/2022/08/convex-knowledge/
 - Feedback: https://github.com/qudent
@@ -21,7 +21,7 @@ tags:
 -->
 
 # Intuition and motivation
-A major development in quantum computational complexity theory is the _adversary method_ [#Ambainis, #Belovs], and more generally, semidefinite programming/convex optimization methods in quantum information [#SikoraVarvitsiotis]. The aim of this note is to develop a generalize these methods to classical information theory, as well as quantum information theory involving mixed states. This leads to a general notion of an agent's knowledge about its environment, and the actions it can perform to learn about and manipulate that environment, which I'll call "state of knowledge". For example, this framework could be applicable if one trains a machine learning model and wants to determine the "most useful questions" to ask human labelers or the real-world environment, if compute is much cheaper than gathering that data. I'll focus on situations where the agent has unbounded internal computational power, and is only restricted by the interface with the environment.
+A major development in quantum computational complexity theory are the _adversary method_ [#Ambainis, #Belovs], and more generally, semidefinite programming/convex optimization methods in quantum information [#SikoraVarvitsiotis]. The aim of this note is to develop a generalize these methods to classical information theory, as well as quantum information theory involving mixed states. This leads to a general notion of an agent's knowledge about its environment, and the actions it can perform to learn about and manipulate that environment, which I'll call "state of knowledge". For example, this framework could be applicable if one trains a machine learning model and wants to determine the "most useful questions" to ask human labelers or the real-world environment, if compute is much cheaper than gathering that data. I'll focus on situations where the agent has unbounded internal computational power, and is only restricted by the interface with the environment.
 
 One can compare this approach to [generalized probabilistic theories](https://en.wikipedia.org/w/index.php?title=Generalized_probabilistic_theory&oldid=1095657221), known in the foundations of quantum physics --- a family of mathematical structures that generalize both quantum physics and classical probability theory. To a limited degree, they allow reasoning about quantum and classical systems using the same algebraic manipulations.
 
@@ -61,7 +61,7 @@ Section [convex optimization] - Section [an agent interacting with its environme
 
 Finally, Section [References] gives a literature overview.
 !!! Tip
-    If you want to speed up reading or don't know quantum physics, you can skip all mentions of non-classical situations. You can also try skipping the technical details and going to the example in Subsection [determining the bias of a coin] directly.
+    A reader who wants to speed up reading or doesn't know quantum physics may can skip all mentions of non-classical situations. One can also try skipping the technical details and go to the example in Subsection [determining the bias of a coin] directly.
 
 # Definition by generators and relations
 In this section, I briefly present an alternative definition of classical or pure-quantum (not mixed-quantum) states of knowledge in terms of formal linear combinations of probability vectors or wavefunctions, subject to relations.
@@ -111,9 +111,15 @@ is treated similarly: The $\mathbb{R}$-vector space $\mathcal{S}_{\mathrm{quant}
 
 $$ \left[ \Psi_1 \right] + \left[ \Psi_2 \right] = \frac{1}{2} \left[ \Psi_1 + \Psi_2 \right] + \frac{1}{2} \left[ \Psi_1 - \Psi_2 \right].$$
 
-In analogy to the classical situation, one can interpret a linear combination of $\left[ \Psi_i \right]$ as an agent with several internal memory states, each corresponding to a certain amplitude distribution over possible environmental states. In total, this corresponds to a bipartite wavevector over environment and internal memory - and as we will now see, the equivalence relations correspond precisely to equivalence of those wavevectors that the quantum computer can transform into each other by isometries acting on the internal memory.
+In analogy to the classical situation, one can interpret a sum (and by rescaling, any linear combination) of $\left[ \Psi_i \right]$ as an agent with several internal memory states, each corresponding to a certain amplitude distribution over possible environmental states. The linear combination corresponds to a bipartite wavevector over environment and internal memory (with each internal memory state a summand). We will now see that the equivalence relations correspond precisely to equivalence of those wavevectors that the quantum computer can transform into each other by isometries acting on the internal memory:
 
-The polarization identity corresponds to the agent applying a Hadamard gate conditioned on being in one of two internal memory states. Together with the rescaling relation (which makes any states equivalent that are related by diagonal unitaries acting on the internal memory), this is sufficient to generate arbitrary transformations of the internal memory: We can see from the Bloch sphere that diagonal unitaries + the Hadamard are sufficient to generate arbitrary $1$-qubit rotations applied to any given pair of internal states, and it is a standard result that any unitary transformation can be decomposed into such rotations (see e.g. [#NielsenChuang, Section 4.5.1: "Two-level unitary gates are universal"]).
+!!! Tip
+    For the argument, we may consider vector space representatives that differ by a sum of $\left[ 0 \right]$ as equivalent. On the side of bipartite wavevectors, we may consider wavevectors as equivalent that differ by relabeling memory states (equivalent to a permutation unitary) and/or adding or removing  memory spaces with an all-$0$ wavefunction.
+
+    Now consider bipartite states obtained from different representatives of the same vector. To show the quantum computer can transform them by local operations, we need to reproduce the effect of the polarization identity, rescaling, relabeling memory states, and splitting states in the form of $\left[ \sqrt{p} \Psi \right] + \left[ \sqrt{1-p}\Psi \right] = \left[ \Psi \right] = \left[ \Psi \right] + \left[ 0 \right].$
+    On the side of the bipartite states, these transformations corresponds to a sequence of Hadamard (on the corresponding two levels), diagonal phase, permutation unitaries, and appropriate rotations.
+
+    Conversely, any isometry acting on a bipartite wavevector's memory can be decomposed into such operations: We add a sufficient number of all-$0$ memory states and extend the isometry to a unitary. Then, by a standard result (see e.g. [#NielsenChuang], Section 4.5.1: "Two-level unitary gates are universal"), we can decompose the unitary to a sequence of two-level unitaries acting on combinations of memory states. In turn, we can decompose these into sequences of Hadamards, rotations around $Z,$ and global phase shifts - all of which correspond to equivalence relations between vector spac representatives.
 
 ## Pure-quantum states of knowledge are reduced density matrices
 In quantum probability theory, the **states of knowledge correspond to the reduced density matrices** of these bipartite states on the subspace corresponding to the environment. This is because for any bipartite quantum system $\mathcal{E}\otimes\mathcal{M}$, the set of nonnormalized density matrices on $\mathcal{E}$ is in 1-to-1 correspondence with the set of equivalence classes of pure states on $\mathcal{E}\otimes \mathcal{M}$, modulo local unitary transformations on $\mathcal{M}$: Every density matrix can be purified, local unitaries on the purifying space don't change the reduced density matrix, and [all purifications of a given reduced density matrix are related by a local unitary](https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary).
