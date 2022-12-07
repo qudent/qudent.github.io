@@ -3,15 +3,17 @@
    **The $\mathbb{R}$-algebra of quasiknowledge and convex optimization**
                           *2022-11-09*
 						  *Duyal Yolcu*
+				   *https://github.com/qudent*
 
 <!--
 permalink: https://qudent.github.io/posts/2022/08/convex-knowledge/
 -->
 
-In a bid to generalize methods from convex optimization and duality applied to optimal learning/control problems, previously used in the quantum setting, to classical and faulty quantum settings, I develop a convex description of a classical or quantum learner's or agent's state of knowledge about its environment.
+In classical probability theory, there is a simple relation between the joint probability distribution $P(E,M)$ over an agent's internal memory and the environment, and the conditional probability distribution $P(E|M),$ i.e. an object describing what and how much the agent would know about the environment in case it is in a certain internal state. Analogously, in quantum physics, the reduced density matrix $\rho_{\mathcal{A}}$ of a pure bipartite state $\left|\Phi \right\rangle \in\mathcal{AB}$ can be understood to encode the "state of knowledge" an observer on $\mathcal{B}$ has of the system's state on $\mathcal{A},$ encoded in a form independent of the basis on $\mathcal{B}.$ This is one way to interpret various semidefinite programming-related results in quantum information such as the adversary bound-universal query algorithm duality, Barnum-Saks-Szegedy's semidefinite programming description of quantum query computation, or the fidelity of quantum states. However, one can't directly extend these results to classical probability theory with joint probability distributions, because the latter are dependent on the agent's internal description of the environment ("basis-dependent") and not well-behaved regarding convex mixtures.
+
+This article develops a convex description of a classical or quantum learner's or agent's state of knowledge about its environment, presented as a convex subset of a commutative $\mathbb{R}$-algebra. With caveats, this leads to a generalization of certain semidefinite programs in quantum information, related to reduced density matrices, to the classical and faulty-quantum setting. The text doesn't assume knowledge of quantum physics. As another example, I also describe and solve a "formal differential equation of states of knowledge" in that algebra.
 
 - Permalink: https://qudent.github.io/posts/2022/08/convex-knowledge/
-- Feedback: https://github.com/qudent
 
 <!--
 tags:
@@ -21,14 +23,14 @@ tags:
 -->
 
 # Intuition and motivation
-A major development in quantum computational complexity theory are the _adversary method_ [#Ambainis, #Belovs], and more generally, semidefinite programming/convex optimization methods in quantum information [#SikoraVarvitsiotis]. The aim of this note is to develop a generalize these methods to classical information theory, as well as quantum information theory involving mixed states. This leads to a general notion of an agent's knowledge about its environment, and the actions it can perform to learn about and manipulate that environment, which I'll call "state of knowledge". For example, this framework could be applicable if one trains a machine learning model and wants to determine the "most useful questions" to ask human labelers or the real-world environment, if compute is much cheaper than gathering that data. I'll focus on situations where the agent has unbounded internal computational power, and is only restricted by the interface with the environment.
+Major developments in quantum computational complexity theory are the _adversary method_ [#Ambainis, #Belovs], and more generally, semidefinite programming/convex optimization methods in quantum information [#SikoraVarvitsiotis]. The aim of this note is to generalize these methods to classical information theory, as well as quantum information theory involving mixed states. This leads to a general notion of an agent's knowledge about its environment, and the actions it can perform to learn about and manipulate that environment, which I'll call "state of knowledge". For example, this framework could be applicable if one trains a machine learning model and wants to determine the "most useful questions" to ask human labelers or the real-world environment, if compute is much cheaper than gathering that data. I'll focus on situations where the agent has unbounded internal computational power, and is only restricted by the interface with the environment. Turning this framework into a realistic machine learning system --- for example, involving neural networks learning representations of the algebraic structures involved --- is a natural topic of future work.
 
-One can compare this approach to [generalized probabilistic theories](https://en.wikipedia.org/w/index.php?title=Generalized_probabilistic_theory&oldid=1095657221), known in the foundations of quantum physics --- a family of mathematical structures that generalize both quantum physics and classical probability theory. To a limited degree, they allow reasoning about quantum and classical systems using the same algebraic manipulations.
+One can compare this approach to [generalized probabilistic theories](https://en.wikipedia.org/w/index.php?title=Generalized_probabilistic_theory&oldid=1095657221), known in the foundations of quantum physics --- a family of mathematical structures that generalize both quantum physics and classical probability theory. To a limited degree, they allow reasoning about quantum and classical systems using the same algebraic manipulations as well. However, the approach here does not describe a generalized probabilistic theory.
 
 In probability theories, one would describe the "state of knowledge" by a joint probability distribution over the environment's and the agent's internal memory states. The approach I present is different in **two basic ways:**
 
 1. **Equivalent joint probability distributions are the same state of knowledge:** In terms of "how much the agent knows about its environment", many joint probability distributions should be considered equivalent --- for example, if the environment and the internal memory are both described by one bit, the joint probability matrices[^1] $\begin{pmatrix}0.5 & 0\\0 & 0.5\end{pmatrix}$ and $\begin{pmatrix}0 & 0.5\\0.5 & 0\end{pmatrix}$ both correspond to the agent having complete knowledge of the environment. We will formalize this idea by an equivalence relation over which we take equivalence classes --- essentially letting states be equivalent if the agent can transform them into each other without interacting with the environment. Then only distinct equivalence classes correspond to distinct "states of knowledge".
-2. **The addition used for convex mixtures is a direct, not entrywise sum:** A basic feature of classical probability distributions and mixed quantum states is _convexity_: If $A$ and $B$ are valid probability distributions, transition matrices or similar, and $0\leq p \leq 1,$ an object denoted by $c_p(A,B):=pA+(1-p)B$ exists and is to be interpreted as "the result of choosing $A$ with probability $p$ and $B$ with probability $1-p$". In probability theory, $A$ and $B$ are some vectors or matrices, $pA$ denotes the **entrywise** product with $p,$ and the $+$ sign denotes the **entrywise sum** of these objects.
+2. **The addition used for convex mixtures corresponds to a direct, not entrywise sum on the joint probability matrices:** A basic feature of classical probability distributions and mixed quantum states is _convexity_: If $A$ and $B$ are valid probability distributions, transition matrices or similar, and $0\leq p \leq 1,$ an object denoted by $c_p(A,B):=pA+(1-p)B$ exists and is to be interpreted as "the result of choosing $A$ with probability $p$ and $B$ with probability $1-p$". In probability theory, $A$ and $B$ are some vectors or matrices, $pA$ denotes the **entrywise** product with $p,$ and the $+$ sign denotes the **entrywise sum** of these objects.
 
    In our notion of "states of knowledge", a "convex mixture" $c_p(A,B)=pA+(1-p)B$ should correspond to the agent "being in state of knowledge $A$ with probability $p,$ and in state of knowledge $B$ with probability $1-p.$" **That wouldn't work if we just took elementwise convex combinations of the joint probability distributions:** Reusing the example from 1., $\frac{1}{2} \begin{pmatrix}0.5 & 0\\0 & 0.5\end{pmatrix}+\frac{1}{2}\begin{pmatrix}0 & 0.5\\0.5 & 0\end{pmatrix}=\begin{pmatrix}0.25 & 0.25\\0.25 & 0.25\end{pmatrix}$ corresponds to a state of complete ignorance even though the constituent matrices correspond to perfect knowledge. We need the system to remember _which_ constituent matrix was chosen. To do this, we use **direct sums:** Interpreting $\oplus$ as a direct sum of the columns,
 
@@ -127,7 +129,7 @@ In quantum probability theory, the **states of knowledge correspond to the reduc
 One can verify that addition and multiplication of states of knowledge corresponds to entrywise addition and multiplication of these density matrices, our partial trace (defined analogously to the classical probabilistic case) is the partial trace of density matrices, and $S_1\leq S_2$ iff $0\leq S_2-S_1,$ i.e. iff $S_2-S_1$ corresponds to a positive semidefinite matrix itself.
 
 # Sets before modding out the equivalence relation
-Now to a more thorough description that includes the mixed-quantum case.
+Now to a more thorough description that includes the mixed-quantum case. With the results of the previous section, it should be easy to see that both set-ups are equivalent.
 
 Consider an agent within an environment that could be in a state $e\in E,$ with some internal memory state $m\in M.$ For a fixed $E,$ we define sets of joint, unnormalized "generalized probability destributions", which will turn into our desired notions of "states of knowledge" after modding out equivalence relation in Section [modding out]. We can do this for classical probability theory (probability vectors), pure quantum states (quantum wavefunctions), and mixed quantum states (quantum wavefunctions with an additional "decohering space"):[^3]
 
@@ -284,7 +286,7 @@ It is tedious but mostly straightforward to check that all our operations behave
    3. the distributive law holds, i.e. $A(B+C)=(AB)+(AC);$ $(A+B)C=(AC)+(BC).$
 3. $\mathcal{S}^\pm$ is an associative $\mathbb{R}$-algebra, [meaning](https://en.wikipedia.org/w/index.php?title=Associative_algebra&oldid=1115059242#From_ring_homomorphisms) that the embedding map $\mathbb{R}\to\mathcal{S}^\pm$ is a ring homomorphism ($f(a+b)=f(a)+f(b)$, $f(1)=1$ and $f(ab)=f(a)f(b)$); furthermore, the image lies in the center (i.e. for any $r\in \mathbb{R}$, $f(r)$ commutes with all $S\in\mathcal{S}^\pm$). These follow from the definitions.
 4. The map $\mathcal{S}\to \mathcal{S}^\pm$, $s\to (s,0)$ is injective (which is necessary to be able to consider $\mathcal{S}$ as a subset of $\mathcal{S}^\pm$. This is the cancellation property of Section [the cancellation property].
-5. $\mathcal{S}^\pm$ is ordered w.r.t. $\leq$ as a vector space. This [means that](https://en.wikipedia.org/w/index.php?title=Ordered_vector_space&oldid=1110116026#Definition) $S_1\leq S_2$ implies $S_1+S_3\leq S_2+S_3$, and $S_1\leq S_2$ implies $\lambda S_1\leq \lambda S_2$ \forall $\lambda \in\mathbb{R}_{\geq 0}$. This can be verified easily using the cancellation property.
+5. $\mathcal{S}^\pm$ is ordered w.r.t. $\leq$ as a vector space. This [means that](https://en.wikipedia.org/w/index.php?title=Ordered_vector_space&oldid=1110116026#Definition) $S_1\leq S_2$ implies $S_1+S_3\leq S_2+S_3$, and $S_1\leq S_2$ implies $\lambda S_1\leq \lambda S_2$ for any $\lambda \in\mathbb{R}_{\geq 0}$. This can be verified easily using the cancellation property.
 !!! Info: Question
     Is it an [ordered algebra](https://en.wikipedia.org/w/index.php?title=Ordered_algebra&oldid=1041753564) as well? That seems to be true for $\mathcal{S}^\pm_\mathrm{quant}$ and $\mathcal{S}^\pm_\mathrm{class}$ (see Section [definition by generators and relations]), but I don't know whether the product of positive states is always positive in the faulty-quantum situation.
     
@@ -590,7 +592,7 @@ $$N \geq \mathrm{tr} (Q\otimes I_O)(\tilde{S})/\mathrm{tr}{Q(S_0)}$$
     which must be true for $\tilde{S}$ obtained from algorithms as well. I didn't put this constraint in by default, as it would be irrelevant for $\mathrm{Adv}(S_N - S_0)\gg 1,$ make $\mathrm{Adv}$ dependent on $S_0$ explicitly (rather than just $S_N-S_0$) and break the scale invariance. 
 
 ## The universal query algorithm
-Under the condition that the algorithm can always choose to do nothing, we can turn the feasible solutions of the optimization problems above into algorithms approximating the desired state transformation. This works similarly as the proof of the cancellation property in Subsection [the cancellation property], as mentioned there.
+Under the condition that the algorithm can always choose to do nothing, we can turn the feasible solutions of the optimization problems above into algorithms approximating the desired state transformation. This works similarly as the proof of the cancellation property in Subsection [the cancellation property], as mentioned there. The quantum analogue is the same as 
 
 $${\large\forall} S \in \mathcal{S}^E ~ {\large\exists  S_{O,\mathrm{idle}}\in \mathcal{S}^{E\times O}} ~\colon~ \mathrm{tr_O} S_{O,\mathrm{idle}} = \mathrm{tr_O} \left( T \left( S_{O,\mathrm{idle}} \right) \right) = S.$$ 
 
@@ -615,7 +617,7 @@ in $N'$ steps. As we let $N'\to \infty,$ this approaches an algorithm that trans
    
    Broadly, if we do the same with a witness to $\tilde{\mathrm{Adv}}$ (found for a problem which meets the assumptions), we can apply this argument to each possible input state individually, i.e. for any $e\in E,$ applying the algorithm to $e S_0$ will lead to an output state $e S'_N$ which has the same distance bound as above. This is the usual error bound for universal query algorithms.
 
-   I am not satisfied with this description and hope there is more elegant error quantification that doesn't require going back to representatives. In the quantum case, we know by Uhlmann's theorem that the fidelity is related to the minimal achievable $L_2$-distance between representations of states of knowledge. I hope one can generalize this and relate it to the convex optimization formulation somehow. See Belovs-Yolcu, upcoming, for details on the proof for pure quantum states.
+   I am not satisfied with this description and hope there is more elegant error quantification that doesn't require going back to representatives. In the quantum case, we know by Uhlmann's theorem that the fidelity is related to the minimal achievable $L_2$-distance between representations of states of knowledge. I hope one can generalize this and relate it to the convex optimization formulation somehow. See [#Yolcu], for details on the proof for pure quantum states.
    
 !!! Tip
    If $\tilde{S}$ was constructed as a random step of an algorithm as above, we can interpret the algorithms constructed from $\tilde{S}$ as "factory line productions" of $S_N$ from $S_0$. Adding $\tilde{S}$ is equivalent to adding all intermediate states of the original algorithm at once, and one step of the constructed algorithm corresponds to applying one processing step to each of the intermediate states.
@@ -655,6 +657,8 @@ Thanks to [John Baez](https://math.ucr.edu/home//baez/README.html) for helpful c
 
 [#NielsenChuang]: [Quantum Computation and Quantum Information](https://www.cambridge.org/highereducation/books/quantum-computation-and-quantum-information/01E10196D0A682A6AEFFEA52D53BE9AE#overview)
 
+[#Yolcu]: [The Adversary Bound Revisited: From Optimal Query Algorithms to Optimal Control](https://arxiv.org/abs/2211.16293)
+
 # Footnotes
 [^1]: Our convention is that each row is a different environmental state, and each column a different internal memory state.
 
@@ -672,5 +676,6 @@ Thanks to [John Baez](https://math.ucr.edu/home//baez/README.html) for helpful c
 
 [^8]: It is **not** a homomorphism of $\mathbb{R}$-algebras.
 
-[^9]: Apparently, [this Oberwolfach seminar](https://homepages.cwi.nl/~monique/ow-seminar-sdp/) contains a lecture on infinite-dimensional semidefinite optimization.
+[^9]: [This Oberwolfach seminar](https://homepages.cwi.nl/~monique/ow-seminar-sdp/) contains a lecture on infinite-dimensional semidefinite optimization.
+
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
