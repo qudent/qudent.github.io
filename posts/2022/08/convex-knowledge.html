@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 
    **The $\mathbb{R}$-algebra of quasiknowledge and convex optimization**
-                          *2022-11-09*
+                          *2022-12-08*
 						  *Duyal Yolcu*
 				   *https://github.com/qudent*
 
@@ -9,11 +9,7 @@
 permalink: https://qudent.github.io/posts/2022/08/convex-knowledge.html
 -->
 
-In classical probability theory, there is a simple relation between the joint probability distribution $P(E,M)$ over an agent's internal memory and the environment, and the conditional probability distribution $P(E|M),$ i.e. an object describing what and how much the agent would know about the environment in case it is in a certain internal state. Analogously, in quantum physics, the reduced density matrix $\rho_{\mathcal{A}}$ of a pure bipartite state $\left|\Phi \right\rangle \in\mathcal{AB}$ can be understood to encode the "state of knowledge" an observer on $\mathcal{B}$ has of the system's state on $\mathcal{A},$ encoded in a form independent of the basis on $\mathcal{B}.$ This is one way to interpret various semidefinite programming-related results in quantum information such as the adversary bound-universal query algorithm duality, Barnum-Saks-Szegedy's semidefinite programming description of quantum query computation, or the fidelity of quantum states. However, one can't directly extend these results to classical probability theory with joint probability distributions, because the latter are dependent on the agent's internal description of the environment ("basis-dependent") and not well-behaved regarding convex mixtures.
-
-This article develops a convex description of a classical or quantum learner's or agent's state of knowledge about its environment, presented as a convex subset of a commutative $\mathbb{R}$-algebra. With caveats, this leads to a generalization of certain semidefinite programs in quantum information, related to reduced density matrices, to the classical and faulty-quantum setting. The text doesn't assume knowledge of quantum physics. As another example, I also describe and solve a "formal differential equation of states of knowledge" in that algebra.
-
-- Permalink: https://qudent.github.io/posts/2022/08/convex-knowledge.html
+In classical probability theory, there is a simple relation between the joint probability distribution $P(E,M)$ over an agent's internal memory and the environment, and the conditional probability distribution $P(E|M),$ i.e. an object describing what and how much the agent would know about the environment in case it is in a certain internal state. Analogously, in quantum physics, the reduced density matrix $\rho_{\mathcal{A}}$ of a pure bipartite state $\left|\Phi \right\rangle \in\mathcal{AB}$ can be understood to encode the "state of knowledge" an observer on $\mathcal{B}$ has of the system's state on $\mathcal{A},$ encoded in a form independent of the basis on $\mathcal{B}.$ The latter is one way to interpret various semidefinite programming-related objects and results in quantum information such as the adversary bound-universal query algorithm duality, Barnum-Saks-Szegedy's semidefinite programming description of quantum query computation [#Barnum-Saks-Szegedy], or the fidelity of quantum states. However, one can't directly extend these results to classical probability theory with joint probability distributions, because the latter are dependent on the agent's internal description of the environment ("basis-dependent") and not well-behaved regarding convex mixtures. Similarly, it would be desirable to generalize the adversary bound - query algorithm duality to quantum computation involving faulty oracles and mixed states.
 
 <!--
 tags:
@@ -21,6 +17,26 @@ tags:
   - cs.cc
   - quant-ph
 -->
+
+# Contributions
+This article develops a convex description of a classical or quantum learner's or agent's state of knowledge about its environment, presented as a convex subset of a commutative $\mathbb{R}$-algebra. With caveats so far -- mainly the infinite dimensionality of the vector space and lack of an analogue of Slater's strong duality condition --- this leads to a generalization of certain semidefinite programs (such as that describing the universal query algorithm dual to the quantum adversary bound) to the classical and faulty-quantum setting. Philosophically, this also gives a new (to the best of my knowledge) interpretation of the cone of reduced density matrices as "states of knowledge"; I prove the equivalence explicitly in Subsection [pure quantum theory]. Nevertheless, the text doesn't assume knowledge of quantum physics. As another example (not made entirely rigorous here), I describe and solve a "formal differential equation of states of knowledge" in that algebra, where an agent obtains experimental data in a Poissonian process, and its state of knowledge evolves as an exponential power series. However, this framework currently lacks impressive applications, and I post it in part to solicit feedback and collaboration on those. In particular, it may be possible to develop it into a new framework for the design of experiments, e.g. the problem of finding maximally informative questions to ask human labelers or the environment in machine-learning problems.
+
+# Outline
+The article starts with a more detailed description of the problems arising when describing states of knowledge as joint probability distributions, and how the approach here is different (Section [intuition and motivation]). In Section [definition by generators and relations] - Section [modding out], I develop the concrete situations of classical, pure quantum, and mixed quantum physics and obtain structures $\mathcal{S}^\pm_{\mathrm{class}},$ $\mathcal{S}^\pm_{\mathrm{quant}},$ $\mathcal{S}^\pm_{\mathrm{decoh}}.$ More precisely, Section [definition by generators and relations] defines the algebras of knowledge for classical and pure quantum theory in terms of generators and relations, Section [sets before modding out the equivalence relation] defines sets, Section [set inclusions (injective maps)] - Section [operations] structure on that sets, and Section [modding out] discusses the equivalence relation and basic algebraic structure of $\mathcal{S}^\pm$.
+
+Subsection [determining the bias of a coin] is a basic example, Subsection [differential equation of knowledge] introduces a new concept: Formal differential equations of knowledge.
+
+Section [convex optimization] - Section [an agent interacting with its environment] discuss convex optimization problems to help understand the "statics" and "dynamics" of states of knowledge better --- answering questions like
+
+- "What functions of the environment can I calculate with a given maximal error probability and state of knowledge?",
+- "How similar are two states of knowledge?",
+- "Which states of knowledge are achievable by an agents in $N$ interaction rounds with its environment?", or
+- "How many steps does an agent need to accomplish a task?"
+
+Finally, Section [References] gives a literature overview.
+!!! Tip
+    Note that much of this text is only relevant for the case of quantum computation involving quantum channels. A reader who wants to focus on the classical case may read Subsection [classical states of knowledge], and then go to Section [two examples] and the following ones directly; the pure-quantum case is discussed in Subsection [pure quantum theory].
+
 
 # Intuition and motivation
 Major developments in quantum computational complexity theory are the _adversary method_ [#Ambainis, #Belovs], and more generally, semidefinite programming/convex optimization methods in quantum information [#SikoraVarvitsiotis]. The aim of this note is to generalize these methods to classical information theory, as well as quantum information theory involving mixed states. This leads to a general notion of an agent's knowledge about its environment, and the actions it can perform to learn about and manipulate that environment, which I'll call "state of knowledge". For example, this framework could be applicable if one trains a machine learning model and wants to determine the "most useful questions" to ask human labelers or the real-world environment, if compute is much cheaper than gathering that data. I'll focus on situations where the agent has unbounded internal computational power, and is only restricted by the interface with the environment. Turning this framework into a realistic machine learning system --- for example, involving neural networks learning representations of the algebraic structures involved --- is a natural topic of future work.
@@ -40,30 +56,14 @@ In probability theories, one would describe the "state of knowledge" by a joint 
 0    & 0.25 & 0.25 &    0
 \end{pmatrix}.$$
 
-   We interpret the right-hand side's memory space as follows: It contains an additional bit storing whether the knowledge is encoded as in the left or as in the right summand. It will turn out that the right-hand side matrix is the state of complete knowledge as well --- in other words, another representative of the equivalence class that contains $\begin{pmatrix}0.5 & 0\\0 & 0.5\end{pmatrix}$ and $\begin{pmatrix}0 & 0.5\\0.5 & 0\end{pmatrix}$. This is as it should be, as having complete knowledge in either of two ways, with probability $1/2$ each, is equivalent to having complete knowledge with probability $1.$
+   We interpret the right-hand side's memory space as follows: It contains an additional bit, which is set to $0$ if the knowledge's encoding corresponds to that of the left summand, and $1$ if it corresponds to that of the right summand. It will turn out that the right-hand side matrix is the state of complete knowledge as well --- in other words, another representative of the equivalence class that contains $\begin{pmatrix}0.5 & 0\\0 & 0.5\end{pmatrix}$ and $\begin{pmatrix}0 & 0.5\\0.5 & 0\end{pmatrix}$. This is as it should be, as having complete knowledge in either of two ways, with probability $1/2$ each, is equivalent to having complete knowledge with probability $1.$
    
    So in our formal algebraic structure of "states of knowledge" describing classical physics, multiplication with a nonnegative scalar is defined elementwise, and addition is implemented by a direct sum. If we find a way to subtract states of knowledge as well (or multiply with a negative scalar), we have all the ingredients needed for a real vector space (if everything fulfills the axioms). To make states subtractable, we use a _Grothendieck group construction_, which is a consistent way to add enough negatives to an algebraic structure that everything has an inverse (just like negative numbers were abstracted from natural numbers as "numbers that don't actually exist, but are useful for calculations"). In the end, the physical states of knowledge are a convex subset of a vector space.
    
 I see two **applications:**
 
-   1. As mentioned in the beginning, we will be able to describe the problem of finding an optimal strategy to manipulate or learn about the environment as a **convex optimization problem** --- and hopefully use duality to find lower bounds for the agent's ability to do so. We can describe results from quantum complexity theory, in particular [this paper by Barnum-Saks-Szegedy](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.113.1101&rep=rep1&type=pdf) and the related [quantum adversary bound-universal query algorithm duality](https://arxiv.org/abs/1504.06943), in our formalism --- and plugging in the definitions, the convex optimization problems therein generalize to classical or decoherent-quantum situations. However, compared to the coherent-quantum case, I see no good bounds on the dimension of the involved vector spaces in the classical or decoherent-quantum case.[^2]
-   2. Leaving mathematical rigour a bit (as we don't define infinite sums or limits, at least in this note), we can also describe **formal differential equations** and construct power series that describe e.g. the evolution of a learner's knowledge over time when it observes a Poisson process generating experimental data. This will involve a notion of multiplication of "states of knowledge", corresponding to an agent having access to multiple states of knowledge in parallel (e.g. multiple observations gathered at different times). So in fact, we are dealing with something called an $\mathbb{R}$-algebra (which we can always interpret as a vector space as well).
-
-# Outline
-In Section [definition by generators and relations] - Section [modding out], I develop the concrete situations of classical, pure quantum, and mixed quantum physics and obtain structures $\mathcal{S}^\pm_{\mathrm{class}},$ $\mathcal{S}^\pm_{\mathrm{quant}},$ $\mathcal{S}^\pm_{\mathrm{decoh}}.$ More precisely, Section [definition by generators and relations] defines the algebras of knowledge for classical and pure quantum theory in terms of generators and relations, Section [sets before modding out the equivalence relation] defines sets, Section [set inclusions (injective maps)] - Section [operations] structure on that sets, and Section [modding out] discusses the equivalence relation and basic algebraic structure of $\mathcal{S}^\pm$.
-
-Section [determining the bias of a coin] is a basic example, Subsection [differential equation of knowledge] introduces a new concept: Formal differential equations of knowledge.
-
-Section [convex optimization] - Section [an agent interacting with its environment] discuss convex optimization problems to help understand the "statics" and "dynamics" of states of knowledge better --- answering questions like
-
-- "What functions of the environment can I calculate with a given maximal error probability and state of knowledge?",
-- "How similar are two states of knowledge?",
-- "Which states of knowledge are achievable by an agents in $N$ interaction rounds with its environment?", or
-- "How many steps does an agent need to accomplish a task"?
-
-Finally, Section [References] gives a literature overview.
-!!! Tip
-    A reader who wants to speed up reading or doesn't know quantum physics may can skip all mentions of non-classical situations. One can also try skipping the technical details and go to the example in Subsection [determining the bias of a coin] directly.
+   1. As mentioned in the beginning, we will be able to describe the problem of finding an optimal strategy to manipulate or learn about the environment as a **convex optimization problem** --- and hopefully use duality to find lower bounds for the agent's ability to do so. We can describe results from quantum complexity theory, in particular Barnum-Saks-Szegedy [#Barnum-Saks-Szegedy] and the related quantum adversary bound-universal query algorithm duality [#Ambainis], [#Belovs-Yolcu], [#Yolcu], in our formalism --- and plugging in the definitions, the convex optimization problems therein generalize to classical or decoherent-quantum situations. However, the dimension of the involved vector spaces in the classical or decoherent-quantum case is generally infinite, in contrast to the coherent-quantum case.
+   2. Leaving mathematical rigour a bit (as we don't define infinite sums or limits in this note), we can also describe **formal differential equations** and construct power series that describe e.g. the evolution of a learner's knowledge over time when it observes a Poisson process generating experimental data. This will involve a notion of multiplication of "states of knowledge", corresponding to an agent having access to multiple states of knowledge in parallel (e.g. multiple observations gathered at different times). This notion gives the states of knowledge the structure of an $\mathbb{R}$-algebra (which can be defined as a vector space with additional structure).
 
 # Definition by generators and relations
 In this section, I briefly present an alternative definition of classical or pure-quantum (not mixed-quantum) states of knowledge in terms of formal linear combinations of probability vectors or wavefunctions, subject to relations.
@@ -71,9 +71,9 @@ In this section, I briefly present an alternative definition of classical or pur
 So consider a finite set $E,$ representing possible states of the environment.
 
 ## Classical states of knowledge
-We define the $\mathbb{R}$-vector space $\mathcal{S}_{\mathrm{class}}^{\pm E}$ as the vector space of **formal** (finite) linear combinations of vectors of nonnegative real numbers, $\vec{p}\in \mathbb{R}_{\geq 0}^E:$ An element $S\in\mathcal{S}_{\mathrm{class}}^{\pm E}$ can be written as
+We define the $\mathbb{R}$-vector space $\mathcal{S}_{\mathrm{class}}^{\pm E}$ as the vector space of **formal** (finite) linear combinations of vectors of nonnegative real numbers over $E,$ $\vec{p}\in \mathbb{R}_{\geq 0}^E:$ An element $S\in\mathcal{S}_{\mathrm{class}}^{\pm E}$ can be written as
 
-$$ S = \lambda_0 \left[ \vec{p_0} \right] + \lambda_1 \left[ \vec{p_1} \right] + \ldots + \lambda_N \left[ \vec{p_N} \right], $$
+$$ S = \lambda_1 \left[ \vec{p_1} \right] + \lambda_2 \left[ \vec{p_2} \right] + \ldots + \lambda_N \left[ \vec{p_N} \right], $$
 
 where we write $\left [ \vec{p_i} \right]$ when considering the vectors as elements of $\mathcal{S}_{\mathrm{class}}^{\pm E}.$ For any $q\geq 0$ and $\vec{p}\in \mathbb{R}_{\geq 0}^E$, we introduce a relation, i.e. linear dependency, of
 
@@ -83,22 +83,33 @@ and no other dependencies - in particular, in general,
 
 $$\left[ \vec{p_1} + \vec{p_2} \right] \neq \left[ \vec{p_1} \right] + \left[ \vec{p_2} \right].$$
 
-The set $\mathcal{S}^E\subset \mathcal{S}^{\pm E}$ consists of those elements that can be written without negative coefficients. Each normalized probability vector from the generating set corresponds to a prior probability distribution of environmental states - and a convex mixture should be interpreted as a probability distribution over internal memory states, where being in any one of them corresponds to a certain posterior probability distribution over $E$.
+The set $\mathcal{S}^E\subset \mathcal{S}^{\pm E}$ consists of those elements that can be written without negative coefficients.
+
+!!! Tip The vector space corresponds to an agent's joint probability matrix, modulo transformations
+    Such a positive linear combination should be interpreted as a joint probability matrix over environmental and internal memory states, $\left( \lambda_1 \vec{p_1} , \lambda_2 \vec{p_2},\ldots \right)$ --- and the freedom in choosing  representatives and rearranging the generators corresponds exactly to the agent's freedom in reversibly acting on its own internal memory states:
+    - Rearranging the generators corresponds to relabeling the internal memory states,
+    - The linear dependency $q \left[ \vec{p} \right] = \left [ q\vec{p} \right]$ doesn't change the matrices,
+    - "splitting" generators as in $\lambda_1 \left[ \vec{p} \right] + \lambda_2 \left[ \vec{p} \right] = (\lambda_1 + \lambda_2) \left[ \vec{p} \right],$ or vice versa, corresponds to a probabilistic process in which the agent generates an additional random bit in case it is in the appropriate memory state, which is reversible by deleting that bit.
+
+    In conclusion, each normalized probability vector from the generating set corresponds to a prior probability distribution of environmental states --- and a convex mixture should be interpreted as a probability distribution over the agent having a certain posterior probability distribution over $E$.
 
 Then
 
-2. We define the trace, $\mathrm{tr}\colon \mathcal{S}^{\pm E}\to \mathbb{R},$ as the linear map that maps each generating vector to $\left[ \vec{p} \right] \to \sum_{e\in E} p_e,$
-3. For a bipartite environment $E'=E\times X,$ the partial trace $\mathrm{tr_X}\colon \mathcal{S}^{\pm E\times X}\to \mathcal{S}^{\pm E}$ maps a multipartite probability vector to a sum of its individual columns: If we write $\vec{p}\in \mathbb{R}_{\geq 0}^{E \times X}$ as a vector of vectors in $\mathbb{R}^X_{\geq 0},$ $\left( \vec{p_x} \right)_{x\in X},$ $\mathrm{tr_X} \vec{p} := \sum_{x\in X} \left[ \vec{p_x} \right].$ We again extend this so that $\mathrm{tr_X}$ is linear, and corresponds to absorbing part of the environment into the agent's internal memory.
+2. We define the trace, $\mathrm{tr}\colon \mathcal{S}^{\pm E}\to \mathbb{R},$ as the linear map that maps each generating vector as $\left[ \vec{p} \right] \to \sum_{e\in E} p_e,$
+3. For a bipartite environment $E'=E\times X,$ the partial trace $\mathrm{tr_X}\colon \mathcal{S}^{\pm E\times X}\to \mathcal{S}^{\pm E}$ maps a multipartite probability vector to a sum of its individual columns: If we write $\vec{p}\in \mathbb{R}_{\geq 0}^{E \times X}$ as a vector of vectors $\left( \vec{p_x} \right)_{x\in X}$ with each $\vec{p_x}\in\mathbb{R}^E_{\geq 0},$ $\mathrm{tr_X} \vec{p} := \sum_{x\in X} \left[ \vec{p_x} \right].$ We again extend this so that $\mathrm{tr_X}$ is linear, and corresponds to absorbing part of the environment into the agent's internal memory.
 
-4. We generate a preorder by "forgetting" some things, i.e. starting to treat different states as one: For any $\vec{p_1},$ $\vec{p_2},$ we require
+4. We generate a preorder that captures the agent's ability to "forget" some things, i.e. start to treat different states as one: For any $\vec{p_1},$ $\vec{p_2},$ we require
 
    $$0 \leq \left[ \vec{p_1} + \vec{p_2} \right] \leq \left[ \vec{p_1} \right] + \left[ \vec{p_2} \right]$$
 
-   as well as that $\leq$ is a preorder compatible with the vector space structure as in [Wikipedia](https://en.wikipedia.org/w/index.php?title=Ordered_vector_space&oldid=1119696756#Definition). So we define $S_1 \leq S_2$ if and only if $S_1 \leq S_2$ can be deduced in a finite number of steps from the requirement above, the preorder axioms, and the vector space compatibility. We can prove that this is actually a partial order, i.e. $S_1\leq S_2 \leq S_1$ implies $S_1=S_2:$
+   as well as that $\leq$ is a preorder compatible with the vector space structure as defined in [Wikipedia](https://en.wikipedia.org/w/index.php?title=Ordered_vector_space&oldid=1119696756#Definition): For all $x\leq y\in \mathbb{S}^{\pm E},$ we require $x+z \leq y+z$ for all $z\in \mathbb{S}^{\pm E}$ and
+   $\lambda x \leq \lambda y$ for all $\lambda \geq 0 \in \mathbb{R}.$
+
+   So we define $S_1 \leq S_2$ if and only if $S_1 \leq S_2$ can be deduced in a finite number of steps from the requirement above, the preorder axioms, and the vector space compatibility. We can prove that this is actually a partial order, i.e. $S_1\leq S_2 \leq S_1$ implies $S_1=S_2:$
    
    1. First, if $S_1 \leq S_2 \leq S_1,$ then the transformations implying these inequalities can't include a nontrivial instance of $0\leq \left[\vec{p}\right],$ as this would strictly decrease the trace and imply $\mathrm{tr} S_1 < \mathrm{tr} S_1.$
    2. Define the "expected entropy" $S(S)$ as a linear map that maps normalized probability vectors to their Shannon entropies (and formal linear combinations of these to the appropriate linear combination),
-   3. Show that this quantity will strictly increase through each "forgetting transformation" that leads to a different state,
+   3. By strict concavity of entropy, this quantity will strictly increase through each "forgetting transformation" that leads to a different state,
    4. Therefore, $S_1\leq S_2\leq S_1$ and $S_1\neq S_2$ would imply that $S(S_1) < S(S_2) < S(S_1),$ a contradiction.
 
 5. We turn this into an associative, commutative [ordered algebra](https://en.wikipedia.org/w/index.php?title=Ordered_algebra&oldid=1041753564) by defining multiplication elementwise:
@@ -109,29 +120,36 @@ Then
    and again extending bilinearly to the rest of the vector spaces. This corresponds to the agent having several sources of information at once, see Subsection [determining the bias of a coin] for an example.
 
 ## Pure quantum theory
-is treated similarly: The $\mathbb{R}$-vector space $\mathcal{S}_{\mathrm{quant}}^{\pm E}$ is generated by nonnormalized wavevectors over $E,$ $\Psi\in \mathbb{C}^E$, the rescaling relation that $\left [ \alpha \Psi \right ] = \left\vert \alpha \right\vert^2 \left[ \Psi \right]$ for any $\alpha \in \mathbb{C}$ and $\Psi \in \mathbb{C}^E,$ and furthermore a **polarization identity:** For any $\Psi_1,\Psi_2\in\mathbb{C}^E,$
+is treated similarly: The $\mathbb{R}$-vector space $\mathcal{S}_{\mathrm{quant}}^{\pm E}$ is generated by nonnormalized wavevectors over $E$ (i.e. elements $\Psi\in\mathbb{C}^E$), the rescaling relation that $\left [ \alpha \Psi \right ] = \left\vert \alpha \right\vert^2 \left[ \Psi \right]$ for any $\alpha \in \mathbb{C}$ and $\Psi \in \mathbb{C}^E,$ and furthermore a **polarization identity:** For any $\Psi_1,\Psi_2\in\mathbb{C}^E,$
 
 $$ \left[ \Psi_1 \right] + \left[ \Psi_2 \right] = \frac{1}{2} \left[ \Psi_1 + \Psi_2 \right] + \frac{1}{2} \left[ \Psi_1 - \Psi_2 \right].$$
 
-In analogy to the classical situation, one can interpret a sum (and by rescaling, any linear combination) of $\left[ \Psi_i \right]$ as an agent with several internal memory states, each corresponding to a certain amplitude distribution over possible environmental states. The linear combination corresponds to a bipartite wavevector over environment and internal memory (with each internal memory state a summand). We will now see that the equivalence relations correspond precisely to equivalence of those wavevectors that the quantum computer can transform into each other by isometries acting on the internal memory:
+In analogy to the classical situation, one can interpret a sum (and by the rescaling identity, any positive linear combination) of $\left[ \Psi_i \right]$ as an agent with several internal memory states, each corresponding to a certain amplitude distribution over possible environmental states. The linear combination corresponds to a bipartite wavevector over environment and internal memory (with each internal memory state a summand). We will now see that the equivalence relations correspond precisely to equivalence of those wavevectors that the quantum computer can transform into each other by unitary transformations acting on the internal memory (considered as a subset of a countably infinite-dimensional internal memory space):
 
-!!! Tip
-    For the argument, we may consider vector space representatives that differ by a sum of $\left[ 0 \right]$ as equivalent. On the side of bipartite wavevectors, we may consider wavevectors as equivalent that differ by relabeling memory states (equivalent to a permutation unitary) and/or adding or removing  memory spaces with an all-$0$ wavefunction.
+!!! Tip The vector space corresponds to an agent's joint amplitude matrix, modulo transformations
+    Vector space representatives that differ by a sum of $\left[ 0 \right],$ or are constructed by adding generators in a different order, are equivalent. Correspondingly on the side of bipartite wavevectors, wavevectors are equivalent that differ by relabeling memory states (equivalent to a permutation unitary); we also consider wavevectors as equivalent that are related by adding and/or removing memory states with only $0$ amplitudes.
 
-    Now consider bipartite states obtained from different representatives of the same vector. To show the quantum computer can transform them by local operations, we need to reproduce the effect of the polarization identity, rescaling, relabeling memory states, and splitting states in the form of $\left[ \sqrt{p} \Psi \right] + \left[ \sqrt{1-p}\Psi \right] = \left[ \Psi \right] = \left[ \Psi \right] + \left[ 0 \right].$
+    Now, consider a representative of the vector space as a sum of pairwise different generators not containing $\left[ 0 \right],$ with prefactor $1.$ To show the quantum computer can transform them by operations local to the memory space, we need to reproduce the effect of the polarization identity, rescaling, relabeling memory states, and splitting/joining states in the form of $\left[ \sqrt{p} \Psi \right] + \left[ \sqrt{1-p}\Psi \right] = \left[ \Psi \right] = \left[ \Psi \right] + \left[ 0 \right].$
     On the side of the bipartite states, these transformations corresponds to a sequence of Hadamard (on the corresponding two levels), diagonal phase, permutation unitaries, and appropriate rotations.
 
-    Conversely, any isometry acting on a bipartite wavevector's memory can be decomposed into such operations: We add a sufficient number of all-$0$ memory states and extend the isometry to a unitary. Then, by a standard result (see e.g. [#NielsenChuang], Section 4.5.1: "Two-level unitary gates are universal"), we can decompose the unitary to a sequence of two-level unitaries acting on combinations of memory states. In turn, we can decompose these into sequences of Hadamards, rotations around $Z,$ and global phase shifts - all of which correspond to equivalence relations between vector spac representatives.
+    Conversely, any isometry acting on a bipartite wavevector's memory can be decomposed into such operations: We add a sufficient number of all-$0$ memory states and extend the isometry to a unitary. Then, by a standard result (see e.g. [#NielsenChuang], Section 4.5.1: "Two-level unitary gates are universal"), we can decompose the unitary to a sequence of two-level unitaries acting on combinations of memory states. In turn, we can decompose these into sequences of Hadamards, rotations around $Z,$ and global phase shifts - all of which correspond to equivalence relations between vector space representatives.
 
-## Pure-quantum states of knowledge are reduced density matrices
-In quantum probability theory, the **states of knowledge correspond to the reduced density matrices** of these bipartite states on the subspace corresponding to the environment. This is because for any bipartite quantum system $\mathcal{E}\otimes\mathcal{M}$, the set of nonnormalized density matrices on $\mathcal{E}$ is in 1-to-1 correspondence with the set of equivalence classes of pure states on $\mathcal{E}\otimes \mathcal{M}$, modulo local unitary transformations on $\mathcal{M}$: Every density matrix can be purified, local unitaries on the purifying space don't change the reduced density matrix, and [all purifications of a given reduced density matrix are related by a local unitary](https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary).
+We skip defining partial trace, partial order etc. explicitly and refer to the general discussion starting in Section [sets before modding out the equivalence relation]; the results are similar to the previous ones for classical states.
+
+### Pure-quantum states of knowledge are reduced density matrices
+In quantum probability theory, the **states of knowledge correspond to the reduced density matrices** of these bipartite states on the subspace corresponding to the environment. This is because for any bipartite quantum system $\mathcal{E}\otimes\mathcal{M}$, the set of nonnormalized density matrices on $\mathcal{E}$ is in 1-to-1 correspondence with the set of equivalence classes of pure states on $\mathcal{E}\otimes \mathcal{M}$, modulo local unitary transformations on $\mathcal{M}$: Every density matrix can be purified, local unitaries on the purifying space don't change the reduced density matrix, and all purifications of a given reduced density matrix are related by a local unitary [#NielsenChuang].
 
 One can verify that addition and multiplication of states of knowledge corresponds to entrywise addition and multiplication of these density matrices, our partial trace (defined analogously to the classical probabilistic case) is the partial trace of density matrices, and $S_1\leq S_2$ iff $0\leq S_2-S_1,$ i.e. iff $S_2-S_1$ corresponds to a positive semidefinite matrix itself.
+
+### Relation to quantum query algorithms and the adversary bound
+A discussion of a quantum or classical algorithm typically involves tracking the quantum computer's wavefunction for the various inputs. We can formulate this in the framework of bipartite wavefunctions and states of knowledge: If we let the environment $E$ be the set of possible inputs, a bipartite, nonnormalized wavefunction $\sum_{e\in E} \left| e \right\rangle \otimes \left| \Psi_e \right\rangle \in \mathcal{E}\otimes \mathcal{M}$ may encode all of these states at once. By the preceding discussion, the corresponding state of knowledge captures precisely that state modulo permissible transformations by a quantum query algorithm as described e.g. in [#Belovs-Yolcu].
+
+The transpose of the wavefunction's reduced density matrix on $\mathcal{E}$ (which we know corresponds to the state of knowledge) equals the _Gram matrix_, i.e. the matrix of complex inner products between the individual states. Tracking feasible Gram matrices is the idea behind the so-called  _adversary lower bound_ for quantum query complexity, originally described in [#Ambainis] and generalized many times since. Section [an agent interacting with its environment] essentially generalizes the ideas in [#Barnum] (a modification of the more well-known paper [#Barnum-Saks-Szegedy]) for the states-of-knowledge setting; Subsection [the adversary bound] does the same for [#Yolcu]. One can see that the same symbols appearing in the semidefinite programs in [#Barnum] --- given different meanings --- lead to the appropriate generalizations in this setup.
 
 # Sets before modding out the equivalence relation
 Now to a more thorough description that includes the mixed-quantum case. With the results of the previous section, it should be easy to see that both set-ups are equivalent.
 
-Consider an agent within an environment that could be in a state $e\in E,$ with some internal memory state $m\in M.$ For a fixed $E,$ we define sets of joint, unnormalized "generalized probability destributions", which will turn into our desired notions of "states of knowledge" after modding out equivalence relation in Section [modding out]. We can do this for classical probability theory (probability vectors), pure quantum states (quantum wavefunctions), and mixed quantum states (quantum wavefunctions with an additional "decohering space"):[^3]
+Consider an agent within an environment that could be in a state $e\in E$ (with $E$ a finite set), with some internal memory state $m\in M.$ For a fixed $E,$ we define sets of joint, unnormalized "generalized probability destributions", which will turn into our desired notions of "states of knowledge" after modding out equivalence relation in Section [modding out]. We can do this for classical probability theory (probability vectors), pure quantum states (quantum wavefunctions), and mixed quantum states (quantum wavefunctions with an additional "decohering space"):[^2]
 
 $$\left.\begin{array}
 \mathcal{S}'^E_{\mathrm{class}}\\
@@ -153,7 +171,7 @@ $$\left.\begin{array}
 
 $\mathbb{R}_{\geq 0}$ denotes the set of nonnegative real numbers. Note that
 
-1. we do not fix $M$, or limit its sizes beyond requiring it is finite, and
+1. we do not fix $M$, or limit its size beyond requiring it is finite, and
 2. we don't enforce normalization of our distributions.
 
 We leave out the superscript $E$ and/or the subscript $\mathrm{class},$ $\mathrm{quant},$ $\mathrm{decoh}$ if they are irrelevant.
@@ -168,7 +186,7 @@ We define maps that will play the role of inclusion maps after our equivalence r
 ## Classical and pure quantum as mixed quantum states
 The inclusions are
 
-1. $i_c\colon \mathcal{S}'_{class}\to\mathcal{S}'_\mathrm{decoh},$ $i_c\left( (M,P) \right) := \left( E\times M, M, \left( \sqrt{P_{e,m}} \delta_{e',e} \delta_{m',m} \right)_{(e',m'), e, m} \right)$ (in words, treating a classical as a completely decohered state),
+1. $i_c\colon \mathcal{S}'_{\mathrm{class}}\to\mathcal{S}'_\mathrm{decoh},$ $i_c\left( (M,P) \right) := \left( E\times M, M, \left( \sqrt{P_{e,m}} \delta_{e',e} \delta_{m',m} \right)_{(e',m'), e, m} \right)$ (in words, treating a classical as a completely decohered state),
 2. $i_q\colon \mathcal{S}'_\mathrm{quant}\to\mathcal{S}'_\mathrm{decoh},$ $i_q \left( (M,P)\right) := \left( \left\{ \mathrm{1} \right\}, M, (P_{e,m})_{(1,e,m),(1, e',m')} \right)$ (in words, treating a pure quantum state as a quantum state with no decoherence).
 
 ## Knowledge as quasiknowledge
@@ -177,7 +195,7 @@ $i_k\colon \mathcal{S}'\to\mathcal{S}'^\pm,$ $i_k(S') := S'-0.$
 
 ## Elements of E
 We want to consider $e\in E$ as the state of knowledge in which the environment is guaranteed to be in state $e,$ with probability $1.$ We map
-$E\to\mathcal{S}'_\mathrm{class},$ $e\to(\{0\},(\delta_{e',e})_{(e',0)\in E\times \{0\}}))$
+$E\to\mathcal{S}'_\mathrm{class},$ $e\to(\{0\},(\delta_{e',e})_{0,e'})$
 (where $\{0\}$ is an arbitrary 1-element memory space). The situation is the same in the pure-quantum or mixed-quantum case.
 
 ## Real numbers
@@ -196,7 +214,7 @@ We now define some operations on the $\mathcal{S}'$ and $\mathcal{S}'^\pm.$
 In the $\mathcal{S}'^\pm,$ $(A-B) + (C-D) := ((A+C) - (B+D))$ as expected.
 
 ## Multiplication
-We denote **multiplication** on the $\mathcal{S}'$ by concatenating the factors and interpret it as the model having access to two pieces of knowledge independently. That is:
+We denote **multiplication** on the $\mathcal{S}'$ by the symbol $*$, or just concatenating the factors, and interpret it as the model having access to two pieces of knowledge independently. That is:
 1. In $\mathcal{S}'_{\mathrm{class}},$ $(M_1,P_1)(M_2,P_2) := (M_1 \times M_2, P')$ with $(P')_{e, (m_1, m_2)} := (P_1)_{e, m_1} (P_2)_{e, m_2},$
 2. equivalently in $\mathcal{S}'_{\mathrm{quant}},$
 3. and in $\mathcal{S}'_{\mathrm{decoh}},$ $(D_1,M_1,\Psi_1) (D_2,M_2,\Psi_2) := (D_1 \times D_2, M_1 \times M_2, \Psi')$ with $\Psi'_{(d_1, d_2), e, (m_1, m_2)} := (\Psi_1)_{d_1, e, m_1}(\Psi_2)_{d_2, e, m_2}.$
@@ -204,16 +222,16 @@ We denote **multiplication** on the $\mathcal{S}'$ by concatenating the factors 
 In the $\mathcal{S}'^\pm,$ $(A-B)(C-D) := (AC+BD) - (AD+BC).$
 
 ## Trace: Total probability
-We define a linear map $\mathrm{tr}\colon \mathcal{S}'^\pm\to \mathbb{R}$ that restricts to $\mathcal{S}'\to\mathbb{R}_{\geq 0}$ as the total probability associated with a SOK: Using the [$L_{1,1}$ and $L_{2,2}$ norms, which treat the matrix entries as long vectors](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1116582616#L2,1_and_Lp,q_norms), we map
+We define a linear map $\mathrm{tr}\colon \mathcal{S}'^\pm\to \mathbb{R}$ that restricts to $\mathcal{S}'\to\mathbb{R}_{\geq 0}$ as the total probability associated with a SOK: We map
 
 1. $(M, P)\to {\left\Vert P \right\Vert}_{1,1}$ on $\mathcal{S}'_{\mathrm{class}}$ (where ${\left\Vert P \right\Vert}_{1,1}$ is the [sum of entries](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1116582616#L2,1_and_Lp,q_norms)),
-2. $(M, \Psi)\to {\left\Vert \Psi \right\Vert}^2$ on $\mathcal{S}'_{\mathrm{quant}}$,
-3. $(D, M, \Psi)\to {\left\Vert \Psi \right\Vert}^2$ on $\mathcal{S}'_{\mathrm{quant}}$,
+2. $(M, \Psi)\to {\left\Vert \Psi \right\Vert_{2,2}}^2$ on $\mathcal{S}'_{\mathrm{quant}}$ (i.e. the sum of squared absolute values of entries), and
+3. equivalently on $\mathcal{S}'_{\mathrm{decoh}}.$
 
 To define the trace on $\mathcal{S}'^\pm$, we map $(S'_1-S'_2)\to \mathrm{tr} S'_1-\mathrm{tr} S'_2$.
 
 ## The partial trace: Input from environment
-Remember that when we consider different possible environments, we denote our sets by $\mathcal{S}'^E$ and similar. Considering a bipartite environment $E\times C,$ we define a **"partial trace"** $\mathrm{tr}_C \colon \mathcal{S}'^{E\times C}\to \mathcal{S}'^E.$ This works by considering the $C$ register, which previously was part of the environment, as part of the memory: it maps $M\to M\times C,$ copies the entries of $P$ or $\Psi$ and (in the decohering case) leaves $D$ untouched. After modding out an equivalence relation in section 6, this will look more like the partial trace --- after making some information accessible to the agent, the state of knowledge becomes equivalent with respect to all transformations that it can perform on that information.[^4]
+Remember that when we consider different possible environments, we denote our sets by $\mathcal{S}'^E$ and similar. Considering a bipartite environment $E\times C,$ we define a **"partial trace"** $\mathrm{tr}_C \colon \mathcal{S}'^{E\times C}\to \mathcal{S}'^E.$ This works by considering the $C$ register, which previously was part of the environment, as part of the memory: it maps $M\to C \times M,$ reinterprets a matrix $P\in \mathbb{R}_{\geq 0}^{(E\times C) \times M}$ as $P \in \mathbb{R}_{\geq 0}^{E\times (C \times M)}$ (and equivalently for wavefunctions) and (in the decohering case) leaves $D$ untouched. After modding out an equivalence relation in section 6, this will look more like the partial trace --- after making some information accessible to the agent, the state of knowledge becomes equivalent with respect to all transformations that it can perform on that information.[^3]
 
 Of course, on $\mathcal{S}'^\pm,$ $\mathrm{tr}_C (A-B):= \mathrm{tr}_C A - \mathrm{tr}_C B.$
 
@@ -223,20 +241,22 @@ The partial trace will be useful to discuss the interface between agent and the 
     After the equivalence relation of Section [modding out], the set inclusion $\mathbb{R}\subseteq \mathcal{S}^{\pm\{0\}}$ defined in Subsection [real numbers] will be a _surjective_ vector space isomorphism for a 1-element $E=\{0\}.$ Under that isomorphism, the result of treating an environment $E$ as $\{0\}\times E$ and calculates the partial trace over $E$ will be consistent with the trace of Subsection [trace: total probability], as we expect from quantum physics.
 
 ## The preorder
-We define a **preorder** $S_1 \leq S_2$ to capture the notion that the agent can trivially transform a state into another state, as follows:
-1. In $\mathcal{S}'_{\mathrm{class}},$ $(M_1,P_2 T^T) \leq (M_2,P_2)$ for all transformation matrices on the memory $T \in \mathbb{R}_{\geq 0}^{M_1 \times M_2}$ with $\Vert T\Vert_1\leq 1.$ $P_2 T^T$ is the usual matrix product of $P_2$ with the transpose of $T.$ One can check that this corresponds to applying $T$ on the $M$ subsystem; this is a technicality related to not using graphical notation. The latter is the [1-norm of $T,$ i.e. the maximal column sum.](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms) This means that starting from any state $m_2\in M_2,$ the probabilities of transitioning to a final state must sum to **at most** one; if it is $<1$ for some column, we interpret this as the agent "giving up" (and outputting "failure") with a certain probability. If _all_ column sums were $1,$ we'd get a "proper" transition matrix that doesn't lose probability mass.
+We define a **preorder** $S'_1 \leq S'_2$ (i.e. a relation such that $S'_1 \leq S'_1,$ and $S'_1\leq S'_2,$ $S'_2\leq S'_3$ implies $S'_1\leq S'_3$) to capture the notion that the agent can trivially transform a state into another state as follows:
+1. In $\mathcal{S}'_{\mathrm{class}},$ $(M_1,P_2 T^T) \leq (M_2,P_2)$ for all transformation matrices on the memory $T \in \mathbb{R}_{\geq 0}^{M_1 \times M_2}$ with $\Vert T\Vert_1\leq 1,$ where
+   - $P_2 T^T$ is the usual matrix product of $P_2$ with the transpose of $T:$ One can check that this corresponds to applying $T$ on the $M$ subsystem; this is a technicality related to not using graphical notation.
+   - The norm is the [1-norm of $T,$ i.e. the maximal column sum.](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms) This means that starting from any state $m_2\in M_2,$ the probabilities of transitioning to a final state must sum to **at most** one; if it is $<1$ for some column, we interpret this as the agent "giving up" (and outputting "failure") with a certain probability. If all column sums are $1,$ we have a "proper" transition matrix that doesn't lose probability mass.
 
-2. The definition in $\mathcal{S}'_{\mathrm{quant}}$ is analogous (with $\mathbb{R}_{\geq 0}$ replaced by $\mathbb{C}$, but the transpose not replaced by a Hermitian conjugate) except that our constraint on $T$ is that $\Vert T\Vert_2\leq 1,$ using the [2-norm of $T$](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms). This means that the maximal singular value of $T$ is $\leq 1.$ Analogously to 1., _all_ singular values being $1$ is equivalent to $T$ being an isometry, i.e. a "proper" quantum transition matrix. If some singular values of $T$ are $<1,$ the block-matrix $\begin{pmatrix}T\\\\ \sqrt{I-T^\dagger  T}\end{pmatrix}$ is an isometry nevertheless; we can imagine the agent gives up if it lands in the lower block of that matrix and/or consider $T$ to be one [Kraus operator of a quantum channel](https://en.wikipedia.org/w/index.php?title=Quantum_operation&oldid=1094787035#Statement_of_the_theorem).
+2. The definition in $\mathcal{S}'_{\mathrm{quant}}$ is analogous (with $\mathbb{R}_{\geq 0}$ replaced by $\mathbb{C}$, but the transpose not replaced by a Hermitian conjugate) except that our constraint on $T$ is that $\Vert T\Vert_2\leq 1,$ using the [2-norm of $T$](https://en.wikipedia.org/w/index.php?title=Matrix_norm&oldid=1100495446#Matrix_norms_induced_by_vector_p-norms). This means that $T$ is a contraction w.r.t. the $2$-norm of states it is applied on, or equivalently, every singular value is at most $1.$ Analogously to 1., _all_ singular values being $1$ is equivalent to $T$ being an isometry, i.e. a "proper" quantum transition matrix. If some singular values of $T$ are $<1,$ the block-matrix $\begin{pmatrix}T\\\\ \sqrt{I-T^\dagger  T}\end{pmatrix}$ is an isometry nevertheless; we can imagine the agent gives up if it lands in the lower block of that matrix and/or consider $T$ to be one [Kraus operator of a quantum channel](https://en.wikipedia.org/w/index.php?title=Quantum_operation&oldid=1094787035#Statement_of_the_theorem) [#NielsenChuang].
 
 3. In $\mathcal{S}'_{\mathrm{decoh}},$ we consider transitions involving both $D$ and the memory. So the condition is
 
    $$(D_1,M_1, T_D(\Psi_2 T^T_M)) \leq (D_2, M_2, \Psi_2),$$
    
    where $T_D(\Psi_2 T_M^T)$ denotes
-   1. The application of some $T_M \in \mathbb{C}^{M_2 \times (M_1 \times D_M)}$ to the memory space of $\Psi_2,$ where $D_M$ is an intermediate decohering space and $\Vert T_M\Vert_2\leq 1,$
-   2. following that, the application of $T_D\in \mathbb{C}^{D_1\times (D\times D_M)}$ to $D$ and $D_M,$ with $\Vert T_D\Vert_2\leq 1$ as well. So $T_M$ transforms the memory and generates a register $D_M$ that becomes part of the decohering space, and $T_D$ is an arbitrary transformation of that decohering space, which is **not necessarily an isometry either**.[^5]
+   1. The application of some $T_M \in \mathbb{C}^{(M_1 \times D_M) \times M_2}$ to the memory space of $\Psi_2,$ where $D_M$ is an intermediate decohering space and $\Vert T_M\Vert_2\leq 1,$
+   2. following that, the application of $T_D\in \mathbb{C}^{D_1\times (D\times D_M)}$ to $D$ and $D_M,$ with $\Vert T_D\Vert_2\leq 1$ as well. So $T_M$ transforms the memory and generates a register $D_M$ that becomes part of the decohering space, and $T_D$ is an arbitrary transformation of that decohering space, which is **not necessarily an isometry either**.[^4]
 
-On $\mathcal{S}'^\pm,$ $(A-B)\leq (C-D)$ iff $A+D\leq B+D.$
+On $\mathcal{S}'^\pm,$ $(A-B)\leq (C-D)$ iff $A+D\leq B+D.$ On $\mathcal{S}',$ we can easily see that the preorder axioms are fulfilled. For $\mathcal{S}'^\pm,$ we'll show this in Subsection [the cancellation property].
 
 ## Sub-preimage of the partial trace: Output to environment
 The partial trace corresponds to the agent incorporating part of the environment's state into its internal memory. Conversely, suppose the agent is in state $S_0' \in \mathcal{S}'^E.$ Then the states $S'_X\in \mathcal{S}'^{E \times X}$ that it can obtain by applying an acceptable internal memory transformation, and then outputting a part of its internal memory into an output register $X,$ are given by the set
@@ -244,14 +264,14 @@ The partial trace corresponds to the agent incorporating part of the environment
 $$\left\{ S'_X \mid \mathrm{tr_X} S'_X \leq S'_0,~~ S'_X \in \mathcal{S}'^{E \times X} \right \}.$$
 
 # Modding out
-This section contains the technical details of the writeup's central claim --- $\mathcal{S}\subseteq\mathcal{S}^\pm,$ defined by modding out the equivalence relation given by the condition $S'_1\leq S'_2 \leq S'_1$, is a **convex cone as a subset of an associative, commutative $\mathbb{R}$-algebra that is ordered w.r.t. $\leq$ as a vector space, and the partial trace $\mathrm{tr}_C$ is a monotonous vector space homomorphism that is surjective when restricted to $\mathcal{S}^{E \times C}\to \mathcal{S}^E.$**
+This section contains the technical details of this article's central claim that $\mathcal{S}\subseteq\mathcal{S}^\pm,$ defined by modding out the equivalence relation given by the condition $S'_1\leq S'_2 \leq S'_1$, is a **convex cone as a subset of an associative, commutative $\mathbb{R}$-algebra that is ordered w.r.t. $\leq$ as a vector space, and the partial trace $\mathrm{tr}_C$ is a monotonous vector space homomorphism that is surjective when restricted to $\mathcal{S}^{E \times C}\to \mathcal{S}^E.$**
 ## The cancellation property
 The following property is important. The proof of the harder direction is similar to the universal query algorithm in Subsection [the universal query algorithm].
 !!! Info: Theorem: Cancellation property
     Let $S'_1,S'_2,S'_3\in \mathcal{S}'^\pm$. Then $S'_1+S'_3\leq S'_2+S'_3$ if and only if $S'_1\leq S'_2$.
 
 !!! Tip: Proof
-    We prove the statement for $S'_1,S'_2,S'_3\in\mathcal{S}'$, generalizing to $\mathcal{S}'^\pm$ is easy.
+    We prove the statement for $S'_1,S'_2,S'_3\in\mathcal{S}'$, generalizing to $\mathcal{S}'^\pm$ is easy after we have shown that $\mathcal{S}'^\pm$ is in fact a preorder.
 	
     If $S'_1\leq S'_2$ by some transformation $P$, we can construct a transformation witnessing $S'_1+S'_3\leq S'_2+S'_3$ by applying $P$ to $S'_2$ and identity to $S'_3$.
 
@@ -259,7 +279,7 @@ The following property is important. The proof of the harder direction is simila
 	
     Now suppose that $S'_1+S'_3\leq S'_2+S'_3$. By the last two paragraphs, this implies that $S'_1+S'_3\leq S'_3+S'_2$, and we can ignore brackets. Applying this inequality $N$ times, we obtain
 
-    $$N S'_1+S'_3\leq S'_3+\sum^{N-1}_{i=0} S'_1 \leq\sum^{N-1}_{i=0} S'_2 + S'_3 \leq N S'_2 + S'_3.$$
+    $$N S'_1+S'_3\leq \sum^{N-1}_{i=0} S'_1 + S'_3 \leq S'_3 +\sum^{N-1}_{i=0} S'_2 \leq S'_3 + NS'_2 \leq NS'_2 + S'_3.$$
 	
     After rescaling, we obtain $S'_1+\frac{S'_3}{N}\leq S'_2+\frac{S'_3}{N}$ for any positive integer $N$. Applying the transformation witnessing this inequality to $S'_2$, we obtain a state arbitrarily close to $S'_1$ with respect to a reasonable metric. Therefore, $S_1'$ is reachable as well by a completeness argument:
     1. For given memory spaces, the set of states $S'$ achievable from $S'_2$ is the image of the (continuous) map that maps the (compact) set of transformations to the result of evaluating them at $S'_2,$
@@ -267,13 +287,20 @@ The following property is important. The proof of the harder direction is simila
     3. a compact metric space is complete,
     4. so the limit of the Cauchy sequence approaching $S'_1$ is achievable as well.
 
+This allows us to show that $\leq$ on the $\mathbb{S}'^\pm$ as defined in Subsection [the preorder] is in fact a preorder:
+1. Reflexivity is trivial,
+2. for transitivity, consider $(A-B) \leq (C-D)$ and $(C-D) \leq (E-F).$ Then, using preorder transitivity in $\mathcal{S}',$
+  1. $A+D\leq C+B,$ therefore $A+E+D\leq B+E+C,$
+  2. $C+F\leq E+D,$ therefore $A+F+C \leq A+E+D \leq B+E+C,$
+  3. By the cancellation property, $A+F\leq B+E,$ i.e. $(A-B) \leq (E-F).$
+
 ## The equivalence relation and algebra
-Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \leq X),$ and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm.$[^6] We can easily show this is an equivalence relation on the $\mathcal{S}'$, and using the cancellation property of the last section, we can show that it is an equivalence relation on $\mathcal{S}'^\pm$ as well.
+Finally, we define an **equivalence relation** on the $\mathcal{S}'$ and $\mathcal{S}'^\pm$ by $X\sim Y\leftrightarrow (X\leq Y \leq X),$ and call the equivalence classes the spaces of **states of knowledge** $\mathcal{S}$ and **states of quasiknowledge** $\mathcal{S}^\pm.$ As promised, a reader familiar with Grothendieck group constructions may recognize the latter as an instance. We can easily show this is an equivalence relation on the $\mathcal{S}'$, and using the cancellation property of the last section, we can show that it is an equivalence relation on $\mathcal{S}'^\pm$ as well.
 
 It is tedious but mostly straightforward to check that all our operations behave well with this equivalence relation and the claim in the beginning of Section [modding out], that $\mathcal{S}\subseteq\mathcal{S}^\pm$ becomes a convex cone as a subset of an associative, commutative $\mathbb{R}$-algebra that is ordered w.r.t. $\leq$ as a vector space. This means:
 
 1. For all operations, choosing different representatives of the same equivalence class leads to equivalent results, 
-2. $\mathcal{S}^\pm$ is a commutative ring, fulfilling the ring axioms enumerated [here,](https://en.wikipedia.org/w/index.php?title=Ring_\(mathematics\)&oldid=1107386958#Definition) as well as the axiom that $*$ is commutative. Copying the content of the link, for any $A,B,C\in\mathcal{S}^\pm,$
+2. $\mathcal{S}^\pm$ is a commutative ring, fulfilling the ring axioms enumerated, for example, in  [Wikipedia,](https://en.wikipedia.org/w/index.php?title=Ring_\(mathematics\)&oldid=1107386958#Definition) as well as the axiom that $*$ is commutative. Copying the content of the link, for any $A,B,C\in\mathcal{S}^\pm,$
    1. $(\mathcal{S}^\pm,+)$ is an Abelian (commutative) group, i.e.
 	   1. $+$ is associative, $A+(B+C)=(A+B)+C,$
 	   2. $+$ is commutative (abelian), $A+B=B+A,$
@@ -285,16 +312,16 @@ It is tedious but mostly straightforward to check that all our operations behave
 	   3. $1*a=a*1=a$ for all $a\in\mathcal{S}^\pm$.
    3. the distributive law holds, i.e. $A(B+C)=(AB)+(AC);$ $(A+B)C=(AC)+(BC).$
 3. $\mathcal{S}^\pm$ is an associative $\mathbb{R}$-algebra, [meaning](https://en.wikipedia.org/w/index.php?title=Associative_algebra&oldid=1115059242#From_ring_homomorphisms) that the embedding map $\mathbb{R}\to\mathcal{S}^\pm$ is a ring homomorphism ($f(a+b)=f(a)+f(b)$, $f(1)=1$ and $f(ab)=f(a)f(b)$); furthermore, the image lies in the center (i.e. for any $r\in \mathbb{R}$, $f(r)$ commutes with all $S\in\mathcal{S}^\pm$). These follow from the definitions.
-4. The map $\mathcal{S}\to \mathcal{S}^\pm$, $s\to (s,0)$ is injective (which is necessary to be able to consider $\mathcal{S}$ as a subset of $\mathcal{S}^\pm$. This is the cancellation property of Section [the cancellation property].
-5. $\mathcal{S}^\pm$ is ordered w.r.t. $\leq$ as a vector space. This [means that](https://en.wikipedia.org/w/index.php?title=Ordered_vector_space&oldid=1110116026#Definition) $S_1\leq S_2$ implies $S_1+S_3\leq S_2+S_3$, and $S_1\leq S_2$ implies $\lambda S_1\leq \lambda S_2$ for any $\lambda \in\mathbb{R}_{\geq 0}$. This can be verified easily using the cancellation property.
-!!! Info: Question
+4. The map $\mathcal{S}\to \mathcal{S}^\pm$, $s\to (s,0)$ is injective (which is necessary to be able to consider $\mathcal{S}$ as a subset of $\mathcal{S}^\pm$). This follows from the cancellation property of Subsection [the cancellation property], as $A-0 \leq B-0 \leq A-0$ implies that $A+0 \leq B+0,$ and $B+0 \leq A+0.$ By the cancellation property, this in turn implies $A\leq B\leq A,$ i.e. $A=B.$
+5. $\mathcal{S}^\pm$ is ordered w.r.t. $\leq$ as a vector space. This [means that](https://en.wikipedia.org/w/index.php?title=Ordered_vector_space&oldid=1110116026#Definition) $S_1\leq S_2$ implies $S_1+S_3\leq S_2+S_3$, and $S_1\leq S_2$ implies $\lambda S_1\leq \lambda S_2$ for any $\lambda \in\mathbb{R}_{\geq 0}$. This can be verified easily, again using the cancellation property.
+!!! Info: Question/Remark
     Is it an [ordered algebra](https://en.wikipedia.org/w/index.php?title=Ordered_algebra&oldid=1041753564) as well? That seems to be true for $\mathcal{S}^\pm_\mathrm{quant}$ and $\mathcal{S}^\pm_\mathrm{class}$ (see Section [definition by generators and relations]), but I don't know whether the product of positive states is always positive in the faulty-quantum situation.
     
     Using the equivalence discussed [here](https://en.wikipedia.org/w/index.php?title=Ordered_vector_space&oldid=1110116026#Positive_cones_and_their_equivalence_to_orderings), it may be more helpful to define the $S_1\leq S_2$ by $S_2-S_1\in \mathcal{S}$.
 
 6. $\mathcal{S}$ is a [convex cone](en.wikipedia.org/w/index.php?title=Convex_cone&oldid=1114159935): $\mathcal{S}$ is closed under convex combinations and scalar multiplications.
 
-The partial trace $\mathrm{tr}_C\colon\mathcal{S}^{\pm (E\times C)}\to \mathcal{S}^{\pm E}$ is a **linear map**[^8] that surjectively maps states of knowledge to states of knowledge (i.e. the image $\mathrm{tr}_C(\mathcal{S}^{E\times C})=\mathcal{S}^{E}$). Conversely, however, the preimage of a SOK _does_ generally contain non-SOKs. $\mathrm{tr}_C$ is also monotonous in $\leq.$
+The partial trace $\mathrm{tr}_C\colon\mathcal{S}^{\pm (E\times C)}\to \mathcal{S}^{\pm E}$ is a **linear map**[^5] that surjectively maps states of knowledge to states of knowledge (i.e. the image $\mathrm{tr}_C(\mathcal{S}^{E\times C})=\mathcal{S}^{E}$). Conversely, however, the preimage of a SOK _does_ generally contain non-SOKs. $\mathrm{tr}_C$ is also monotonous in $\leq.$
 
 # Two examples
 These two examples are supposed to illustrate this approach. The second one, of Subsection [differential equation of knowledge], introduces a new concept as well: Formal power series and differential equations of knowledge.
@@ -384,9 +411,9 @@ $$K(t)=\exp(-rt)\exp(Art)S(0)=\sum^\infty_{k=0} \frac{\exp(-rt) (rt)^k}{k!} A^k 
 shows that the amount of knowledge obtained follows a Poisson distribution. Note that these equations contain minus signs, so our Grothendieck construction was probably helpful.
 
 # Convex optimization
-We have defined the algebraic structure and given two concrete examples. As discussed in the outline, the next two sections will be devoted to understanding the "statics" and "dynamics" of states of knowledge better. The partial trace will play a central role in these.
+We have defined the algebraic structure and given two concrete examples. The next two sections will be devoted to understanding the "statics" and "dynamics" of states of knowledge better. The partial trace will play a central role in these.
 
-All of these conditions will be **convex** conditions, and convex optimization problems, because the SOKs are convex and partial traces are linear. So when we **truncate to a finite basis, we should be able to use convex optimization and duality**[^9] to find optimal algorithms that allow the agent to determine some value or perform some manipulation of the environment. The SDPs obtained in that way are mostly generalizations of [Barnum-Saks-Szegedy](https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.113.1101&rep=rep1&type=pdf) (which discussed this question for quantum wavefunctions), and the adversary bound - quantum query algorithm duality.
+All of these conditions will be **convex** conditions, and convex optimization problems, because the SOKs are convex and partial traces are linear. So when we **truncate to a finite basis, we are able to use convex optimization and duality** to find optimal algorithms that allow the agent to determine some value or perform some manipulation of the environment. The SDPs obtained in that way are mostly generalizations of [#Barnum-Saks-Szegedy], [#Barnum] (which discussed this question for quantum wavefunctions), and the adversary bound - quantum query algorithm duality as presented in [#Yolcu].
 
 # Output conditions
 We now define some "output conditions" on SOKs, answering the questions 
@@ -397,7 +424,7 @@ We now define some "output conditions" on SOKs, answering the questions
 <!---
 ## Average vs. variational measures
 (not finished)
-The various distances and output conditions we are about to define, namely trace distance, fidelity, and (my variant of the) adversary bound -- all correspond to "average-case" payoffs, over given probability distributions $\mathrm{eval}(S_\mathrm{target}).$ We can turn them into "variational" variant, giving a "worst-case" payoff over all possible input states: Suppose $d(S_1, S_2) \in \mathbb{R}$ denotes some convex distance measure between SOKs $S_1, S_2\in \mathcal{S}^E$, where a lower number means the states are closer together. Then we define $\tilde{d}(S_1, S_2)$ as the supremal value of the optimization problem
+The various distances and output conditions we are about to define, namely trace distance, fidelity, and (my variant of the) adversary bound -- all correspond to "average-case" payoffs, over given probability distributions $\mathrm{eval}(S_\mathrm{target}).$ We can turn them into "variational" variant, giving a "worst-case" payoff over all possible input states: Suppose $d(S_1, S_2) \in \mathbb{R}$ denotes some convex distance measure between SOKs $S_1, S_2\in \mathcal{S}^E$, where a lower number means the states are closer together. Then we define $\widetilde{d}(S_1, S_2)$ as the supremal value of the optimization problem
 
 \begin{align*}
 &\underset{S_{\mathrm{prior}} \in \mathcal{S}^{ E}}{\operatorname{maximize}}& & d(S_{\mathrm{prior} S_1, S_{\mathrm{prior} S_2) \\
@@ -427,9 +454,7 @@ $$\left\{ \mathrm{eval}(S_C) \mid \mathrm{tr_C} S_C \leq S,~~ S_C \in \mathcal{S
 
 This is clearly a convex set, as promised.
 
-It is easy to turn this definition into optimization problems to find optimal strategies to guess properties of the environment. For example, suppose that $S$ is normalized, and define a "utility function" $V\in \mathbb{R}^{E\times C}$ --- a matrix of payoffs if the environmental state is $E$, and the algorithm outputs $C$. For example, for some function $f\colon E\to C$, $V[e,c]=\delta_{e,f(c)}$ would correspond to the agent succeeding if it correctly determines this function of the environment. Then the optimization problem 
-
-$$\left\{ \mathrm{eval}(S_C)\cdot V \mid \mathrm{tr_C} S_C \leq S,~~ S_C \in \mathcal{S}^{E \times C} \right \} \subset \mathbb{R}_{\geq 0} ^{E \times C}.$$
+It is easy to turn this definition into optimization problems to find optimal strategies to guess properties of the environment, or sets of states of knowledge that allow such guesses with certain success rates. For example, suppose that $S$ is normalized, and define a "utility function" $V\in \mathbb{R}^{E\times C}$ --- a matrix of payoffs if the environmental state is $E$, and the algorithm outputs $C$. For example, for some function $f\colon E\to C$, $V[e,c]=\delta_{e,f(c)}$ would correspond to the agent succeeding if it correctly determines this function of the environment. Then solving the optimization problem 
 
 \begin{align*}
 &\underset{S_C \in \mathcal{S}^{C\times E}}{\operatorname{maximize}}& & \mathrm{eval}(S_C)\cdot V \\
@@ -437,7 +462,13 @@ $$\left\{ \mathrm{eval}(S_C)\cdot V \mid \mathrm{tr_C} S_C \leq S,~~ S_C \in \ma
 & & \mathrm{tr_C} S_C \leq S,
 \end{align*}
 
-with $\cdot$ the elementwise inner product between these matrices, corresponds to maximizing the expected payoff. If we want to maximize the guaranteed payoff for all inputs, we can instead consider the optimization problem
+with $\cdot$ the elementwise inner product between these matrices, corresponds to maximizing the expected payoff. On the set of states of knowledge, the constraint that this optimization problem can be solved with value at least $\lambda^*$ is
+
+$$\left\{ S \mid \exists S_C \in \mathcal{S}^{C\times E} \colon \lambda^* \leq \mathrm{eval}(S_C)\cdot V, \mathrm{tr_C} S_C \leq S, S \in \mathcal{S}^E \right \}.$$
+
+This is a convex set.
+
+To maximize the payoff of the worst-case inputs, we instead consider the optimization problem
 
 \begin{align*}
 &\underset{S_C \in \mathcal{S}^{C\times E}}{\operatorname{maximize}}& & \min_{e\in E} \mathrm{eval}(S_C) \cdot (e^T e V) \\
@@ -445,7 +476,7 @@ with $\cdot$ the elementwise inner product between these matrices, corresponds t
 & & \mathrm{tr_C} S_C \leq S,
 \end{align*}
 
-where $e^T e V$ denotes $V$ with all rows except the one corresponding to $e$ replaced by zeroes. This, in turn, is equivalent to
+where $e^T e V$ denotes $V$ with all rows except the one corresponding to $e$ replaced by zeroes.
 
 \begin{align*}
 &\underset{S_C \in \mathcal{S}^{C\times E},~\lambda \in \mathbb{R}_{\geq 0}}{\operatorname{maximize}}& & \lambda \\
@@ -453,10 +484,10 @@ where $e^T e V$ denotes $V$ with all rows except the one corresponding to $e$ re
 &&& \mathrm{tr_C} S_C \leq S,
 \end{align*}
 
-which is evidently a convex optimization problem that is equivalent to a semidefinite program in the pure quantum case.
+which is evidently a convex optimization problem that is equivalent to a semidefinite program in the pure quantum case. We can turn this optimization problem into a convex constraint on the set of states of knowledge in analogy to the average-case situation above.
 
 ## Quantifying similarity: Trace distance
-We generalize the SDP that quantifies the trace distance of quantum states as follows and define, for $S, T\in \mathcal{S}^E,$ $\left\Vert S - T \right\Vert_{\mathrm{tr}}$ as the infimal value of the optimization problem
+We generalize the SDP that quantifies the trace distance of quantum states by defining, for $S, T\in \mathcal{S}^E,$ $\left\Vert S - T \right\Vert_{\mathrm{tr}}$ as the infimal value of the optimization problem
 
 \begin{align*}
 &\underset{\Delta \in\mathcal{S}^E}{\operatorname{minimize}}& & \mathrm{tr} \Delta \\
@@ -464,7 +495,7 @@ We generalize the SDP that quantifies the trace distance of quantum states as fo
 & & -\Delta \leq S - T \leq \Delta.
 \end{align*}
 
-One can show easility that this is a metric.
+One can show easily that this is a metric.
 
 <!-- ## Quantifying similarity: Maximum overlap
 Another approach to quantify the distance between states $S_1$ and $S_2$ lies in minimizing the $L_1$ (for classical) or squared-$L_2$-distance between representatives of $S_1$ and $S_2$ with compatible memory spaces. We will use this approach to bound the error in the universal query algorithm in Subsection [the universal query algorithm]. In the pure-quantum case, this is related by [Uhlmann's theorem](https://en.wikipedia.org/w/index.php?title=Fidelity_of_quantum_states&oldid=1059082307#Uhlmann's_theorem) to the _Fidelity_ between two quantum states, which has an SDP formulation as well (see e.g. [#SikoraVarvitsiotis, lecture 11]. But I am not sure on the "right" generalization beyond the pure-quantum setting.
@@ -484,9 +515,9 @@ So we define the **fidelity** $F(S, T)$ by $0$ if $S=0$ or $T=0$, and the suprem
 
 otherwise.
 
-We also define the **Lee-Roland fidelity** $\tilde{F}(S,T)$ by
+We also define the **Lee-Roland fidelity** $\widetilde{F}(S,T)$ by
 
-$$\tilde{F}(S,T):=\inf_{\mathrm{tr} W = 1, W\in\mathcal{S}^E} F(SW, TW)$$.
+$$\widetilde{F}(S,T):=\inf_{\mathrm{tr} W = 1, W\in\mathcal{S}^E} F(SW, TW)$$.
 
 !!! Tip
     The definition is lifted from the semidefinite programming characterization of the fidelity of quantum states (see e.g. [here](https://sites.google.com/site/jamiesikora/teaching/semidefinite-programming-quantum-information), lecture 11), to which it reduces in the pure-quantum case.
@@ -507,7 +538,7 @@ Then, starting with a SOK $S\in \mathcal{S}^{E},$ the states of knowledge attain
 
 $$\left\{ \mathrm{tr}_I (T(S_O)) \mid\mathrm{tr}_O S_O \leq S, S_O\in \mathcal{S}^{E\times O} \right\}:$$
 
-As in Subsection [sub-preimage of the partial trace: output to environment] again, if a state $S_O\in \mathcal{S}^{E\times O}$ can be obtained by an agent writing into the output register, based on $S\in \mathcal{S}^E$, then reincorporating $O$ in $E$ (i.e. applying the partial trace) would need to yield a state $\leq \mathcal{S}^E$. Conversely, all states fulfilling this can be obtained. Then the transformation corresponds to applying $T,$ and incorporating the next step's input into the internal memory is the same as application of the partial trace.
+As in Subsection [sub-preimage of the partial trace: output to environment], if a state $S_O\in \mathcal{S}^{E\times O}$ can be obtained by an agent writing into the output register, based on $S\in \mathcal{S}^E$, then reincorporating $O$ in $E$ (i.e. applying the partial trace) would need to yield a state $\leq \mathcal{S}^E$. Conversely, all states fulfilling this can be obtained. Then the transformation corresponds to applying $T,$ and incorporating the next step's input into the internal memory is the same as application of the partial trace.
 
 ## The adversary bound
 Consider a multi-step evolution with each step as in Subsection [evolution]: Starting from $0\neq S_0\in \mathcal{S}^E,$ the system goes through intermediate states $S_1,S_2,\ldots,S_{N-1}$ and arrives at a final state $S_N$ --- influenced by the agent, whose choices in the different steps are encoded by SOKs $S_{O,k}\in \mathcal{S}^{E\times O}:$
@@ -528,10 +559,10 @@ We add $S_0$ on both sides of the equality, and $S_N$ on both sides of the inequ
 
 $$S_N+\mathrm{tr}_O\left( \sum_{k=0}^{N-1}S_{O,k} \right) \leq \sum_{k=0}^{N} S_{k}=S_0+\mathrm{tr}_I \left(T\left( \sum^{N-1}_{k=0}S_{O,k} \right)\right).$$
 
-Now let $\tilde{S}:=\sum_{k=0}^{N-1}S_{O,k}$. Then $\tilde{S}\in \mathcal{S}$. Furthermore, by induction, all $\mathrm{tr} S_{O,k}\leq \mathrm{tr} S_0$ --- implying $\mathrm{tr} \tilde{S} \leq N \mathrm{tr}{S_0}$, or $N \geq \mathrm{tr} \tilde{S}/\mathrm{tr}{S_0}.$ 
+Now let $\widetilde{S}:=\sum_{k=0}^{N-1}S_{O,k}$. Then $\widetilde{S}\in \mathcal{S}$. Furthermore, by induction, all $\mathrm{tr} S_{O,k}\leq \mathrm{tr} S_0$ --- implying $\mathrm{tr} \widetilde{S} \leq N \mathrm{tr}{S_0}$, or $N \geq \mathrm{tr} \widetilde{S}/\mathrm{tr}{S_0}$ (if $S_0\neq 0,$  $\mathrm{tr}{S_0}>0$ and the division is permissible).
 
 !!! Tip
-   A bit of intuition: Up to renormalizing (multiplying by $1/N$), $\tilde{S}$ corresponds to applying a "random step" of the algorithm.
+   A bit of intuition: Up to multiplying by $1/N$, $\widetilde{S}$ corresponds to applying a "random step" of the algorithm.
 
 In particular, any algorithm performing the transformation $S_0\to S_N$ 
 must take at least
@@ -541,9 +572,9 @@ $$ N\geq \left\lceil \frac{\mathrm{Adv}(S_N-S_0)}{\mathrm{tr}{S_0}} \right\rceil
 steps, where we define $\mathrm{Adv}(S_N-S_0)$ as the infimal value of the optimization problem
 
 \begin{align*}
-&\underset{\tilde{S}\in\mathcal{S}^{E\times O}}{\operatorname{minimize}}& & \mathrm{tr} \tilde{S} \\
+&\underset{\widetilde{S}\in\mathcal{S}^{E\times O}}{\operatorname{minimize}}& & \mathrm{tr} \widetilde{S} \\
 &\operatorname{subject\ to}
-& & \mathrm{tr_I} \left(T\left(\tilde{S}\right)\right) - \mathrm{tr_O} \tilde{S} \geq S_N - S_0.
+& & \mathrm{tr_I} \left(T\left(\widetilde{S}\right)\right) - \mathrm{tr_O} \widetilde{S} \geq S_N - S_0.
 \end{align*}
 
 <!---
@@ -557,84 +588,79 @@ Note that $\mathrm{Adv}$ only depends on $S_N-S_0$, and the scale invariance: Fo
 
 $$\mathrm{Adv}(\lambda (S_N - S_0))=\lambda \mathrm{Adv}(S_N-S_0).$$
 
-We strengthen this bound in case $T$ is block-diagonal (i.e. applying it never changes the environmental state - this means that the agent is a "query computer" that can only observe the environment, but not change 	 ). In this case, it is not only true that
+We strengthen this bound in case the transformation matrix that gives rise to $T$ is block-diagonal in $E$ (i.e. applying it never changes the environmental state --- this means that the agent is a "query computer" that can only observe the environment, but not change it). In this case, it is not only true that
 
-$$\mathrm{tr} \tilde{S} \leq N \mathrm{tr}{S_0},$$
+$$\mathrm{tr} \widetilde{S} \leq N \mathrm{tr}{S_0},$$
 
 but that
 
-$$\mathrm{tr}(e \mathrm{tr_O} \tilde{S}) \leq N \mathrm{tr}{e S_0}$$
+$$\mathrm{tr}\left( e \mathrm{tr_O} \widetilde{S} \right) \leq N \mathrm{tr}\left( e S_0 \right)$$
 
-for each $e\in E$. This can be seen by induction. So under the assumption that $\mathrm{tr} e S_0=1$ for all $e\in E,$ an alternative, stronger lower bound is
+for each $e\in E$. This can be seen by induction. So under the assumption that $\mathrm{tr} \left( e S_0 \right) =1$ for all $e\in E,$ an alternative, stronger lower bound is
 
 \begin{align*}
-&\underset{\tilde{S}\in\mathcal{S}^{E\times O}}{\operatorname{minimize}}& & \max_{e \in E} \left\{ \mathrm{tr} \left( e \mathrm{tr_O} \right) /  \tilde{S} \right\} \\
+&\underset{\widetilde{S}\in\mathcal{S}^{E\times O}}{\operatorname{minimize}}& & \max_{e \in E} \mathrm{tr}\left( e \mathrm{tr_O} \widetilde{S} \right)/ \mathrm{tr}\left( e S_0 \right) \\
 &\operatorname{subject\ to}
-& & \mathrm{tr_I} \left(T\left(\tilde{S}\right)\right) - \mathrm{tr_O} \tilde{S} \geq S_N - S_0.
+& & \mathrm{tr_I} \left(T\left(\widetilde{S}\right)\right) - \mathrm{tr_O} \widetilde{S} \geq S_N - S_0.
 \end{align*}
 
-We call this $\tilde{Adv}(S_N - S_0).$
+We call this bound $\widetilde{\mathrm{Adv}}(S_N - S_0).$
 
 <!---
-More generally, if the evolution operator $T$ "block-commutes" with a certain evolution operator $Q\colon \mathcal{S}^E\to \mathcal{S}^E$ in the sense that $T\circ (Q \otimes \mathrm{id_O}) = (Q \otimes \mathrm{id_I}) \otimes T,$ any valid $\tilde{S}$ will fulfill
+More generally, if the evolution operator $T$ "block-commutes" with a certain evolution operator $Q\colon \mathcal{S}^E\to \mathcal{S}^E$ in the sense that $T\circ (Q \otimes \mathrm{id_O}) = (Q \otimes \mathrm{id_I}) \otimes T,$ any valid $\widetilde{S}$ will fulfill
 
-$$\mathrm{tr_I} \left(T\left(\tilde{S}\right)\right) - \mathrm{tr_O} \tilde{S} \geq Q(S_N - S_0)$$
+$$\mathrm{tr_I} \left(T\left(\widetilde{S}\right)\right) - \mathrm{tr_O} \widetilde{S} \geq Q(S_N - S_0)$$
 
 as well. This means that we can define
-$$N \geq \mathrm{tr} (Q\otimes I_O)(\tilde{S})/\mathrm{tr}{Q(S_0)}$$
+$$N \geq \mathrm{tr} (Q\otimes I_O)(\widetilde{S})/\mathrm{tr}{Q(S_0)}$$
 --->
 
-!!! Tip Side note
+!!! Tip Side remark
     We could also slightly strengthen this bound by adding the constraint
     
-    $$\mathrm{tr_O}\left(\tilde{S}\right)-S_0\in \mathcal{S},$$
+    $$\mathrm{tr_O}\left(\widetilde{S}\right)-S_0\in \mathcal{S},$$
     
-    which must be true for $\tilde{S}$ obtained from algorithms as well. I didn't put this constraint in by default, as it would be irrelevant for $\mathrm{Adv}(S_N - S_0)\gg 1,$ make $\mathrm{Adv}$ dependent on $S_0$ explicitly (rather than just $S_N-S_0$) and break the scale invariance. 
+    which must be true for $\widetilde{S}$ obtained from algorithms as well. I didn't put this constraint in by default, as it would be irrelevant for $\mathrm{Adv}(S_N - S_0)\gg 1,$ make $\mathrm{Adv}$ dependent on $S_0$ explicitly (rather than just $S_N-S_0$) and break the scale invariance. 
 
 ## The universal query algorithm
-Under the condition that the algorithm can always choose to do nothing, we can turn the feasible solutions of the optimization problems above into algorithms approximating the desired state transformation. This works similarly as the proof of the cancellation property in Subsection [the cancellation property], as mentioned there. The quantum analogue is the same as 
+Suppose that the algorithm can always choose to do nothing, i.e.
 
 $${\large\forall} S \in \mathcal{S}^E ~ {\large\exists  S_{O,\mathrm{idle}}\in \mathcal{S}^{E\times O}} ~\colon~ \mathrm{tr_O} S_{O,\mathrm{idle}} = \mathrm{tr_O} \left( T \left( S_{O,\mathrm{idle}} \right) \right) = S.$$ 
 
-Now apply this to $S:=S_0,$ $S:=S_N$, and call the resulting states $S_{O,0}$ and $S_{O,N}.$ Then the transformation given by the equations
+Under this condition, we can turn the feasible solutions of the optimization problems specifying the adversary bound above into algorithms approximating the desired state transformation. This works similarly as the proof of the cancellation property in Subsection [the cancellation property], as mentioned there. 
 
-Choosing a number of steps $N'$ and
+Consider a feasible solution for the optimization problem corresponding to $\mathrm{Adv}(S_R-S_S),$ let the idle states corresponding to initial and target states be above states be $S_{O,S}$ and $S_{O,R}.$ Choose a number of steps $N'.$ Then the algorithm given by the intermediate states of knowledge
 
-$$S_{O,k} := (N' - k) S_{O,0} + k S_{O,N} + \tilde{S},~0\leq k\leq N'$$
+$$S_{O,k} := \frac{N' - k}{N'} S_{O,S} + \frac{k}{N'} S_{O,N} + \frac{\widetilde{S}}{N'},~0\leq k < N'$$
 
-results in a valid query algorithm as in the last Subsection [the adversary bound], transforming $N' S_0 + \tilde{S}$ into $N' S_N + \tilde{S}$. Up to normalization, this is equivalent to an algorithm transforming
+results in a valid query algorithm as in the last Subsection [the adversary bound], transforming
 
-$$S_0 + \frac{\tilde{S}}{N'} \rightarrow S_N  + \frac{\tilde{S}}{N'}$$
+$$S_S + \frac{\widetilde{S}}{N'} \rightarrow S_R  + \frac{\widetilde{S}}{N'}$$
 
-in $N'$ steps. As we let $N'\to \infty,$ this approaches an algorithm that transforms $S_0\to S_N$ without error.
+in $N'$ steps. Finally, we can transform the result to $S_N$ by a non-invertible transformation; as we let $N'\to \infty,$ this approaches an algorithm that transforms $S_S\to S_R$ without error.
 
 !!! Tip
-   To quantify how close to the target SOK the algorithm allows us to get starting from $S_0,$ we can unroll the definitions and work with the representatives of the states of knowledge. Then the algorithms correspond to sequences of linear transformation that don't increase the $L_1$ norm (for classical SOK)/squared-$L_2$ norm (for pure/mixed-quantum SOK). There exist representative of $S_0$ and $S_0 + \frac{\tilde{S}}{N'}$ whose $L_1$/squared-$L_2$ distance from each other is at most $\mathrm{tr} \tilde{S}/N'.$ Applying the algorithm intended for the representative of $S_0 + \frac{\tilde{S}}{N'}$ to the representative of $S_0$ instead will yield a final state whose $L_1$/squared $L_2$-distance from $S_0 + \frac{\tilde{S}}{N'}$ is at most $\mathrm{tr} \tilde{S}/N'.$ By a triangle inequality, this achievable final state has $L_1$/squared-$L_2$ distance at most
-
-   $$\frac{4 \mathrm{tr} \tilde{S}}{N'}$$
-
-   from the target state $S_N$ (where in the classical case, the $4$ can be replaced by a $2$).
+   To quantify how close to the target SOK the algorithm allows us to get starting from $S_S,$ we can unroll the definitions and work with the representatives of the states of knowledge. Then the algorithms correspond to sequences of linear transformation that don't increase the $L_1$ norm (for classical SOK)/squared-$L_2$ norm (for pure/mixed-quantum SOK). There exist representative of $S_S$ and $S_S + \frac{\widetilde{S}}{N'}$ whose $L_1$/squared-$L_2$ distance from each other is at most $\mathrm{tr} \widetilde{S}/N'.$ Applying the algorithm intended for the representative of $S_S + \frac{\widetilde{S}}{N'}$ to the representative of $S_S$ instead will yield a final state whose $L_1$/squared-$L_2$-distance from $S_R$ is at most $\mathrm{tr} \widetilde{S}/N'.$
    
-   Broadly, if we do the same with a witness to $\tilde{\mathrm{Adv}}$ (found for a problem which meets the assumptions), we can apply this argument to each possible input state individually, i.e. for any $e\in E,$ applying the algorithm to $e S_0$ will lead to an output state $e S'_N$ which has the same distance bound as above. This is the usual error bound for universal query algorithms.
+   If we do the same with a witness to $\widetilde{\mathrm{Adv}}$ (found for a problem which meets the block-diagonality assumption), we can apply this argument to each possible input state individually, i.e. for any $e\in E,$ applying the algorithm to $e S_0$ will lead to an output state $e S'_N$ which has the same distance bound as above. This is the usual error bound for universal query algorithms. See [#Yolcu] for a more systematic description.
 
-   I am not satisfied with this description and hope there is more elegant error quantification that doesn't require going back to representatives. In the quantum case, we know by Uhlmann's theorem that the fidelity is related to the minimal achievable $L_2$-distance between representations of states of knowledge. I hope one can generalize this and relate it to the convex optimization formulation somehow. See [#Yolcu], for details on the proof for pure quantum states.
+   I am not satisfied with this description and hope there is a more elegant error quantification that doesn't require going back to representatives. In the quantum case, we know by Uhlmann's theorem [#NielsenChuang] that the fidelity is related to the minimal achievable $L_2$-distance between representations of states of knowledge. I hope one can generalize this and relate it to the convex optimization formulation somehow. See [#Yolcu] for details on the proof for pure quantum states.
    
 !!! Tip
-   If $\tilde{S}$ was constructed as a random step of an algorithm as above, we can interpret the algorithms constructed from $\tilde{S}$ as "factory line productions" of $S_N$ from $S_0$. Adding $\tilde{S}$ is equivalent to adding all intermediate states of the original algorithm at once, and one step of the constructed algorithm corresponds to applying one processing step to each of the intermediate states.
+   If $\widetilde{S}$ was constructed as a random step of an algorithm as above, we can interpret the algorithms constructed from $\widetilde{S}$ as "factory line productions" of $S_N$ from $S_0$. Adding $\widetilde{S}$ is equivalent to adding all intermediate states of the original algorithm at once, and one step of the constructed algorithm corresponds to applying one processing step to each of the intermediate states.
 
 # Discussion and outlook
-The biggest question is whether this theory can be applied to something. In particular, lower bounds for faulty query algorithms. I see a possibility that one can use it to prove a theorem of the sort "if you can solve a problem using a faulty quantum computer in time T, you can also solve it using a classical/pure-quantum computer in time T'" - by converting optimal adversary matrices into each other or suchlike.
+I see the following main open questions and directions:
 
-It would also be nice to understand the convex optimization duals better, prove an analogue of Slater's condition, and parametrize the dual of the vector space of SOKs similarly to how one can parametrize the dual of the space of Hermitian matrices by Hermitian matrices themselves.
+1. Can we apply this theory to something less trivial --- for example, lower bounds for concrete faulty quantum query algorithms? I see a possibility that one can use it to prove a theorem of the sort "if one can solve a problem using a faulty quantum computer in time T, one can also solve it using a classical/pure-quantum computer in time T'" --- by converting optimal adversary states of knowledge into each other or similar.
 
-Can one prove strong direct product theorems in this formalism in the sense of Lee-Roland? The "Lee-Roland fidelity" as defined in [#Lee-Roland], equation 3.2 seems to have been a central technical tool in that paper, and in the pure-quantum case, it has an SDP formulation.
+2. How to understand the convex optimization duals better, prove an analogue of Slater's condition, and parametrize the dual of the vector space of SOKs similarly to how one can parametrize the dual of the space of Hermitian matrices by Hermitian matrices themselves? Relatedly, defining an inner product on the vector space of states of knowledge is a natural question. In the pure-quantum case described as in Subsection [pure quantum theory], the standard inner product of Hermitian matrices corresponds to mapping $\left[ \Psi_1 \right] \cdot \left[ \Psi_2 \right] \to \left\vert \left\langle \Psi_1 \mid \Psi_2 \right\rangle \right\vert^2,$ and extending bilinearly. A candidate for a classical analogue would be the squared Bhattacharyya coefficient $\left[ \vec{p_1} \right] \cdot \left[ \vec{p_2} \right] \to \left( \sum_{e\in E} \sqrt{\left(p_1\right)_e \left(p_2\right)_e} \right)^2,$ but the resulting properties are not clear to me.
 
-In analogy of the formal power series of Subsection [differential equation of knowledge], we may be ale to formal power series if the agent is allowed to make choices --- when considering _sets of attainable states of knowledge_ instead of _individual states of knowledge_.
+3. Can one prove strong direct product theorems in this formalism in the sense of Lee-Roland? The "Lee-Roland fidelity" as defined in [#Lee-Roland], equation 3.2, was a central technical tool in that paper, and in the pure-quantum case, it has a semidefinite programming formulation.
 
-The source code of this document contains an attempt to generalize an SDP definining fidelity of quantum states --- I leave it out because the "right" way to generalize the quantity $\mathrm{tr} \left( X \rho \right)$, with $\rho$ a pure-quantum SOK over a qubit, interpreted as a density matrix, is not clear to me. Similarly, one can define the similarity measure used in the error quantification of Subsection [the universal query algorithm] in more detail. As mentioned, in the pure-quantum case, Uhlmann's theorem relates this similarity measure to the fidelity, and it is desirable to generalize fidelity in such a way that Uhlmann's theorem generalizes as well.
+4. In analogy of the formal power series of Subsection [differential equation of knowledge], one may be able to describe formal power series if the agent is allowed to make choices --- when considering _sets of attainable states of knowledge_ instead of _individual states of knowledge_.
 
-# Acknowledgements
-Thanks to [John Baez](https://math.ucr.edu/home//baez/README.html) for helpful comments.
+5. This document does not contain my attempt to generalize an SDP definining the fidelity of quantum states. This is because the "right" way to generalize the quantity $\mathrm{tr} \left( X \rho \right)$, with $\rho$ a pure-quantum SOK over a qubit, interpreted as a density matrix, is not clear to me. Similarly, one can define the similarity measure used in the error quantification of Subsection [the universal query algorithm] in more detail. As mentioned, in the pure-quantum case, Uhlmann's theorem [#NielsenChuang] relates this similarity measure to the fidelity, and it is desirable to generalize fidelity in such a way that Uhlmann's theorem generalizes as well.
 
 # References
 [#Ambainis]: [Quantum lower bounds by quantum arguments](https://dl.acm.org/doi/pdf/10.1145/335305.335394), 2000
@@ -651,31 +677,25 @@ Thanks to [John Baez](https://math.ucr.edu/home//baez/README.html) for helpful c
 
 [#Chiribella-D'Ariano-Perinotti]: [Theoretical framework for quantum networks](https://arxiv.org/abs/0904.4483), 2009
 
-[#Barnum-Saks-Szegedy]: [Quantum query complexity and semi-definite programming](https://ieeexplore.ieee.org/document/1214419) (generalized to noncommuting queries [here](https://arxiv.org/abs/quant-ph/0703141))
+[#Barnum]: [Semidefinite programming characterization and spectral adversary method for quantum complexity with noncommuting unitary queries](https://arxiv.org/abs/quant-ph/0703141), 2007 (generalizing [#Barnum-Saks-Szegedy] to noncommuting queries)
+
+[#Barnum-Saks-Szegedy]: [Quantum query complexity and semi-definite programming](https://ieeexplore.ieee.org/document/1214419) 
 
 [#SikoraVarvitsiotis]: [Semidefinite Programming & Quantum Information](https://sites.google.com/site/jamiesikora/teaching/semidefinite-programming-quantum-information), university course, 2015
 
-[#NielsenChuang]: [Quantum Computation and Quantum Information](https://www.cambridge.org/highereducation/books/quantum-computation-and-quantum-information/01E10196D0A682A6AEFFEA52D53BE9AE#overview)
+[#NielsenChuang]: [Quantum Computation and Quantum Information](https://www.cambridge.org/highereducation/books/quantum-computation-and-quantum-information/01E10196D0A682A6AEFFEA52D53BE9AE#overview), 2002
 
-[#Yolcu]: [The Adversary Bound Revisited: From Optimal Query Algorithms to Optimal Control](https://arxiv.org/abs/2211.16293)
+[#Yolcu]: [The Adversary Bound Revisited: From Optimal Query Algorithms to Optimal Control](https://arxiv.org/abs/2211.16293), 2022
 
 # Footnotes
 [^1]: Our convention is that each row is a different environmental state, and each column a different internal memory state.
 
-[^2]: In fact, as I understand, they are infinite-dimensional.
+[^2]: I think that using density matrices and a variant of quantum channels would work as well to discuss mixed states.
 
-[^3]: I think now that using density matrices and a variant of quantum channels would work as well to discuss mixed states. I didn't understand this when writing this draft.
+[^3]: In the correspondence between $\mathcal{S}^E_\mathrm{quant}$ and reduced density matrices on $E$, this works out to be a literal partial trace.
 
-[^4]: In the correspondence $\mathcal{S}^E_\mathrm{quant}$<->reduced density matrices on $E$, it should work out to be a literal partial trace.
+[^4]: I think that one can obtain a more elegant description of possible transformations by adapting the parallel developments by [#Gutoski-Watrous] and [#Chiribella-D'Ariano-Perinotti]. But I don't see a use of that as of this note.
 
-[^5]: I think one can obtain a more elegant description of possible transformations by adapting the parallel developments by [Gutoski and Watrous](https://arxiv.org/pdf/quant-ph/0611234.pdf) and [Chiribella, D'Ariano, and Perinotti](https://journals.aps.org/pra/abstract/10.1103/PhysRevA.80.022339). But I don't see a use of that as of this note.
-
-[^6]: If one looks into the definitions, one can see that the "states of quasiknowledge" construction is related to a [Grothendieck group construction](https://en.wikipedia.org/wiki/Grothendieck_group). I looked into Wikipedia to read that this has his name from a specific case "which resulted in the development of [K-theory](https://en.wikipedia.org/w/index.php?title=K-theory&oldid=1072713370)". What's written there looks formally quite similar to what I do here, though I don't understand it in detail. So maybe one can call these thoughts "K-theory on the space of probabilistic transformations?"
-
-[^7]: A side remark: $\mathcal{S}_{\mathrm{quant}}\subset\mathcal{S}^\pm_{\mathrm{quant}}$ should be isomorphic to the algebra of complex positive semidefinite $E\times E$ matrices (as a subset of the Hermitian matrices), with elementwise addition and multiplication. There is a 1-to-1 correspondence between bipartite, unnormalized wavefunctions modulo unitary transformations on one part, and positive semidefinite matrices (which are the same as density matrices without normalization): Every density matrix can be purified, local unitaries on the purifying space don't change the reduced density matrix, and [all purifications of a given reduced density matrix are related by a local unitary](https://quantumcomputing.stackexchange.com/questions/9368/why-do-purifications-only-differ-by-a-local-unitary).
-
-[^8]: It is **not** a homomorphism of $\mathbb{R}$-algebras.
-
-[^9]: [This Oberwolfach seminar](https://homepages.cwi.nl/~monique/ow-seminar-sdp/) contains a lecture on infinite-dimensional semidefinite optimization.
+[^5]: It is **not** a homomorphism of $\mathbb{R}$-algebras.
 
 <!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
