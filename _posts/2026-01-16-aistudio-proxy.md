@@ -25,6 +25,7 @@ A long-term solution would be a bring-your-own-key flow within OAuth. Instead of
 ## Disclosure timeline
 *   **Nov 30:** Reported to Google.
 *   **Jan 13:** Google replied that this is "due to insufficient or incorrect documentation" (i.e., the proxy setup is considered to be working as intended).
+*   **Feb 15:** Apparently no change in the documentation yet.
 
 ## Test it out
 Go to https://aistudio.google.com/build, deploy a basic web app, and verify the open proxy:
