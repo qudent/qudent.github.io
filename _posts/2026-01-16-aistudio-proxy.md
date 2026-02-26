@@ -15,7 +15,7 @@ Even if you build an app that uses **zero AI features**, this proxy is deployed 
 Since Google API keys don’t allow setting hard spending limits (and Google Cloud billing alerts lead to warnings but don't stop usage), the outcome can be catastrophic.
 
 ## Find vulnerable endpoints with a single Google search
-A single Google search for the URL scheme under which these apps are published (which anyone can find easily enough by testing it out) reveals plenty of live apps whose authors apparently trusted the documentation. An attacker could use these open proxies to incur thousands of dollars in costs - generating fake videos or spam - billed directly to the developer's credit card.
+A single Google (or Twitter, or Hacker News) search for the URL scheme under which these apps are published (which anyone can find easily enough by testing it out - namely, "us-west1.run.app" or search for other regions does the trick) reveals plenty of live apps whose authors apparently trusted the documentation. An attacker could use these open proxies to incur thousands of dollars in costs - generating fake videos or spam - billed directly to the developer's credit card.
 
 As it stands, this proxy provides no security benefit compared to putting the API key in the frontend. It is essentially **"cargo cult security"**: it mimics the appearance of safety (hiding the credential) while ignoring the actual threat (unauthorized usage).
 
