@@ -23,7 +23,7 @@ As it stands, this proxy provides no security benefit compared to putting the AP
 A long-term solution would be a bring-your-own-key flow within OAuth. Instead of the developer footing the bill, users should authorize a spending limit during Google OAuth, and the app should receive a new key billed to the user.
 
 ## Disclosure timeline
-*   **Nov 30:** Reported to Google.
+*   **Nov 30, 2025:** Reported to Google.
 *   **Jan 13:** Google replied that this is "due to insufficient or incorrect documentation" (i.e., the proxy setup is considered to be working as intended).
 *   **Jan 31:** Closed with status INTENDED_BEHAVIOR
 *   **Feb 15:** Apparently no change in the documentation yet.
