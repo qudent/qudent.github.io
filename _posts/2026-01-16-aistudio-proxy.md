@@ -25,6 +25,7 @@ A long-term solution would be a bring-your-own-key flow within OAuth. Instead of
 ## Disclosure timeline
 *   **Nov 30:** Reported to Google.
 *   **Jan 13:** Google replied that this is "due to insufficient or incorrect documentation" (i.e., the proxy setup is considered to be working as intended).
+*   **Jan 31:** Closed with status INTENDED_BEHAVIOR
 *   **Feb 15:** Apparently no change in the documentation yet.
 *   **Feb 26:** No fix, but by now, the publishing app flow has changed. It includes a warning that "Before launching to real customers, verify your app's external software dependencies." - implying that launching such an app to real customers in this way, with the open proxy, would otherwise be a good idea.
 
