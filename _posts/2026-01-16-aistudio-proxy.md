@@ -76,3 +76,6 @@ Or list available models:
 ```bash
 curl -X GET "https://<your-app-url>/api-proxy/v1beta/models?pageSize=1000"
 ```
+
+# Advice for affected users
+If you got hit by a significant charge after deploying such an app, especially in the 3-month window between report and fix, you may appeal it with Google. You can check the HTTP referrers in the Logs Explorer for your Google Cloud Run project to see whether the traffic came from legitimate usage of your app (legitimate traffic will show your app's deployed URL as the referrer, abuse traffic may have empty or different referrers unless the attacker specifically set the correct referrer). If the charge is significant and you complain to a court or someone else than Google, this disclosure timeline (and the evidence of Google-encouraged deployments therein) may be relevant.
