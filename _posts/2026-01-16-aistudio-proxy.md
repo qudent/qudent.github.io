@@ -23,14 +23,15 @@ As it stands, this proxy provides no security benefit compared to putting the AP
 A long-term solution would be a bring-your-own-key flow within OAuth. Instead of the developer footing the bill, users should authorize a spending limit during Google OAuth, and the app should receive a new key billed to the user.
 
 # Update (reported March 18):
-These findings were inspired by a [Truffle security report](https://trufflesecurity.com/blog/google-api-keys-werent-secrets-but-then-gemini-changed-the-rules) published on February 25, which points out a similar issue: Google API keys were documented as not secrets for a long time, but adding Gemini to a project exposed the File API and Gemini access to them. By scanning the Common Crawl dataset, Truffle found almost 3000 thousand API keys with open Gemini access lying around in public, including in Google-owned properties. I didn't perform such an exhaustive list for my vulnerability, assuming that pointing to the Google search page would be enough - scoped [search on Twitter](https://x.com/search?q=us-west1.run.app%20until%3A2025-02-31)) appears to produce at least hundreds of apps at least as well, with most published after I disclosed the issue (and nothing was being done to update the documentation). I recall finding one app with document analysis features belonging to a bank on Google.
-
 ## Unauthorized file access
 The Gemini API allows uploading files (which can be put into context), which are then accessible. I confirmed that the open proxy also allows downloading those files.
 
 ## Amplified impact by official promotion
 - Oct 27: A Google DevRel [showcased](https://x.com/meteatamel/status/1982781124116914508) a public app developed with the vulnerable flow (technically a Google-owned deployment)
 - Dec 31 (after report submission): Google announced a vibecoding competition called [New Year, New You](https://dev.to/challenges/new-year-new-you-google-ai-2025-12-31) that required online publishing and encouraged the vulnerable deployment flow.
+
+## Related: Truffle Security report
+The findings above were inspired by a [Truffle security report](https://trufflesecurity.com/blog/google-api-keys-werent-secrets-but-then-gemini-changed-the-rules) published on February 25, which points out a similar issue: Google API keys were documented as not secrets for a long time, but adding Gemini to a project exposed the File API and Gemini access to them. By scanning the Common Crawl dataset, Truffle found almost 3000 thousand API keys with open Gemini access lying around in public, including in Google-owned properties. I didn't perform such an exhaustive list for my vulnerability, assuming that pointing to the Google search page would be enough - scoped [search on Twitter](https://x.com/search?q=us-west1.run.app%20until%3A2025-02-31)) appears to produce at least hundreds of apps at least as well, with most published after I disclosed the issue (and nothing was being done to update the documentation). I recall finding one app with document analysis features belonging to a bank on Google.
 
 ## Disclosure and reward
 The disclosure experience was a bit bumpy (see timeline).
