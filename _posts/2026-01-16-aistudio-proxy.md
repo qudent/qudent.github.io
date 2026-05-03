@@ -22,14 +22,39 @@ As it stands, this proxy provides no security benefit compared to putting the AP
 ## How to mitigate this?
 A long-term solution would be a bring-your-own-key flow within OAuth. Instead of the developer footing the bill, users should authorize a spending limit during Google OAuth, and the app should receive a new key billed to the user.
 
-## Disclosure timeline
-*   **Nov 30, 2025:** Reported to Google.
-*   **Jan 13:** Google replied that this is "due to insufficient or incorrect documentation" (i.e., the proxy setup is considered to be working as intended).
-*   **Jan 31:** Closed with status INTENDED_BEHAVIOR
-*   **Feb 15:** Apparently no change in the documentation yet.
-*   **Feb 26:** No fix, but by now, the publishing app flow has changed. It includes a warning that "Before launching to real customers, verify your app's external software dependencies." - implying that launching such an app to real customers in this way, with the open proxy, would otherwise be a good idea.
+# Update (reported March 18):
+These findings were inspired by a [Truffle security report](https://trufflesecurity.com/blog/google-api-keys-werent-secrets-but-then-gemini-changed-the-rules) published on February 25, which points out a similar issue: Google API keys were documented as not secrets for a long time, but adding Gemini to a project exposed the File API and Gemini access to them. By scanning the Common Crawl dataset, Truffle found almost 3000 thousand API keys with open Gemini access lying around in public, including in Google-owned properties. I didn't perform such an exhaustive list for my vulnerability, assuming that pointing to the Google search page would be enough - scoped [search on Twitter](https://x.com/search?q=us-west1.run.app%20until%3A2025-02-31)) appears to produce at least hundreds of apps at least as well, with most published after I disclosed the issue (and nothing was being done to update the documentation). I recall finding one app with document analysis features belonging to a bank on Google.
 
-## Test it out
+## Unauthorized file access
+The Gemini API allows uploading files (which can be put into context), which are then accessible. I confirmed that the open proxy also allows downloading those files.
+
+## Amplified impact by official promotion
+- Oct 27: A Google DevRel [showcased](https://x.com/meteatamel/status/1982781124116914508) a public app developed with the vulnerable flow (technically a Google-owned deployment)
+- Dec 31 (after report submission): Google announced a vibecoding competition called [New Year, New You](https://dev.to/challenges/new-year-new-you-google-ai-2025-12-31) that required online publishing and encouraged the vulnerable deployment flow.
+
+## Disclosure and reward
+The disclosure experience was a bit bumpy (see timeline).
+
+**Pro-Tips** for my future self are to look for the issues pointed out in the update (data access rather than mere billing abuse, official Google deployments or DevRel encouragements of the vulnerable flow). Submitting a concrete, long list of vulnerable endpoints rather than gesturing at the Google search may have been helpful as well.
+
+## Disclosure and vulnerability timeline
+*   **Oct 27, 2025:** Google DevRel [showcases](https://x.com/meteatamel/status/1982781124116914508) a public app developed with the vulnerable flow
+*   **Nov 30, 2025:** Reported to Google. (The initial report contained neither the file access vulnerability nor the Oct 27 and Dec 31 promotional examples).
+*   **Dec 15, 2025:** Someone (else) posts a [Reddit comment](https://old.reddit.com/r/Bard/comments/1pdxgpv/how_does_an_app_built_with_ai_studio_hide_the/nu3u4bz/) (which I discovered later) pointing out the basic issue (without cross-referencing the documentation or Google discoverability), but doesn't get traction
+*   **Dec 31, 2025:** Google-sponsored ["New Year, New You" competition](https://dev.to/challenges/new-year-new-you-google-ai-2025-12-31) announced, which requires publishing and posting a site and encourages the vulnerable deployment flow
+*   **Jan 13:** Reward denied because the issue is considered to be "due to insufficient or incorrect documentation", asserting that the proxy setup itself is a valid design.
+*   **Jan 13:** [Truffle security report](https://trufflesecurity.com/blog/google-api-keys-werent-secrets-but-then-gemini-changed-the-rules) (published Feb 25) gets classified as "Single-Service Privilege Escalation, READ" (Tier 1, $20,000).
+*   **Jan 31:** Closed with status INTENDED_BEHAVIOR.
+*   **Feb 15:** Confirmed that the relevant parts of the documentation haven't changed.
+*   **Feb 25:** Truffle Security report gets published and goes viral on Hacker News one day later.
+*   **Feb 26:** No fix, but by now, the publishing app flow has changed. It includes a warning that "Before launching to real customers, verify your app's external software dependencies." In line with the DevRel post and the competition, this confirms to a user that launching these exposed apps to the public internet isn't just an edge case, but Google's expected, supported use case.
+*   **Mar 18:** Abuse Reward ($1,337) issued with the following justification: "Exploitation likelihood is medium. Issue qualified as an abuse-related methodology with medium impact."
+*   **Mar 18:** Confirmed that Google had changed the deployment flow to prevent the vulnerable behavior (to my memory, breaking all AI features in new deployments at some point, though existing apps remained exposed).
+*   **Mar 18:** An email is sent to AI studio users announcing enforceable spending caps.
+*   **Mar 18:** Appealed pointing out facts in Update which make the situation comparable to the Truffle report
+*   **Mar 31:** Classification appeal rejected (no reasoning given)
+
+## Test it out (deprecated)
 Go to https://aistudio.google.com/build, deploy a basic web app, and verify the open proxy:
 
 ```bash
