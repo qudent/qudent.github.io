@@ -36,7 +36,7 @@ The findings above were inspired by a [Truffle security report](https://truffles
 ## Disclosure and reward
 The disclosure experience was a bit bumpy (see timeline).
 
-**Pro-Tips** for my future self are to look for the issues pointed out in the update (data access rather than mere billing abuse, official Google deployments or DevRel encouragements of the vulnerable flow). Submitting a concrete, long list of vulnerable endpoints rather than gesturing at the Google search may have been helpful as well.
+**Pro-Tips** for my future self are to look for the issues pointed out in the update (data access rather than mere billing abuse, official Google deployments or DevRel encouragements of the vulnerable flow). Submitting a concrete, long list of vulnerable endpoints rather than gesturing at the Google search may have been helpful as well. This is not supposed to matter - according to the [Google VRP rules](https://bughunters.google.com/about/rules/google-friends/google-and-alphabet-vulnerability-reward-program-vrp-rules), one should submit a report "as soon as you have discovered a potential security issue" - but it may have made a difference in practice.
 
 ## Disclosure and vulnerability timeline
 *   **Oct 27, 2025:** Google DevRel [showcases](https://x.com/meteatamel/status/1982781124116914508) a public app developed with the vulnerable flow
@@ -52,7 +52,7 @@ The disclosure experience was a bit bumpy (see timeline).
 *   **Mar 18:** Abuse Reward ($1,337) issued with the following justification: "Exploitation likelihood is medium. Issue qualified as an abuse-related methodology with medium impact."
 *   **Mar 18:** Confirmed that Google had changed the deployment flow to prevent the vulnerable behavior (to my memory, breaking all AI features in new deployments at some point, though existing apps remained exposed).
 *   **Mar 18:** An email is sent to AI studio users announcing enforceable spending caps.
-*   **Mar 18:** Appealed pointing out facts in Update which make the situation comparable to the Truffle report
+*   **Mar 18:** Appealed pointing out facts in Update which make the situation comparable to the Truffle report. According to [Google VRP rules](https://bughunters.google.com/about/rules/google-friends/google-and-alphabet-vulnerability-reward-program-vrp-rules), "the panel will consider the maximum impact and will choose the reward accordingly. We routinely pay higher rewards for otherwise well-written and useful submissions where the reporter didn't notice or couldn't fully analyze the impact of a particular flaw".
 *   **Mar 31:** Classification appeal rejected (no reasoning given)
 
 ## Test it out (deprecated)
